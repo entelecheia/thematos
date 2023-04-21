@@ -1,5 +1,9 @@
 <!--next-version-placeholder-->
 
+## v0.1.3 (2023-04-21)
+### Fix
+* **version:** Disable scm-version ([`07058b6`](https://github.com/entelecheia/thematos/commit/07058b67ae77d92a81918f2c0add4ad025b15208))
+
 ## v0.1.2 (2023-04-21)
 ### Fix
 * **version:** Add pre-commit command to make scm-version ([`427e4ad`](https://github.com/entelecheia/thematos/commit/427e4ad98c1069895514dbf85a70643468a513f8))
