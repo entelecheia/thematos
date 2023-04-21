@@ -1,5 +1,9 @@
 <!--next-version-placeholder-->
 
+## v0.1.2 (2023-04-21)
+### Fix
+* **version:** Add pre-commit command to make scm-version ([`427e4ad`](https://github.com/entelecheia/thematos/commit/427e4ad98c1069895514dbf85a70643468a513f8))
+
 ## v0.1.1 (2023-04-21)
 ### Fix
 * Add PYPI TOKEN ([`d57b6c9`](https://github.com/entelecheia/thematos/commit/d57b6c9c0746027ae76a47d6398916ba222bcbde))
