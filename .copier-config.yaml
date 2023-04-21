@@ -1,0 +1,25 @@
+# Changes here will be overwritten by Copier; do NOT edit manually
+_commit: v0.2.10
+_src_path: gh:entelecheia/hyperfast-python-template
+author: Young Joon Lee
+code_template_answers_file: .copier-hyfi-config.yaml
+code_template_source: gh:entelecheia/hyfi-template
+copyright_year: 2023
+documentaion_tool: jupyter-book
+documentation_url: https://thematos.entelecheia.ai
+email: entelecheia@hotmail.com
+friendly_name: ThematOS
+github_repo_name: thematos
+github_username: entelecheia
+package_name: thematos
+project_description: ThematOS is a comprehensive and user-friendly Python library
+    designed for topic modeling, a key technique in natural language processing (NLP)
+    and machine learning (ML) used to extract hidden patterns and themes from large
+    collections of text data. The name ThematOS is derived from the Greek word θέματος
+    (topic), reflecting the library's primary focus on uncovering the underlying structure
+    of textual data.
+project_license: MIT
+project_name: thematos
+project_short_description: A Python Library for Topic Modeling
+use_source_code_skeleton: true
+
