@@ -1,5 +1,9 @@
 <!--next-version-placeholder-->
 
+## v0.1.4 (2023-04-25)
+### Fix
+* Apply updated template ([`a400c5a`](https://github.com/entelecheia/thematos/commit/a400c5a6b5861a651e027b6a4511264a5cfd04bc))
+
 ## v0.1.3 (2023-04-21)
 ### Fix
 * **version:** Disable scm-version ([`07058b6`](https://github.com/entelecheia/thematos/commit/07058b67ae77d92a81918f2c0add4ad025b15208))
