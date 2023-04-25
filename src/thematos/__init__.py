@@ -1,23 +1,21 @@
 import os
 
-import toml
 from hyfi import HyFI, about, global_config
 
 from ._version import __version__
 
 # Read and parse pyproject.toml
 current_dir = os.path.dirname(os.path.abspath(__file__))
-pyproject_path = os.path.join(current_dir, "project.toml")
+about_path = os.path.join(current_dir, "conf", "about", "__init__.yaml")
 
-with open(pyproject_path) as f:
-    pyproject_data = toml.load(f)
+about_data = HyFI.load(about_path)
 
-# Extract package information from pyproject.toml
-project_data = pyproject_data.get("metadata", {})
-about.name = project_data.get("name", "package name")
-about.author = project_data.get("authors", ["Author name"])[0]
-about.description = project_data.get("description", "package description")
-about.homepage = project_data.get("homepage", "https://package.homepage")
+# Extract package information
+about.name = about_data.get("name", "package name")
+about.authors = about_data.get("authors", ["Author name"])
+about.description = about_data.get("description", "package description")
+about.homepage = about_data.get("homepage", "https://package.homepage")
+about.license = about_data.get("license", "MIT")
 about.version = __version__
 global_config.hyfi_package_config_path = "pkg://thematos.conf"
 

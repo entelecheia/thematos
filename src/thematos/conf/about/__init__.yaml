@@ -1,5 +1,6 @@
-name: HyFI
-author: Young Joon Lee
-description: Hydra Fast Interface (Hydra and Pydantic based interface framework)
-homepage: https://hyfi.entelecheia.cc
-version: "0.1.0"
+name: "ThematOS"
+authors: "Young Joon Lee <entelecheia@hotmail.com>"
+description: "A Python Library for Topic Modeling"
+homepage: "https://thematos.entelecheia.ai"
+license: "MIT"
+version: "0.0.0"
