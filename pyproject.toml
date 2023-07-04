@@ -14,7 +14,7 @@ thematos = 'thematos.__cli__:main'
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<3.12"
-hyfi = "^0.2.15"
+hyfi = ">=0.2.15,<1.1.0"
 
 [tool.poetry.group.dev.dependencies]
 python-semantic-release = "^7.33.1"
