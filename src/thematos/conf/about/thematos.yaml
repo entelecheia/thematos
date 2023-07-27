@@ -1,0 +1,5 @@
+name: "ThematOS"
+authors: "Young Joon Lee <entelecheia@hotmail.com>"
+description: "A Python Library for Topic Modeling"
+homepage: "https://thematos.entelecheia.ai"
+license: "MIT"
