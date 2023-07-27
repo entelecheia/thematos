@@ -7,7 +7,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>ThematOS &#8212; ThematOS</title>
   
@@ -70,6 +70,13 @@
     <script src="_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-RGCZCJ4ZZF"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-RGCZCJ4ZZF');
+            </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -78,9 +85,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({startOnLoad:true});</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="shortcut icon" href="https://assets.entelecheia.ai/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Usage" href="usage.html" />
@@ -170,6 +176,13 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/thematos.html">thematos</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/thematos.conf.html">thematos.conf</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 
@@ -236,6 +249,23 @@ const thebe_selector_output = ".output, .cell_output"
   <i class="fab fa-github"></i>
   </span>
 <span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/entelecheia/thematos/edit/main/book/index.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
 </a>
 </li>
       
@@ -382,10 +412,11 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="thematos">
 <h1>ThematOS<a class="headerlink" href="#thematos" title="Permalink to this heading">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/thematos"><img alt="pypi-image" src="https://img.shields.io/pypi/v/thematos" /></a>
-<a class="reference external" href="https://github.com/entelecheia/thematos/blob/main/LICENSE"><img alt="license-image" src="https://img.shields.io/github/license/entelecheia/thematos" /></a>
 <a class="reference external" href="https://github.com/entelecheia/thematos/releases"><img alt="version-image" src="https://img.shields.io/github/v/release/entelecheia/thematos?sort=semver" /></a>
 <a class="reference external" href="https://github.com/entelecheia/thematos/releases"><img alt="release-date-image" src="https://img.shields.io/github/release-date/entelecheia/thematos" /></a>
-<a class="reference external" href="https://thematos.entelecheia.ai"><img alt="jupyter-book-image" src="https://jupyterbook.org/en/stable/_images/badge.svg" /></a></p>
+<a class="reference external" href="https://github.com/entelecheia/thematos/blob/main/LICENSE"><img alt="license-image" src="https://img.shields.io/github/license/entelecheia/thematos" /></a>
+<a class="reference external" href="https://thematos.entelecheia.ai"><img alt="jupyter-book-image" src="https://jupyterbook.org/en/stable/_images/badge.svg" /></a>
+<a class="reference external" href="https://codecov.io/gh/entelecheia/thematos"><img alt="codecov" src="https://codecov.io/gh/entelecheia/thematos/branch/main/graph/badge.svg?token=JP5P7C8ZOO" /></a></p>
 <!-- Links: -->
 <!-- Links: -->
 <p>A Python Library for Topic Modeling</p>
@@ -412,6 +443,13 @@ document.write(`
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/thematos.html">thematos</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/thematos.conf.html">thematos.conf</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 </div>
@@ -422,8 +460,8 @@ document.write(`
     {
         requestKernel: true,
         binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
-            ref: "master",
+            repo: "entelecheia/thematos",
+            ref: "main",
         },
         codeMirrorConfig: {
             theme: "abcdef",
