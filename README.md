@@ -8,7 +8,7 @@
 [![jupyter-book-image]][docs-url]
 
 <!-- Links: -->
-[codecov-image]: https://codecov.io/gh/entelecheia/thematos/branch/main/graph/badge.svg?token=[REPLACE_ME]
+[codecov-image]: https://codecov.io/gh/entelecheia/thematos/branch/main/graph/badge.svg?token=JP5P7C8ZOO
 [codecov-url]: https://codecov.io/gh/entelecheia/thematos
 [pypi-image]: https://img.shields.io/pypi/v/thematos
 [license-image]: https://img.shields.io/github/license/entelecheia/thematos
