@@ -1,14 +1,17 @@
 # ThematOS
 
 [![pypi-image]][pypi-url]
-[![license-image]][license-url]
 [![version-image]][release-url]
 [![release-date-image]][release-url]
+[![license-image]][license-url]
 [![jupyter-book-image]][docs-url]
+[![codecov][codecov-image]][codecov-url]
 
 <!-- Links: -->
 [hyperfast python template]: https://github.com/entelecheia/hyperfast-python-template
 
+[codecov-image]: https://codecov.io/gh/entelecheia/thematos/branch/main/graph/badge.svg?token=[REPLACE_ME]
+[codecov-url]: https://codecov.io/gh/entelecheia/thematos
 [pypi-image]: https://img.shields.io/pypi/v/thematos
 [license-image]: https://img.shields.io/github/license/entelecheia/thematos
 [license-url]: https://github.com/entelecheia/thematos/blob/main/LICENSE
@@ -32,8 +35,6 @@ A Python Library for Topic Modeling
 
 ThematOS is a comprehensive and user-friendly Python library designed for topic modeling, a key technique in natural language processing (NLP) and machine learning (ML) used to extract hidden patterns and themes from large collections of text data. The name ThematOS is derived from the Greek word θέματος (topic), reflecting the library's primary focus on uncovering the underlying structure of textual data.
 
-
-
 ## Changelog
 
 See the [CHANGELOG] for more information.
@@ -45,7 +46,6 @@ Contributions are welcome! Please see the [contributing guidelines] for more inf
 ## License
 
 This project is released under the [MIT License][license-url].
-
 
 ## Table of Contents
 
