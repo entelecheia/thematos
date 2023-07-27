@@ -1,6 +1,0 @@
-[metadata]
-name = "thematos"
-description = "A Python Library for Topic Modeling"
-authors = ["Young Joon Lee <entelecheia@hotmail.com>"]
-license = "MIT"
-homepage = "https://thematos.entelecheia.ai"
