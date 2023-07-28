@@ -1,3 +1,6 @@
+# workging directory
+workspace/
+
 # hypothesis: https://github.com/HypothesisWorks/hypothesis
 .hypothesis/
 .vscode/
