@@ -1,5 +1,11 @@
 <!--next-version-placeholder-->
 
+## v0.2.1 (2023-07-28)
+
+### Fix
+
+* **pyproject.toml:** Upgrade hyfi to ^1.12.0 ([`a3d6c93`](https://github.com/entelecheia/thematos/commit/a3d6c931d4ce3c0b39cff37d5905ee4c3bdba000))
+
 ## v0.2.0 (2023-07-27)
 
 ### Feature
