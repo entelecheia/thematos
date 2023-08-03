@@ -1,5 +1,11 @@
 <!--next-version-placeholder-->
 
+## v0.2.3 (2023-08-03)
+
+### Fix
+
+* **dependencies:** Upgrade hyfi to 1.17.2 ([`ae81a43`](https://github.com/entelecheia/thematos/commit/ae81a4344ab3eaa54aeaeeeb82b229dd511333b2))
+
 ## v0.2.2 (2023-07-30)
 
 ### Fix
