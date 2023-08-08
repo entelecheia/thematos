@@ -15,7 +15,7 @@ thematos = 'thematos.__cli__:main'
 [tool.poetry.dependencies]
 python = ">=3.8.1,<3.12"
 click = "^8.1.3"
-hyfi = "^1.24.0"
+hyfi = "^1.25.0"
 lexikanon = "^0.5.2"
 
 [tool.poetry.group.dev]
