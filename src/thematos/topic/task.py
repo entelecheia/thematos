@@ -38,9 +38,7 @@ class TopicTask(BatchTaskConfig):
     _summaries_: List[ModelSummary] = []
     active_model_id: Optional[str] = None
 
-    model = None
     models = {}
-    labels = []
 
     @property
     def summary_file(self) -> Path:
