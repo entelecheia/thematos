@@ -221,7 +221,7 @@ class TopicModel(BatchTaskConfig):
             sys.stdout = original_stdout  # Reset the standard output.
 
     def save_model_summary(self) -> None:
-        HyFI.add_to_jsonl(
+        HyFI.append_to_jsonl(
             self.model_summary.model_dump(),
             self.model_summary_file,
         )
