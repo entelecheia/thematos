@@ -16,6 +16,8 @@ class WordPrior(BaseModel):
     lowercase: bool = True
     prior_data: Optional[PriorType] = None
     data_file: Optional[str] = None
+    min_prior_weight: float = 0.01
+    max_prior_weight: float = 1.0
     verbose: bool = False
 
     _priors_: PriorType = {}
