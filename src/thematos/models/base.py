@@ -18,6 +18,9 @@ logger = HyFI.getLogger(__name__)
 
 
 class TrainConfig(BaseModel):
+    _config_group_ = "/model/train"
+    _config_name_ = "topic"
+
     burn_in: int = 0
     interval: int = 10
     iterations: int = 100
@@ -25,14 +28,18 @@ class TrainConfig(BaseModel):
 
 
 class TopicModel(BatchTaskConfig):
-    batch_name: str = "Topic"
+    _config_group_ = "model"
+    _config_name_ = "topic"
+
+    task_name: str = "topic"
+    batch_name: str = "batch"
     model_type: str = "BASE"
     model_config: Any = None
     wordprior: WordPrior = WordPrior()
     corpus: Corpus = Corpus()
     train_config: TrainConfig = TrainConfig()
 
-    coherence_metrics: List[str] = ["u_mass", "c_uci", "c_npmi", "c_v"]
+    coherence_metric_list: List[str] = ["u_mass", "c_uci", "c_npmi", "c_v"]
     eval_coherence: bool = False
     set_wordprior: bool = False
     save: bool = True
@@ -42,7 +49,7 @@ class TopicModel(BatchTaskConfig):
     # internal attributes
     _model_: Optional[Any] = None
     _timestamp_: Optional[str] = None
-    _coh_metrics_: Optional[CoherenceMetrics] = None
+    _coherence_metrics_: Optional[CoherenceMetrics] = None
     _ll_per_words_: List[Tuple[int, float]] = []
 
     @property
@@ -62,10 +69,10 @@ class TopicModel(BatchTaskConfig):
         return self._model_summary_
 
     @property
-    def cohrence_metrics(self) -> CoherenceMetrics:
-        if self._coh_metrics_ is None:
+    def coherence_metrics(self) -> CoherenceMetrics:
+        if self._coherence_metrics_ is None:
             raise ValueError("Model has not been trained yet.")
-        return self._coh_metrics_
+        return self._coherence_metrics_
 
     @property
     def timestamp(self) -> str:
@@ -143,7 +150,7 @@ class TopicModel(BatchTaskConfig):
             train_config=self.train_config.model_dump(),
             ll_per_word=self.ll_per_words,
             perplexity=self.model.perplexity,
-            coherence_metrics=self.cohrence_metrics.model_dump(),
+            coherence_metrics=self.coherence_metrics.model_dump(),
         )
 
     def _set_wordprior(self) -> None:
@@ -174,7 +181,7 @@ class TopicModel(BatchTaskConfig):
         # save model
         self.save_model()
         if self.eval_coherence:
-            self._coh_metrics_ = self.evaluate_coherence()
+            self._coherence_metrics_ = self.evaluate_coherence()
         self.save_document_topic_dists()
         self.save_model_summary()
 
@@ -187,7 +194,7 @@ class TopicModel(BatchTaskConfig):
         assert self.model, "Model not found"
         mdl = self.model
         coh_metrics = {}
-        for metric in self.coherence_metrics:
+        for metric in self.coherence_metric_list:
             coh = tp.coherence.Coherence(mdl, coherence=metric)
             average_coherence = coh.get_score()
             coh_metrics[metric] = average_coherence
@@ -196,7 +203,7 @@ class TopicModel(BatchTaskConfig):
                 logger.info("==== Coherence : %s ====", metric)
                 logger.info("Average: %s", average_coherence)
                 logger.info("Per Topic: %s", coherence_per_topic)
-        self._coh_metrics_ = CoherenceMetrics(**coh_metrics)
+        self._coherence_metrics_ = CoherenceMetrics(**coh_metrics)
 
     def save_model(self) -> None:
         self.model.save(self.model_file, full=self.save_full)
@@ -216,7 +223,7 @@ class TopicModel(BatchTaskConfig):
         ax.get_figure().savefig(self.ll_per_words_fig_file, dpi=300, transparent=False)
 
     def save_train_summary(self) -> None:
-        coh_values = self.cohrence_metrics.model_dump()
+        coh_values = self.coherence_metrics.model_dump()
         original_stdout = sys.stdout
         with open(self.train_summary_file, "w") as f:
             sys.stdout = f  # Change the standard output to the file.
