@@ -1,0 +1,16 @@
+defaults:
+- /path@path: __batch__
+- /batch@batch: __init__
+- /run@data_load: load_dataframe
+_target_: thematos.datasets.corpus.Corpus
+_config_name_: _topic_corpus_
+_config_group_: /dataset
+verbose: false
+task_name: demo-task
+task_root: workspace
+version: 0.0.0
+module: null
+pipelines: []
+batch_name: corpus
+id_col: id
+text_col: text
