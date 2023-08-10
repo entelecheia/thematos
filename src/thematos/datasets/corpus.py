@@ -16,6 +16,7 @@ class Corpus(BatchTaskConfig):
     _config_group_: str = "/dataset"
     _config_name_: str = "topic_corpus"
 
+    task_name: str = "topic"
     batch_name: str = "corpus"
     id_col: str = "id"
     text_col: str = "text"
@@ -51,6 +52,7 @@ class Corpus(BatchTaskConfig):
         with elapsed_timer() as elapsed:
             self._load_docs(elapsed)
         self.save_ids()
+        self.save_config()
 
     @property
     def docs(self) -> List[str]:
@@ -81,7 +83,7 @@ class Corpus(BatchTaskConfig):
 
     @property
     def id_file(self) -> Path:
-        return self.batch_dir / f"{self.batch_name}_doc_ids.csv"
+        return self.batch_dir / f"{self.batch_name}_doc_ids.parquet"
 
     def save_ids(self):
         """Save doc ids to file"""
