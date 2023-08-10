@@ -1,5 +1,46 @@
 <!--next-version-placeholder-->
 
+## v0.3.0 (2023-08-10)
+
+### Feature
+
+* **thematos/models:** Add config.py ([`af87d17`](https://github.com/entelecheia/thematos/commit/af87d17a65e82d47be8d40577a01b73b07af6f05))
+* **thematos/models:** Add methods to save config and dataframes ([`e8579e1`](https://github.com/entelecheia/thematos/commit/e8579e174b2f2cfaa0a4fc9c1077027d23fbd2b4))
+* **corpus:** Add task_name attribute ([`cd38432`](https://github.com/entelecheia/thematos/commit/cd384322319b570e09d9a767b9bc023c9453b3cd))
+* **tests/scripts:** Add gen_models.py to generate and print model configurations ([`1f3d2ee`](https://github.com/entelecheia/thematos/commit/1f3d2ee9dee90aec5917fa8f93138ee920160922))
+* **thematos/models:** Add additional models and ([`d78390c`](https://github.com/entelecheia/thematos/commit/d78390cb3c078395459b676e65894019bdef7975))
+* **model:** Add lda, topic and train configurations ([`597d11a`](https://github.com/entelecheia/thematos/commit/597d11a59f1cd93c91d6ccc386f5e6647df0a8c9))
+* **thematos/models/base:** Add model_summary property and save_model_summary method ([`22da5ed`](https://github.com/entelecheia/thematos/commit/22da5edffe96609cdc96da3b4c00288d5f631228))
+* **thematos/models:** Add min and max prior weight fields in WordPrior class ([`f0cc4c0`](https://github.com/entelecheia/thematos/commit/f0cc4c00def9fa5ed9d9e1df62ebf7531e0f774e))
+* **thematos:** Add min_prior_weight and max_prior_weight configurations in wordprior ([`1d76999`](https://github.com/entelecheia/thematos/commit/1d76999b948996cf8ec817c81c8af8317dc53ae8))
+* **tests/notebook:** Add wordprior notebook ([`7bd613b`](https://github.com/entelecheia/thematos/commit/7bd613ba2787ecc754f6dd7afde6f95ecb8a620a))
+* **tests/notebook:** Add corpus.ipynb ([`88ebc1a`](https://github.com/entelecheia/thematos/commit/88ebc1a029be0283be72c6065028d79d55d19f97))
+* **tests:** Add test for WordPrior model in thematos ([`ae3ddd6`](https://github.com/entelecheia/thematos/commit/ae3ddd6b45b02cb4b9bde1c4a9f089eae79aa253))
+* **thematos:** Add _topic_corpus_ yaml config in dataset module ([`2454094`](https://github.com/entelecheia/thematos/commit/24540946fdf756414cddb47e995c888010310141))
+* **thematos:** Add _wordprior_ configuration for WordPrior model ([`b84a637`](https://github.com/entelecheia/thematos/commit/b84a637cf895098b00ce82c6da17f46f75f11e2b))
+* **tests:** Add corpus tests in thematos/datasets ([`b7382cb`](https://github.com/entelecheia/thematos/commit/b7382cb9c3334875394fedc962c68d99b4739cfb))
+* **thematos/tasks:** Add topic functionality ([`d671cd4`](https://github.com/entelecheia/thematos/commit/d671cd45118a73446c5f731d3c451e5d52c848f0))
+* **tasks:** Add TopicTask ([`6e44b9b`](https://github.com/entelecheia/thematos/commit/6e44b9b5ee66c43cfc47416c45d30837fb349e23))
+* **thematos/models:** Add types.py with CoherenceMetrics and ModelSummary classes ([`4f725fb`](https://github.com/entelecheia/thematos/commit/4f725fbcf03df2292c720801505a101d8ba61174))
+* **thematos/models:** Add WordPrior class ([`62c579a`](https://github.com/entelecheia/thematos/commit/62c579ab218fad0a685792715e23767b908837c7))
+* **thematos/models:** Add lda model ([`cae5427`](https://github.com/entelecheia/thematos/commit/cae54276517c1ba66a79ac8b32b2fa13280cc32a))
+* **thematos/models:** Add TopicModel in base.py ([`0e52722`](https://github.com/entelecheia/thematos/commit/0e52722eb324a6afb97db251defd053d003054a1))
+* **thematos/models:** Add LdaModel and WordPrior classes ([`f11966b`](https://github.com/entelecheia/thematos/commit/f11966bfe260eb1a9cd0ea67361c9a8fd1d8afd6))
+* **datasets:** Add Corpus class in corpus.py module ([`f6a4bc3`](https://github.com/entelecheia/thematos/commit/f6a4bc31ce3701a126e5d4b8860df3733bfdc62c))
+* **datasets:** Add Corpus import in __init__.py ([`053d372`](https://github.com/entelecheia/thematos/commit/053d37200d4e9dc53a5d380b6d2a3e0d002333bf))
+* **topic:** Initialize module ([`58d2b44`](https://github.com/entelecheia/thematos/commit/58d2b44db644654e13dec9043a161cbe49ce00b1))
+* **topic-model:** Add base and lda models ([`f376220`](https://github.com/entelecheia/thematos/commit/f376220aefd0051d51514358f3a1b0a080ce28cc))
+* **thematos/topic/types:** Add new types for CoherenceMetrics and ModelSummary ([`bd5a3ae`](https://github.com/entelecheia/thematos/commit/bd5a3ae2427e1c7fe43521abfbe0798cb71d59c7))
+* **thematos/topic:** Add a new class WordPrior for managing words and their priors ([`43805d4`](https://github.com/entelecheia/thematos/commit/43805d42af09a436df662979b3215dcbf968b832))
+* **thematos/topic:** Add corpus.py ([`d96175d`](https://github.com/entelecheia/thematos/commit/d96175dad644bbbdc9eb1872e85473cb03cc5285))
+* **topic:** Add topic task class ([`10297f8`](https://github.com/entelecheia/thematos/commit/10297f8b4a8514c8766ab2c41ec6bde006be0942))
+* **pyproject.toml:** Add tomotopy and pyldavis dependencies ([`ec7b3f5`](https://github.com/entelecheia/thematos/commit/ec7b3f5f80de3f6aad01d8334437855c6f3c129f))
+
+### Fix
+
+* **thematos:** Correct 'll_per_words' property type hint ([`27afd5a`](https://github.com/entelecheia/thematos/commit/27afd5acf3a47c8b2b8889d9995d7fe7f9c47b71))
+* **thematos:** Rename evaluate_coherence to eval_coherence_value in TopicModel ([`6084550`](https://github.com/entelecheia/thematos/commit/6084550d8b62be3c498d033575b2d4a9b3d73e92))
+
 ## v0.2.3 (2023-08-03)
 
 ### Fix
