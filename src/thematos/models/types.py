@@ -17,7 +17,7 @@ class ModelSummary(BaseModel):
     model_type: str = None
     num_docs: int = None
     num_words: int = None
-    total_vocabs: int = None
+    total_vocabs: Optional[int] = None
     used_vocabs: int = None
     train_config: Dict[str, Any] = None
     ll_per_word: float = None
