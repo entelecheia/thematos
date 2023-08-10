@@ -1,66 +1,62 @@
 import sys
 from datetime import datetime
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 import tomotopy as tp
 from hyfi import HyFI
 from hyfi.composer import BaseModel
+from hyfi.task import BatchTaskConfig
 
 from thematos.datasets import Corpus
 
 from .prior import WordPrior
-from .types import IDF, ONE, PMI, CoherenceMetrics, ModelSummary
+from .types import CoherenceMetrics, ModelSummary
 
 logger = HyFI.getLogger(__name__)
 
 
-class TopicModel(BaseModel):
-    model_name: str = "Topic"
-    model_type: str = "BASE"
+class TrainConfig(BaseModel):
     burn_in: int = 0
     interval: int = 10
     iterations: int = 100
+    seed: int = 123
+
+
+class TopicModel(BatchTaskConfig):
+    batch_name: str = "Topic"
+    model_type: str = "BASE"
+    model_config: Any = None
+    wordprior: WordPrior = WordPrior()
+    corpus: Corpus = Corpus()
+    train_config: TrainConfig = TrainConfig()
 
     coherence_metrics: List[str] = ["u_mass", "c_uci", "c_npmi", "c_v"]
-    seed: int = None
     eval_coherence: bool = False
-    set_word_prior: bool = False
+    set_wordprior: bool = False
     save: bool = True
     save_full: bool = True
     verbose: bool = False
 
     # internal attributes
-    _train_timestamp_: Optional[str] = None
-    _output_dir_: Optional[Path] = None
-    _model_dir_: Optional[Path] = None
+    _model_: Optional[Any] = None
+    _timestamp_: Optional[str] = None
     _corpus_: Optional[Corpus] = None
     _wordprior_: Optional[WordPrior] = None
-    _coh_values_: Optional[CoherenceMetrics] = None
+    _coh_metrics_: Optional[CoherenceMetrics] = None
     _model_summary_: Optional[ModelSummary] = None
     _ll_per_words_: List[Tuple[int, float]] = []
-
-    def initialize(
-        self,
-        corpus: Corpus,
-        model_dir: Path,
-        output_dir: Path,
-        word_prior: Optional[WordPrior] = None,
-    ):
-        self._corpus_ = corpus
-        self._wordprior_ = word_prior
-        self._output_dir_ = output_dir
-        self._model_dir_ = model_dir
 
     @property
     def model_id(self) -> str:
         model_type = self.model_type.upper()
-        margs = [self.model_name, model_type]
-        if self.k:
-            margs.append(f"k({self.k})")
+        margs = [model_type, self.batch_id]
         return "_".join(margs)
+
+    @property
+    def model(self) -> Any:
+        return self._model_
 
     @property
     def model_summary(self) -> ModelSummary:
@@ -69,67 +65,171 @@ class TopicModel(BaseModel):
         return self._model_summary_
 
     @property
-    def cohrence_values(self) -> CoherenceMetrics:
-        if self._coh_values_ is None:
+    def cohrence_metrics(self) -> CoherenceMetrics:
+        if self._coh_metrics_ is None:
             raise ValueError("Model has not been trained yet.")
-        return self._coh_values_
+        return self._coh_metrics_
 
     @property
-    def train_timestamp(self) -> str:
-        if self._train_timestamp_ is None:
+    def timestamp(self) -> str:
+        if self._timestamp_ is None:
             raise ValueError("Model has not been trained yet.")
-        return self._train_timestamp_
+        return self._timestamp_
 
     @property
-    def corpus(self) -> tp.utils.Corpus:
-        if self._corpus_ is None:
-            raise ValueError("Model has not been initialized yet.")
-        return self._corpus_.corpus
+    def tp_corpus(self) -> tp.utils.Corpus:
+        return self.corpus.corpus
 
     @property
-    def corpus_ids(self) -> pd.DataFrame:
-        if self._corpus_ is None:
-            raise ValueError("Model has not been initialized yet.")
-        return self._corpus_.corpus_ids
-
-    @property
-    def wordprior(self) -> Optional[WordPrior]:
-        return self._wordprior_
-
-    @property
-    def output_dir(self) -> Path:
-        if self._output_dir_ is None:
-            raise ValueError("Model has not been initialized yet.")
-        return self._output_dir_
-
-    @property
-    def model_dir(self) -> Path:
-        if self._model_dir_ is None:
-            raise ValueError("Model has not been initialized yet.")
-        return self._model_dir_
+    def doc_ids(self) -> List[Any]:
+        return self.corpus.doc_ids
 
     @property
     def model_file(self) -> str:
-        return f"{self.model_id}-{self.train_timestamp}.mdl"
+        f_ = f"{self.model_id}-{self.train_timestamp}.mdl"
+        return str(self.model_dir / f_)
 
     @property
     def ll_per_words_file(self) -> str:
-        return f"{self.model_id}-ll_per_word-{self.train_timestamp}.csv"
+        f_ = f"{self.model_id}-ll_per_word-{self.train_timestamp}.csv"
+        return str(self.output_dir / f_)
 
     @property
     def ll_per_words_fig_file(self) -> str:
-        return f"{self.model_id}-ll_per_word-{self.train_timestamp}.png"
+        f_ = f"{self.model_id}-ll_per_word-{self.train_timestamp}.png"
+        return str(self.output_dir / f_)
 
     @property
     def topic_dists_file(self) -> str:
-        return f"{self.model_id}-topic_dists-{self.train_timestamp}.csv"
+        f_ = f"{self.model_id}-topic_dists-{self.train_timestamp}.csv"
+        return str(self.output_dir / f_)
 
     @property
     def train_summary_file(self) -> str:
-        return f"{self.model_id}-summary-{self.train_timestamp}.txt"
+        f_ = f"{self.model_id}-summary-{self.train_timestamp}.txt"
+        return str(self.output_dir / f_)
 
     @property
     def ll_per_words(self) -> pd.DataFrame:
         if not self._ll_per_words_:
             raise ValueError("Model not trained yet.")
         return pd.DataFrame(self._ll_per_words_, columns=["iter", "ll_per_word"])
+
+    @property
+    def topic_dists(self) -> List[np.ndarray]:
+        assert self.model, "Model not found"
+        return [doc.get_topic_dist() for doc in self.model.docs]
+
+    @property
+    def num_topics(self) -> int:
+        """Number of topics in the model
+
+        It is the same as the number of columns in the document-topic distribution.
+        """
+        return len(self.topic_dists[0])
+
+    def _set_wordprior(self) -> None:
+        if self.wordprior is None:
+            logger.info("No word prior set.")
+            return
+        for tno, words in self.wordprior.items():
+            if self.verbose:
+                logger.info("Set words %s to topic #%s as prior.", words, tno)
+            for word in words:
+                self.model.set_word_prior(
+                    word,
+                    [
+                        self.wordprior.max_prior_weight
+                        if i == int(tno)
+                        else self.wordprior.min_prior_weight
+                        for i in range(self.k)
+                    ],
+                )
+
+    def train(self) -> None:
+        if self.set_wordprior:
+            self._set_wordprior()
+
+        self._timestamp_ = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # train model
+        self._train(self.model)
+        # save model
+        self.save_model()
+        if self.eval_coherence:
+            self._coh_metrics_ = self.evaluate_coherence()
+        self.save_document_topic_dists()
+
+    def _train(self, model: Any) -> None:
+        raise NotImplementedError
+
+    def eval_coherence_value(
+        self,
+    ):
+        assert self.model, "Model not found"
+        mdl = self.model
+        coh_metrics = {}
+        for metric in self.coherence_metrics:
+            coh = tp.coherence.Coherence(mdl, coherence=metric)
+            average_coherence = coh.get_score()
+            coh_metrics[metric] = average_coherence
+            coherence_per_topic = [coh.get_score(topic_id=k) for k in range(mdl.k)]
+            if self.verbose:
+                logger.info("==== Coherence : %s ====", metric)
+                logger.info("Average: %s", average_coherence)
+                logger.info("Per Topic: %s", coherence_per_topic)
+        self._coh_metrics_ = CoherenceMetrics(**coh_metrics)
+
+    def save_model(self) -> None:
+        self.model.save(self.model_file, full=self.save_full)
+        logger.info("Model saved to %s", self.model_file)
+
+    def save_ll_per_words(self) -> None:
+        HyFI.save_dataframes(
+            self.ll_per_words, self.ll_per_words_file, verbose=self.verbose
+        )
+
+    def plot_ll_per_words(self) -> None:
+        df_ll = self.ll_per_words
+        ax = df_ll.plot(x="iter", y="ll_per_word", kind="line")
+        ax.set_xlabel("Iterations")
+        ax.set_ylabel("Log-likelihood per word")
+        ax.invert_yaxis()
+        ax.get_figure().savefig(self.ll_per_words_fig_file, dpi=300, transparent=False)
+
+    def save_train_summary(self) -> None:
+        coh_values = self.cohrence_metrics.model_dump()
+        original_stdout = sys.stdout
+        with open(self.train_summary_file, "w") as f:
+            sys.stdout = f  # Change the standard output to the file.
+            self.model.summary()
+            if coh_values:
+                print("<Topic Coherence Scores>")
+                for cm, cv in coh_values.items():
+                    print(f"| {cm}: {cv}")
+            sys.stdout = original_stdout  # Reset the standard output.
+
+    def save_document_topic_dists(self):
+        corpus_ids = self.doc_ids
+        topic_dists = self.topic_dists
+
+        logger.info("Total inferred: %s, from: %s", len(topic_dists), len(corpus_ids))
+        if len(topic_dists) == len(corpus_ids):
+            self._save_document_topic_dists(topic_dists, corpus_ids)
+        else:
+            raise ValueError(
+                f"Number of inferred topics ({len(topic_dists)}) does not match with number of documents ({len(corpus_ids)})"
+            )
+
+    def _save_document_topic_dists(
+        self,
+        topic_dists: List[np.ndarray],
+        corpus_ids: List[Any],
+    ):
+        idx = range(self.num_topics)
+        topic_dists_df = pd.DataFrame(topic_dists, columns=[f"topic{i}" for i in idx])
+        id_df = pd.DataFrame(corpus_ids, columns=["id"])
+        topic_dists_df = pd.concat([id_df, topic_dists_df], axis=1)
+        if self.verbose:
+            print(topic_dists_df.tail())
+
+        HyFI.save_data(topic_dists_df, self.topic_dists_file, verbose=self.verbose)
