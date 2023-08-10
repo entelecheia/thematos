@@ -1,22 +1,19 @@
-import sys
-from datetime import datetime
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Optional
 
-import numpy as np
-import pandas as pd
 import tomotopy as tp
 from hyfi import HyFI
 from hyfi.composer import BaseModel
-from tqdm.auto import tqdm
 
 from .base import TopicModel
-from .types import IDF, ONE, PMI, CoherenceMetrics, ModelSummary
+from .types import IDF
 
 logger = HyFI.getLogger(__name__)
 
 
 class LdaConfig(BaseModel):
+    _config_group_ = "/model/config"
+    _config_name_ = "lda"
+
     tw: str = IDF
     min_cf: int = 5
     min_df: int = 0
@@ -27,6 +24,8 @@ class LdaConfig(BaseModel):
 
 
 class LdaModel(TopicModel):
+    _config_name_ = "_lda_"
+
     model_type: str = "LDA"
     model_config: LdaConfig = LdaConfig()
 
