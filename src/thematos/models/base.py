@@ -42,10 +42,7 @@ class TopicModel(BatchTaskConfig):
     # internal attributes
     _model_: Optional[Any] = None
     _timestamp_: Optional[str] = None
-    _corpus_: Optional[Corpus] = None
-    _wordprior_: Optional[WordPrior] = None
     _coh_metrics_: Optional[CoherenceMetrics] = None
-    _model_summary_: Optional[ModelSummary] = None
     _ll_per_words_: List[Tuple[int, float]] = []
 
     @property
@@ -86,27 +83,32 @@ class TopicModel(BatchTaskConfig):
 
     @property
     def model_file(self) -> str:
-        f_ = f"{self.model_id}-{self.train_timestamp}.mdl"
+        f_ = f"{self.model_id}-{self.timestamp}.mdl"
         return str(self.model_dir / f_)
 
     @property
     def ll_per_words_file(self) -> str:
-        f_ = f"{self.model_id}-ll_per_word-{self.train_timestamp}.csv"
+        f_ = f"{self.model_id}-ll_per_word-{self.timestamp}.csv"
         return str(self.output_dir / f_)
 
     @property
     def ll_per_words_fig_file(self) -> str:
-        f_ = f"{self.model_id}-ll_per_word-{self.train_timestamp}.png"
+        f_ = f"{self.model_id}-ll_per_word-{self.timestamp}.png"
         return str(self.output_dir / f_)
 
     @property
     def topic_dists_file(self) -> str:
-        f_ = f"{self.model_id}-topic_dists-{self.train_timestamp}.csv"
+        f_ = f"{self.model_id}-topic_dists-{self.timestamp}.csv"
         return str(self.output_dir / f_)
 
     @property
     def train_summary_file(self) -> str:
-        f_ = f"{self.model_id}-summary-{self.train_timestamp}.txt"
+        f_ = f"{self.model_id}-summary-{self.timestamp}.txt"
+        return str(self.output_dir / f_)
+
+    @property
+    def batch_model_summary_file(self) -> str:
+        f_ = f"{self.batch_name}-summary-{self.timestamp}.jsonl"
         return str(self.output_dir / f_)
 
     @property
@@ -127,6 +129,22 @@ class TopicModel(BatchTaskConfig):
         It is the same as the number of columns in the document-topic distribution.
         """
         return len(self.topic_dists[0])
+
+    @property
+    def model_summary(self) -> ModelSummary:
+        return ModelSummary(
+            timestamp=self.timestamp,
+            model_id=self.model_id,
+            model_type=self.model_type,
+            num_docs=len(self.model.docs),
+            num_words=self.model.num_words,
+            total_vocabs=self.model.total_words,
+            used_vocabs=self.model.used_vocabs,
+            train_config=self.train_config.model_dump(),
+            ll_per_word=self.ll_per_words,
+            perplexity=self.model.perplexity,
+            coherence_metrics=self.cohrence_metrics.model_dump(),
+        )
 
     def _set_wordprior(self) -> None:
         if self.wordprior is None:
@@ -158,6 +176,7 @@ class TopicModel(BatchTaskConfig):
         if self.eval_coherence:
             self._coh_metrics_ = self.evaluate_coherence()
         self.save_document_topic_dists()
+        self.save_model_summary()
 
     def _train(self, model: Any) -> None:
         raise NotImplementedError
@@ -207,6 +226,13 @@ class TopicModel(BatchTaskConfig):
                 for cm, cv in coh_values.items():
                     print(f"| {cm}: {cv}")
             sys.stdout = original_stdout  # Reset the standard output.
+
+    def save_model_summary(self) -> None:
+        HyFI.add_to_jsonl(
+            self.model_summary.model_dump(),
+            self.model_summary_file,
+        )
+        logger.info("Model summary saved to %s", self.model_summary_file)
 
     def save_document_topic_dists(self):
         corpus_ids = self.doc_ids
