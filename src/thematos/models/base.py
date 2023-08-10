@@ -157,7 +157,7 @@ class TopicModel(BatchTaskConfig):
         if self.eval_coherence:
             self.eval_coherence_value()
         self.save_document_topic_dists()
-        # self.save_model_summary()
+        self.save_model_summary()
         self.save_config()
 
     def _train(self, model: Any) -> None:
@@ -234,9 +234,9 @@ class TopicModel(BatchTaskConfig):
             logger.warning("Model summary is not available.")
         HyFI.append_to_jsonl(
             self.model_summary.model_dump(),
-            self.model_summary_file,
+            self.batch_model_summary_file,
         )
-        logger.info("Model summary saved to %s", self.model_summary_file)
+        logger.info("Model summary saved to %s", self.batch_model_summary_file)
 
     def save_document_topic_dists(self):
         corpus_ids = self.doc_ids
