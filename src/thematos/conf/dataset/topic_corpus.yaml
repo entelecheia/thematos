@@ -3,7 +3,7 @@ defaults:
 - /batch@batch: __init__
 - /run@data_load: load_dataframe
 _target_: thematos.datasets.corpus.Corpus
-_config_name_: _topic_corpus_
+_config_name_: topic_corpus
 _config_group_: /dataset
 verbose: false
 task_name: demo-task

@@ -1,0 +1,10 @@
+_target_: thematos.models.lda.LdaConfig
+_config_name_: lda
+_config_group_: /model/config
+tw: null
+min_cf: 5
+min_df: 0
+rm_top: 0
+k: null
+alpha: 0.1
+eta: 0.01
