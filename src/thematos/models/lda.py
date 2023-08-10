@@ -12,7 +12,6 @@ logger = HyFI.getLogger(__name__)
 
 class LdaModel(TopicModel):
     _config_name_ = "lda"
-    _auto_populate_ = False
 
     model_type: str = "LDA"
     model_args: LdaConfig = LdaConfig()
