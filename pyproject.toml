@@ -15,7 +15,7 @@ thematos = 'thematos.__cli__:main'
 [tool.poetry.dependencies]
 python = ">=3.8.1,<3.12"
 click = "^8.1.3"
-hyfi = "^1.25.1"
+hyfi = "^1.26.0"
 lexikanon = "^0.5.2"
 tomotopy = "^0.12.5"
 # hyfi = { path = "../hyfi", develop = true }
