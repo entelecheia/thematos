@@ -63,12 +63,6 @@ class TopicModel(BatchTaskConfig):
         return self._model_
 
     @property
-    def model_summary(self) -> ModelSummary:
-        if self._model_summary_ is None:
-            raise ValueError("Model has not been trained yet.")
-        return self._model_summary_
-
-    @property
     def coherence_metrics(self) -> CoherenceMetrics:
         if self._coherence_metrics_ is None:
             raise ValueError("Model has not been trained yet.")
