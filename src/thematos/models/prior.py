@@ -10,9 +10,8 @@ PriorType = Dict[int, List[str]]
 
 class WordPrior(BaseModel):
     _config_group_: str = "/words"
-    _config_name_: str = "_wordprior_"
+    _config_name_: str = "wordprior"
 
-    name: str = "wordprior"
     lowercase: bool = True
     prior_data: Optional[PriorType] = None
     data_file: Optional[str] = None
