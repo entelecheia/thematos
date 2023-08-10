@@ -54,9 +54,7 @@ class TopicModel(BatchTaskConfig):
         return self._model_
 
     @property
-    def coherence_metrics(self) -> CoherenceMetrics:
-        if self._coherence_metrics_ is None:
-            raise ValueError("Model has not been trained yet.")
+    def coherence_metrics(self) -> Optional[CoherenceMetrics]:
         return self._coherence_metrics_
 
     @property
@@ -135,7 +133,9 @@ class TopicModel(BatchTaskConfig):
             train_config=self.train_args.model_dump(),
             ll_per_word=self.ll_per_words,
             perplexity=self.model.perplexity,
-            coherence_metrics=self.coherence_metrics.model_dump(),
+            coherence_metrics=self.coherence_metrics.model_dump()
+            if self.coherence_metrics
+            else None,
         )
 
     def _set_wordprior(self) -> None:
@@ -166,7 +166,7 @@ class TopicModel(BatchTaskConfig):
         # save model
         self.save_model()
         if self.eval_coherence:
-            self._coherence_metrics_ = self.eval_coherence_value()
+            self.eval_coherence_value()
         self.save_document_topic_dists()
         self.save_model_summary()
         self.save_config()
