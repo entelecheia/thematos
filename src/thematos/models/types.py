@@ -23,7 +23,6 @@ class ModelSummary(BaseModel):
     ll_per_word: float = None
     perplexity: float = None
     coherence: Dict[str, float] = None
-    model_file: str = None
 
 
 IDF = tp.TermWeight.IDF
