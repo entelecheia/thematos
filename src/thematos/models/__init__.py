@@ -1,5 +1,6 @@
-from .base import TopicModel, TrainConfig
-from .lda import LdaConfig, LdaModel
+from .base import TopicModel
+from .config import LdaConfig, TrainConfig
+from .lda import LdaModel
 from .prior import WordPrior
 
 __all__ = [
