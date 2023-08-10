@@ -23,9 +23,6 @@ class TopicTask(BatchTaskConfig):
     _config_group_ = "/task"
     _config_name_ = "topic"
 
-    wordprior: WordPrior = WordPrior()
-    corpus: Corpus = Corpus()
-
     model_name: str = "TopicModel"
 
     model: LdaModel = LdaModel()
