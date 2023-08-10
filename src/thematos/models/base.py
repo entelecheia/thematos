@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 import tomotopy as tp
 from hyfi import HyFI
-from hyfi.composer import BaseModel
 from hyfi.task import BatchTaskConfig
 
 from thematos.datasets import Corpus
@@ -103,9 +102,10 @@ class TopicModel(BatchTaskConfig):
         return str(self.output_dir / f_)
 
     @property
-    def ll_per_words(self) -> pd.DataFrame:
+    def ll_per_words(self) -> Optional[pd.DataFrame]:
         if not self._ll_per_words_:
-            raise ValueError("Model not trained yet.")
+            logger.warning("No log-likelihood per word found.")
+            return None
         return pd.DataFrame(self._ll_per_words_, columns=["iter", "ll_per_word"])
 
     @property
@@ -222,7 +222,9 @@ class TopicModel(BatchTaskConfig):
             total_vocabs=len(self.model.vocabs) if self.model.vocabs else None,
             used_vocabs=len(self.model.used_vocabs),
             train_config=self.train_args.model_dump(),
-            ll_per_word=self.ll_per_words,
+            ll_per_word=self.ll_per_words.ll_per_word.mean()
+            if self.ll_per_words is not None
+            else None,
             perplexity=self.model.perplexity,
             coherence_metrics=self.coherence_metrics.model_dump()
             if self.coherence_metrics
