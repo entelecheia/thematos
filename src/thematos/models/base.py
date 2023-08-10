@@ -11,20 +11,11 @@ from hyfi.task import BatchTaskConfig
 
 from thematos.datasets import Corpus
 
+from .config import LdaConfig, TrainConfig
 from .prior import WordPrior
 from .types import CoherenceMetrics, ModelSummary
 
 logger = HyFI.getLogger(__name__)
-
-
-class TrainConfig(BaseModel):
-    _config_group_ = "/model/train"
-    _config_name_ = "topic"
-
-    burn_in: int = 0
-    interval: int = 10
-    iterations: int = 100
-    seed: int = 123
 
 
 class TopicModel(BatchTaskConfig):
@@ -32,12 +23,12 @@ class TopicModel(BatchTaskConfig):
     _config_name_ = "topic"
 
     task_name: str = "topic"
-    batch_name: str = "batch"
+    batch_name: str = "model"
     model_type: str = "BASE"
-    model_config: Any = None
     wordprior: WordPrior = WordPrior()
     corpus: Corpus = Corpus()
-    train_config: TrainConfig = TrainConfig()
+    model_args: LdaConfig = LdaConfig()
+    train_args: TrainConfig = TrainConfig()
 
     coherence_metric_list: List[str] = ["u_mass", "c_uci", "c_npmi", "c_v"]
     eval_coherence: bool = False
@@ -55,11 +46,11 @@ class TopicModel(BatchTaskConfig):
     @property
     def model_id(self) -> str:
         model_type = self.model_type.upper()
-        margs = [model_type, self.batch_id]
+        margs = [model_type, self.batch_name, f"k({self.model_args.k})"]
         return "_".join(margs)
 
     @property
-    def model(self) -> Any:
+    def model(self):
         return self._model_
 
     @property
@@ -99,7 +90,7 @@ class TopicModel(BatchTaskConfig):
 
     @property
     def topic_dists_file(self) -> str:
-        f_ = f"{self.model_id}-topic_dists-{self.timestamp}.csv"
+        f_ = f"{self.model_id}-topic_dists-{self.timestamp}.parquet"
         return str(self.output_dir / f_)
 
     @property
@@ -141,7 +132,7 @@ class TopicModel(BatchTaskConfig):
             num_words=self.model.num_words,
             total_vocabs=self.model.total_words,
             used_vocabs=self.model.used_vocabs,
-            train_config=self.train_config.model_dump(),
+            train_config=self.train_args.model_dump(),
             ll_per_word=self.ll_per_words,
             perplexity=self.model.perplexity,
             coherence_metrics=self.coherence_metrics.model_dump(),
@@ -178,6 +169,7 @@ class TopicModel(BatchTaskConfig):
             self._coherence_metrics_ = self.evaluate_coherence()
         self.save_document_topic_dists()
         self.save_model_summary()
+        self.save_config()
 
     def _train(self, model: Any) -> None:
         raise NotImplementedError
@@ -259,4 +251,6 @@ class TopicModel(BatchTaskConfig):
         if self.verbose:
             print(topic_dists_df.tail())
 
-        HyFI.save_data(topic_dists_df, self.topic_dists_file, verbose=self.verbose)
+        HyFI.save_dataframes(
+            topic_dists_df, self.topic_dists_file, verbose=self.verbose
+        )
