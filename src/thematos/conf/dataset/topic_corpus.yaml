@@ -6,7 +6,7 @@ _target_: thematos.datasets.corpus.Corpus
 _config_name_: topic_corpus
 _config_group_: /dataset
 verbose: false
-task_name: demo-task
+task_name: topic
 task_root: workspace
 version: 0.0.0
 module: null
