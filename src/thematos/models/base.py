@@ -41,6 +41,7 @@ class TopicModel(BatchTaskConfig):
     _model_: Optional[Any] = None
     _timestamp_: Optional[str] = None
     _coherence_metrics_: Optional[CoherenceMetrics] = None
+    _model_summary_: Optional[ModelSummary] = None
     _ll_per_words_: List[Tuple[int, float]] = []
 
     @property
@@ -122,21 +123,7 @@ class TopicModel(BatchTaskConfig):
 
     @property
     def model_summary(self) -> ModelSummary:
-        return ModelSummary(
-            timestamp=self.timestamp,
-            model_id=self.model_id,
-            model_type=self.model_type,
-            num_docs=len(self.model.docs),
-            num_words=self.model.num_words,
-            total_vocabs=self.model.total_words,
-            used_vocabs=self.model.used_vocabs,
-            train_config=self.train_args.model_dump(),
-            ll_per_word=self.ll_per_words,
-            perplexity=self.model.perplexity,
-            coherence_metrics=self.coherence_metrics.model_dump()
-            if self.coherence_metrics
-            else None,
-        )
+        return self._model_summary_
 
     def _set_wordprior(self) -> None:
         if self.wordprior is None:
@@ -165,10 +152,12 @@ class TopicModel(BatchTaskConfig):
         self._train(self.model)
         # save model
         self.save_model()
+        self.save_ll_per_words()
+        self.plot_ll_per_words()
         if self.eval_coherence:
             self.eval_coherence_value()
         self.save_document_topic_dists()
-        self.save_model_summary()
+        # self.save_model_summary()
         self.save_config()
 
     def _train(self, model: Any) -> None:
@@ -207,6 +196,9 @@ class TopicModel(BatchTaskConfig):
         ax.set_ylabel("Log-likelihood per word")
         ax.invert_yaxis()
         ax.get_figure().savefig(self.ll_per_words_fig_file, dpi=300, transparent=False)
+        logger.info(
+            "Log-likelihood per word plot saved to %s", self.ll_per_words_fig_file
+        )
 
     def save_train_summary(self) -> None:
         coh_values = self.coherence_metrics.model_dump()
@@ -221,6 +213,23 @@ class TopicModel(BatchTaskConfig):
             sys.stdout = original_stdout  # Reset the standard output.
 
     def save_model_summary(self) -> None:
+        self._model_summary_ = ModelSummary(
+            timestamp=self.timestamp,
+            model_id=self.model_id,
+            model_type=self.model_type,
+            num_docs=len(self.model.docs),
+            num_words=self.model.num_words,
+            total_vocabs=len(self.model.vocabs) if self.model.vocabs else None,
+            used_vocabs=len(self.model.used_vocabs),
+            train_config=self.train_args.model_dump(),
+            ll_per_word=self.ll_per_words,
+            perplexity=self.model.perplexity,
+            coherence_metrics=self.coherence_metrics.model_dump()
+            if self.coherence_metrics
+            else None,
+        )
+        if not self.model_summary:
+            logger.warning("Model summary is not available.")
         HyFI.append_to_jsonl(
             self.model_summary.model_dump(),
             self.model_summary_file,
