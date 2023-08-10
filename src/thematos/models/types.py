@@ -20,7 +20,7 @@ class ModelSummary(BaseModel):
     total_vocabs: Optional[int] = None
     used_vocabs: int = None
     train_config: Dict[str, Any] = None
-    ll_per_word: float = None
+    ll_per_word: Optional[float] = None
     perplexity: float = None
     coherence: Optional[Dict[str, float]] = None
 
