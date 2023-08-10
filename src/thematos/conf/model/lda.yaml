@@ -5,7 +5,7 @@ defaults:
 - /dataset@corpus: topic_corpus
 - /model/train@train_config: topic
 _target_: thematos.models.lda.LdaModel
-_config_name_: _lda_
+_config_name_: lda
 _config_group_: model
 verbose: false
 task_name: topic

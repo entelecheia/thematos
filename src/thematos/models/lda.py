@@ -24,7 +24,7 @@ class LdaConfig(BaseModel):
 
 
 class LdaModel(TopicModel):
-    _config_name_ = "_lda_"
+    _config_name_ = "lda"
 
     model_type: str = "LDA"
     model_config: LdaConfig = LdaConfig()
