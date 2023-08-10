@@ -14,7 +14,7 @@ logger = HyFI.getLogger(__name__)
 
 class Corpus(BatchTaskConfig):
     _config_group_: str = "/dataset"
-    _config_name_: str = "__init__"
+    _config_name_: str = "_topic_corpus_"
 
     batch_name: str = "corpus"
     id_col: str = "id"
