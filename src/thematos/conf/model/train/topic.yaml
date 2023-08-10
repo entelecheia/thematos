@@ -1,0 +1,7 @@
+_target_: thematos.models.base.TrainConfig
+_config_name_: topic
+_config_group_: /model/train
+burn_in: 0
+interval: 10
+iterations: 100
+seed: 123

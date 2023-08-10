@@ -1,0 +1,9 @@
+_target_: thematos.models.prior.WordPrior
+_config_name_: wordprior
+_config_group_: /words
+lowercase: true
+prior_data: null
+data_file: null
+min_prior_weight: 0.01
+max_prior_weight: 1.0
+verbose: false
