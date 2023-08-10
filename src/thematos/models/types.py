@@ -22,7 +22,7 @@ class ModelSummary(BaseModel):
     train_config: Dict[str, Any] = None
     ll_per_word: float = None
     perplexity: float = None
-    coherence: Dict[str, float] = None
+    coherence: Optional[Dict[str, float]] = None
 
 
 IDF = tp.TermWeight.IDF
