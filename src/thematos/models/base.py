@@ -46,7 +46,7 @@ class TopicModel(BatchTaskConfig):
     @property
     def model_id(self) -> str:
         model_type = self.model_type.upper()
-        margs = [model_type, self.batch_name, f"k({self.model_args.k})"]
+        margs = [model_type, self.batch_id, f"k({self.model_args.k})"]
         return "_".join(margs)
 
     @property
@@ -166,7 +166,7 @@ class TopicModel(BatchTaskConfig):
         # save model
         self.save_model()
         if self.eval_coherence:
-            self._coherence_metrics_ = self.evaluate_coherence()
+            self._coherence_metrics_ = self.eval_coherence_value()
         self.save_document_topic_dists()
         self.save_model_summary()
         self.save_config()
