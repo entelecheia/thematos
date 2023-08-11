@@ -79,9 +79,6 @@ class TopicModel(BatchTaskConfig):
             else {}
         )
 
-    def update_model_args(self, **kwargs) -> None:
-        self.model_args = self.model_args.model_copy(update=kwargs)
-
     @property
     def timestamp(self) -> str:
         if self._timestamp_ is None:
@@ -97,6 +94,26 @@ class TopicModel(BatchTaskConfig):
         if not self._doc_ids_:
             self._doc_ids_ = self.corpus.doc_ids
         return self._doc_ids_
+
+    @property
+    def ll_per_words(self) -> Optional[pd.DataFrame]:
+        if not self._ll_per_words_:
+            logger.warning("No log-likelihood per word found.")
+            return None
+        return pd.DataFrame(self._ll_per_words_, columns=["iter", "ll_per_word"])
+
+    @property
+    def topic_dists(self) -> List[np.ndarray]:
+        assert self.model, "Model not found"
+        return [doc.get_topic_dist() for doc in self.model.docs]
+
+    @property
+    def num_topics(self) -> int:
+        """Number of topics in the model
+
+        It is the same as the number of columns in the document-topic distribution.
+        """
+        return len(self.topic_dists[0])
 
     @property
     def model_file(self) -> str:
@@ -130,24 +147,12 @@ class TopicModel(BatchTaskConfig):
         return str(self.output_dir / f_)
 
     @property
-    def ll_per_words(self) -> Optional[pd.DataFrame]:
-        if not self._ll_per_words_:
-            logger.warning("No log-likelihood per word found.")
-            return None
-        return pd.DataFrame(self._ll_per_words_, columns=["iter", "ll_per_word"])
+    def ldavis_file(self) -> str:
+        f_ = f"{self.model_id}-ldavis.html"
+        return str(self.output_dir / f_)
 
-    @property
-    def topic_dists(self) -> List[np.ndarray]:
-        assert self.model, "Model not found"
-        return [doc.get_topic_dist() for doc in self.model.docs]
-
-    @property
-    def num_topics(self) -> int:
-        """Number of topics in the model
-
-        It is the same as the number of columns in the document-topic distribution.
-        """
-        return len(self.topic_dists[0])
+    def update_model_args(self, **kwargs) -> None:
+        self.model_args = self.model_args.model_copy(update=kwargs)
 
     def _set_wordprior(self) -> None:
         if self.wordprior is None:
@@ -205,6 +210,7 @@ class TopicModel(BatchTaskConfig):
         self.save_ll_per_words()
         self.plot_ll_per_words()
         self.save_document_topic_dists()
+        self.save_ldavis()
         self.save_model_summary()
         self.save_config()
 
@@ -318,3 +324,42 @@ class TopicModel(BatchTaskConfig):
         )
         self._topic_dists_ = topic_dists_df.iloc[:, 1:].values.tolist()
         self._doc_ids_ = topic_dists_df["id"].values.tolist()
+
+    def save_ldavis(self):
+        import pyLDAvis
+
+        assert self.model, "Model not found"
+        mdl = self.model
+
+        topic_term_dists = np.stack([mdl.get_topic_word_dist(k) for k in range(mdl.k)])
+
+        doc_topic_dists = np.stack(
+            [
+                doc.get_topic_dist()
+                for doc in mdl.docs
+                if np.sum(doc.get_topic_dist()) == 1
+            ]
+        )
+        doc_lengths = np.array(
+            [len(doc.words) for doc in mdl.docs if np.sum(doc.get_topic_dist()) == 1]
+        )
+        vocab = list(mdl.used_vocabs)
+        term_frequency = mdl.used_vocab_freq
+
+        # doc_topic_dists = np.stack([doc.get_topic_dist() for doc in mdl.docs])
+        # doc_topic_dists /= doc_topic_dists.sum(axis=1, keepdims=True)
+        # doc_lengths = np.array([len(doc.words) for doc in mdl.docs])
+        # vocab = list(mdl.used_vocabs)
+        # term_frequency = mdl.used_vocab_freq
+
+        prepared_data = pyLDAvis.prepare(
+            topic_term_dists=topic_term_dists,
+            doc_topic_dists=doc_topic_dists,
+            doc_lengths=doc_lengths,
+            vocab=vocab,
+            term_frequency=term_frequency,
+            start_index=0,
+            sort_topics=False,
+        )
+        pyLDAvis.save_html(prepared_data, self.ldavis_file)
+        logger.info("LDAvis saved to %s", self.ldavis_file)
