@@ -1,0 +1,10 @@
+_target_: thematos.runners.config.LdaRunConfig
+_config_name_: lda
+_config_group_: /runner/config
+k:
+- 10
+- 20
+alpha:
+- 0.1
+eta:
+- 0.01
