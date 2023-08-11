@@ -326,31 +326,23 @@ class TopicModel(BatchTaskConfig):
         self._doc_ids_ = topic_dists_df["id"].values.tolist()
 
     def save_ldavis(self):
-        import pyLDAvis
+        try:
+            import pyLDAvis
+        except ImportError:
+            logger.warning(
+                "pyLDAvis is not installed. Please install it to save LDAvis."
+            )
+            return
 
         assert self.model, "Model not found"
         mdl = self.model
 
         topic_term_dists = np.stack([mdl.get_topic_word_dist(k) for k in range(mdl.k)])
-
-        doc_topic_dists = np.stack(
-            [
-                doc.get_topic_dist()
-                for doc in mdl.docs
-                if np.sum(doc.get_topic_dist()) == 1
-            ]
-        )
-        doc_lengths = np.array(
-            [len(doc.words) for doc in mdl.docs if np.sum(doc.get_topic_dist()) == 1]
-        )
+        doc_topic_dists = np.stack([doc.get_topic_dist() for doc in mdl.docs])
+        doc_topic_dists /= doc_topic_dists.sum(axis=1, keepdims=True)
+        doc_lengths = np.array([len(doc.words) for doc in mdl.docs])
         vocab = list(mdl.used_vocabs)
         term_frequency = mdl.used_vocab_freq
-
-        # doc_topic_dists = np.stack([doc.get_topic_dist() for doc in mdl.docs])
-        # doc_topic_dists /= doc_topic_dists.sum(axis=1, keepdims=True)
-        # doc_lengths = np.array([len(doc.words) for doc in mdl.docs])
-        # vocab = list(mdl.used_vocabs)
-        # term_frequency = mdl.used_vocab_freq
 
         prepared_data = pyLDAvis.prepare(
             topic_term_dists=topic_term_dists,
