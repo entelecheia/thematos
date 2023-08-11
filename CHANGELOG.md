@@ -1,5 +1,17 @@
 <!--next-version-placeholder-->
 
+## v0.5.0 (2023-08-11)
+
+### Feature
+
+* **config:** Add new test configuration files for dataset, model, project, runner, words, and workflow ([`8d7b07b`](https://github.com/entelecheia/thematos/commit/8d7b07b09392e37c7d34fa173111d746756fc460))
+* **tests/scripts:** Add TopicRunner and LdaRunConfig generate_config calls ([`cfb92e0`](https://github.com/entelecheia/thematos/commit/cfb92e0787ed8a616885cc4902dd9824aac0beab))
+* **topic-runner:** Add new topic runner class ([`7ca6987`](https://github.com/entelecheia/thematos/commit/7ca69877d5199b64a324dce406609fdaab4ecd49))
+* **runners/config:** Add new lda run configuration ([`4e647be`](https://github.com/entelecheia/thematos/commit/4e647be19204f51f4b1449624c7e74c17074dad6))
+* **runners:** Add new files for topic handling and configuration ([`b9ba47f`](https://github.com/entelecheia/thematos/commit/b9ba47f7ca7afc20108b54dc31c3029e4aae1174))
+* **runner/config:** Add lda.yaml for thematos.runners.config.LdaRunConfig ([`dc9b733`](https://github.com/entelecheia/thematos/commit/dc9b7330929dc7dba79c2c2cd4c6274b6eefe3ed))
+* **thematos:** Add new configuration for topic runner ([`1e872ca`](https://github.com/entelecheia/thematos/commit/1e872cab170842a5c3ef8096a61c5640b5da73d3))
+
 ## v0.4.0 (2023-08-11)
 
 ### Feature
