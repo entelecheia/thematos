@@ -24,8 +24,8 @@ class LdaModel(TopicModel):
         if self._model_ is None:
             self._model_ = tp.LDAModel(
                 corpus=self.tp_corpus,
-                seed=self.train_args.seed,
-                **self.model_args.model_dump(),
+                seed=self.seed,
+                **self.model_args.model_dump(exclude=self.model_args._exclude_keys_),
             )
         return self._model_
 
@@ -52,3 +52,12 @@ class LdaModel(TopicModel):
         if self.verbose:
             model.summary()
         self._model_ = model
+
+    def _load_model(self):
+        model_path = self.model_file
+        if HyFI.is_file(model_path):
+            self._model_ = tp.LDAModel.load(model_path)
+            logger.info("Model loaded from %s", model_path)
+        else:
+            self._model_ = None
+            logger.warning("Model file %s does not exist", model_path)

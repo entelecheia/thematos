@@ -19,6 +19,7 @@ class ModelSummary(BaseModel):
     num_words: int = None
     total_vocabs: Optional[int] = None
     used_vocabs: int = None
+    seed: Optional[int] = None
     train_config: Dict[str, Any] = None
     ll_per_word: Optional[float] = None
     perplexity: float = None

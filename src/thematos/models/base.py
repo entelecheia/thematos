@@ -1,6 +1,7 @@
 import sys
 from datetime import datetime
-from typing import Any, List, Optional, Tuple
+from pathlib import Path
+from typing import Any, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -32,7 +33,7 @@ class TopicModel(BatchTaskConfig):
     coherence_metric_list: List[str] = ["u_mass", "c_uci", "c_npmi", "c_v"]
     eval_coherence: bool = False
     set_wordprior: bool = False
-    save: bool = True
+    autosave: bool = True
     save_full: bool = True
     verbose: bool = False
 
@@ -42,6 +43,7 @@ class TopicModel(BatchTaskConfig):
     _coherence_metrics_: Optional[CoherenceMetrics] = None
     _model_summary_: Optional[ModelSummary] = None
     _ll_per_words_: List[Tuple[int, float]] = []
+    _doc_ids_: List[Any] = None
 
     @property
     def model_id(self) -> str:
@@ -69,36 +71,39 @@ class TopicModel(BatchTaskConfig):
 
     @property
     def doc_ids(self) -> List[Any]:
-        return self.corpus.doc_ids
+        if not self._doc_ids_:
+            self._doc_ids_ = self.corpus.doc_ids
+        return self._doc_ids_
 
     @property
     def model_file(self) -> str:
-        f_ = f"{self.model_id}-{self.timestamp}.mdl"
+        f_ = f"{self.model_id}.mdl"
+        self.model_dir.mkdir(parents=True, exist_ok=True)
         return str(self.model_dir / f_)
 
     @property
     def ll_per_words_file(self) -> str:
-        f_ = f"{self.model_id}-ll_per_word-{self.timestamp}.csv"
+        f_ = f"{self.model_id}-ll_per_word.csv"
         return str(self.output_dir / f_)
 
     @property
     def ll_per_words_fig_file(self) -> str:
-        f_ = f"{self.model_id}-ll_per_word-{self.timestamp}.png"
+        f_ = f"{self.model_id}-ll_per_word.png"
         return str(self.output_dir / f_)
 
     @property
     def topic_dists_file(self) -> str:
-        f_ = f"{self.model_id}-topic_dists-{self.timestamp}.parquet"
+        f_ = f"{self.model_id}-topic_dists.parquet"
         return str(self.output_dir / f_)
 
     @property
     def train_summary_file(self) -> str:
-        f_ = f"{self.model_id}-summary-{self.timestamp}.txt"
+        f_ = f"{self.model_id}-summary.txt"
         return str(self.output_dir / f_)
 
     @property
     def batch_model_summary_file(self) -> str:
-        f_ = f"{self.batch_name}-summary-{self.timestamp}.jsonl"
+        f_ = f"{self.batch_name}-summary.jsonl"
         return str(self.output_dir / f_)
 
     @property
@@ -151,14 +156,10 @@ class TopicModel(BatchTaskConfig):
         # train model
         self._train(self.model)
         # save model
-        self.save_model()
-        self.save_ll_per_words()
-        self.plot_ll_per_words()
         if self.eval_coherence:
             self.eval_coherence_value()
-        self.save_document_topic_dists()
-        self.save_model_summary()
-        self.save_config()
+        if self.autosave:
+            self.save()
 
     def _train(self, model: Any) -> None:
         raise NotImplementedError
@@ -179,6 +180,14 @@ class TopicModel(BatchTaskConfig):
                 logger.info("Average: %s", average_coherence)
                 logger.info("Per Topic: %s", coherence_per_topic)
         self._coherence_metrics_ = CoherenceMetrics(**coh_metrics)
+
+    def save(self) -> None:
+        self.save_model()
+        self.save_ll_per_words()
+        self.plot_ll_per_words()
+        self.save_document_topic_dists()
+        self.save_model_summary()
+        self.save_config()
 
     def save_model(self) -> None:
         self.model.save(self.model_file, full=self.save_full)
@@ -221,7 +230,10 @@ class TopicModel(BatchTaskConfig):
             num_words=self.model.num_words,
             total_vocabs=len(self.model.vocabs) if self.model.vocabs else None,
             used_vocabs=len(self.model.used_vocabs),
-            train_config=self.train_args.model_dump(),
+            seed=self.seed,
+            train_config=self.train_args.model_dump(
+                exclude=self.train_args._exclude_keys_
+            ),
             ll_per_word=self.ll_per_words.ll_per_word.mean()
             if self.ll_per_words is not None
             else None,
@@ -265,3 +277,31 @@ class TopicModel(BatchTaskConfig):
         HyFI.save_dataframes(
             topic_dists_df, self.topic_dists_file, verbose=self.verbose
         )
+
+    def load(
+        self,
+        batch_name: Optional[str] = None,
+        batch_num: Optional[int] = None,
+        filepath: Optional[Union[str, Path]] = None,
+        **config_kwargs,
+    ):
+        super().load_config(
+            batch_name=batch_name,
+            batch_num=batch_num,
+            filepath=filepath,
+            **config_kwargs,
+        )
+        self._load_model()
+        self._load_ll_per_words()
+        self._load_document_topic_dists()
+
+    def _load_ll_per_words(self):
+        ll_df = HyFI.load_dataframes(self.ll_per_words_file, verbose=self.verbose)
+        self._ll_per_words_ = [(ll.iter, ll.ll_per_word) for ll in ll_df.itertuples()]
+
+    def _load_document_topic_dists(self):
+        topic_dists_df = HyFI.load_dataframes(
+            self.topic_dists_file, verbose=self.verbose
+        )
+        self._topic_dists_ = topic_dists_df.iloc[:, 1:].values.tolist()
+        self._doc_ids_ = topic_dists_df["id"].values.tolist()

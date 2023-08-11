@@ -3,7 +3,8 @@ defaults:
 - /batch@batch: __init__
 - /words@wordprior: wordprior
 - /dataset@corpus: topic_corpus
-- /model/train@train_config: topic
+- /model/config@model_args: lda
+- /model/train@train_args: topic
 _target_: thematos.models.base.TopicModel
 _config_name_: topic
 _config_group_: model
@@ -13,7 +14,7 @@ task_root: workspace
 version: 0.0.0
 module: null
 pipelines: []
-batch_name: batch
+batch_name: model
 model_type: BASE
 coherence_metric_list:
 - u_mass
@@ -22,5 +23,5 @@ coherence_metric_list:
 - c_v
 eval_coherence: false
 set_wordprior: false
-save: true
+autosave: true
 save_full: true

@@ -9,7 +9,7 @@ class LdaConfig(BaseModel):
     _config_group_ = "/model/config"
     _config_name_ = "lda"
 
-    tw: int = IDF
+    tw: int = int(IDF.value)
     min_cf: int = 5
     min_df: int = 0
     rm_top: int = 0
@@ -25,4 +25,3 @@ class TrainConfig(BaseModel):
     burn_in: int = 0
     interval: int = 10
     iterations: int = 100
-    seed: int = 123
