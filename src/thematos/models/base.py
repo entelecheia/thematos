@@ -79,6 +79,9 @@ class TopicModel(BatchTaskConfig):
             else {}
         )
 
+    def update_model_args(self, **kwargs) -> None:
+        self.model_args = self.model_args.model_copy(update=kwargs)
+
     @property
     def timestamp(self) -> str:
         if self._timestamp_ is None:
