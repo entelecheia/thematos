@@ -1,5 +1,16 @@
 <!--next-version-placeholder-->
 
+## v0.7.0 (2023-08-11)
+
+### Feature
+
+* **thematos:** Implement method for lda visualization saving ([`91322ca`](https://github.com/entelecheia/thematos/commit/91322ca682d1258b1e36576a1e9debebc3534187))
+
+### Fix
+
+* **runner:** Correct typo in configuration file ([`0b23775`](https://github.com/entelecheia/thematos/commit/0b237750bcfeb2ba5363d7c2598d8a39130aeb4a))
+* **thematos/runners/topic:** Add save method and implement batch increment ([`b7dfb53`](https://github.com/entelecheia/thematos/commit/b7dfb53be3bbfc2f100aeee97fec4b8a22fe76d8))
+
 ## v0.6.0 (2023-08-11)
 
 ### Feature
