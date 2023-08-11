@@ -40,7 +40,7 @@ class TopicRunner(BatchTaskConfig):
         for args in tqdm(self.run_args.iter_configs(), total=self.run_args.total_runs):
             if self.verbose:
                 logger.info("Running with args: %s", args)
-            self.model.train_args = self.model.train_args.model_copy(update=args)
+            self.model.update_model_args(**args)
             self.model.train()
             self._summaries_.add_model_summary(
                 overrides=args,
