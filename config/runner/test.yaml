@@ -16,4 +16,4 @@ run_args:
     - 100
 model:
   train_args:
-    interations: 500
+    iterations: 500
