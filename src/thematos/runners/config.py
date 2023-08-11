@@ -4,7 +4,6 @@ from typing import Any, Dict, List
 from hyfi import HyFI
 from hyfi.composer import BaseModel
 
-
 logger = HyFI.getLogger(__name__)
 
 

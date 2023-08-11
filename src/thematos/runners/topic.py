@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Dict, List
 
 from hyfi import HyFI
 from hyfi.task import BatchTaskConfig
@@ -44,7 +44,3 @@ class TopicRunner(BatchTaskConfig):
         for args in tqdm(self.run_args.iter_configs(), total=self.run_args.total_runs):
             self.model.train_args = self.model.train_args.model_copy(update=args)
             self.model.train()
-        #     self.model.config.update(config)
-        #     self.model.run()
-        #     self._summaries_.append(self.model.summary)
-        # self.save_summaries()
