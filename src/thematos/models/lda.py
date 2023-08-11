@@ -24,7 +24,7 @@ class LdaModel(TopicModel):
         if self._model_ is None:
             self._model_ = tp.LDAModel(
                 corpus=self.tp_corpus,
-                seed=self.train_args.seed,
+                seed=self.seed,
                 **self.model_args.model_dump(),
             )
         return self._model_
