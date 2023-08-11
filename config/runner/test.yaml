@@ -17,3 +17,4 @@ run_args:
 model:
   train_args:
     iterations: 500
+  save_full: false
