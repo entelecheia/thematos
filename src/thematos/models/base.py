@@ -33,7 +33,7 @@ class TopicModel(BatchTaskConfig):
     coherence_metric_list: List[str] = ["u_mass", "c_uci", "c_npmi", "c_v"]
     eval_coherence: bool = False
     set_wordprior: bool = False
-    save: bool = True
+    autosave: bool = True
     save_full: bool = True
     verbose: bool = False
 
@@ -43,6 +43,7 @@ class TopicModel(BatchTaskConfig):
     _coherence_metrics_: Optional[CoherenceMetrics] = None
     _model_summary_: Optional[ModelSummary] = None
     _ll_per_words_: List[Tuple[int, float]] = []
+    _doc_ids_: List[Any] = None
 
     @property
     def model_id(self) -> str:
@@ -70,7 +71,9 @@ class TopicModel(BatchTaskConfig):
 
     @property
     def doc_ids(self) -> List[Any]:
-        return self.corpus.doc_ids
+        if not self._doc_ids_:
+            self._doc_ids_ = self.corpus.doc_ids
+        return self._doc_ids_
 
     @property
     def model_file(self) -> str:
@@ -155,7 +158,8 @@ class TopicModel(BatchTaskConfig):
         # save model
         if self.eval_coherence:
             self.eval_coherence_value()
-        self.save()
+        if self.autosave:
+            self.save()
 
     def _train(self, model: Any) -> None:
         raise NotImplementedError
@@ -285,7 +289,17 @@ class TopicModel(BatchTaskConfig):
             filepath=filepath,
             **config_kwargs,
         )
-        # self._load_model()
-        # self._load_ll_per_words()
-        # self._load_document_topic_dists()
-        # self._load_model_summary()
+        self._load_model()
+        self._load_ll_per_words()
+        self._load_document_topic_dists()
+
+    def _load_ll_per_words(self):
+        ll = HyFI.load_dataframes(self.ll_per_words_file, verbose=self.verbose)
+        self._ll_per_words_ = [(l.iter, l.ll_per_word) for l in ll]
+
+    def _load_document_topic_dists(self):
+        topic_dists_df = HyFI.load_dataframes(
+            self.topic_dists_file, verbose=self.verbose
+        )
+        self._topic_dists_ = topic_dists_df.iloc[:, 1:].values.tolist()
+        self._doc_ids_ = topic_dists_df["id"].values.tolist()
