@@ -1,5 +1,17 @@
 <!--next-version-placeholder-->
 
+## v0.4.0 (2023-08-11)
+
+### Feature
+
+* **thematos:** Implement loading functions for ll_per_words and document_topic_dists in TopicModel ([`d252b29`](https://github.com/entelecheia/thematos/commit/d252b29776521655e2c9cbff2d3d432a02344027))
+* **lda:** Add model loading functionality ([`6f128bd`](https://github.com/entelecheia/thematos/commit/6f128bdc011249add52dda2e486e6e8690651922))
+
+### Fix
+
+* **thematos/models:** Add seed to ModelSummary ([`5c00df2`](https://github.com/entelecheia/thematos/commit/5c00df2da77e458fa01eaabed9d2a1f8d9ca50f3))
+* **models/config:** Change IDF value to int, remove seed from TrainConfig ([`f800375`](https://github.com/entelecheia/thematos/commit/f80037573711e194cbc3fb89a613a703dce75067))
+
 ## v0.3.0 (2023-08-10)
 
 ### Feature
