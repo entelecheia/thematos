@@ -1,0 +1,15 @@
+defaults:
+  - topic
+  - override /model@model: test
+
+run_args:
+  k:
+    - 10
+task_name: topic-test
+model:
+  train_args:
+    iterations: 100
+  save_full: false
+  task_name: ${..task_name}
+  corpus:
+    task_name: ${..task_name}
