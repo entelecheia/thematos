@@ -231,7 +231,9 @@ class TopicModel(BatchTaskConfig):
             total_vocabs=len(self.model.vocabs) if self.model.vocabs else None,
             used_vocabs=len(self.model.used_vocabs),
             seed=self.seed,
-            train_config=self.train_args.model_dump(),
+            train_config=self.train_args.model_dump(
+                exclude=self.train_args._exclude_keys_
+            ),
             ll_per_word=self.ll_per_words.ll_per_word.mean()
             if self.ll_per_words is not None
             else None,
@@ -294,8 +296,8 @@ class TopicModel(BatchTaskConfig):
         self._load_document_topic_dists()
 
     def _load_ll_per_words(self):
-        ll = HyFI.load_dataframes(self.ll_per_words_file, verbose=self.verbose)
-        self._ll_per_words_ = [(l.iter, l.ll_per_word) for l in ll]
+        ll_df = HyFI.load_dataframes(self.ll_per_words_file, verbose=self.verbose)
+        self._ll_per_words_ = [(ll.iter, ll.ll_per_word) for ll in ll_df.itertuples()]
 
     def _load_document_topic_dists(self):
         topic_dists_df = HyFI.load_dataframes(
