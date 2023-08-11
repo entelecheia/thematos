@@ -14,3 +14,6 @@ run_args:
     - 80
     - 90
     - 100
+model:
+  train_args:
+    interations: 500
