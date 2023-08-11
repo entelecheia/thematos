@@ -1,0 +1,5 @@
+defaults:
+  - wordprior
+
+data_file: ${oc.select:datasets_path,datasets}/word_prior.yaml
+verbose: true

@@ -1,4 +1,5 @@
 from thematos.models import TopicModel, LdaModel, TrainConfig, LdaConfig
+from thematos.runners import TopicRunner, LdaRunConfig
 
 
 def gen_model_configs():
@@ -9,6 +10,10 @@ def gen_model_configs():
     d = TrainConfig.generate_config()
     print(d)
     d = LdaConfig.generate_config()
+    print(d)
+    d = TopicRunner.generate_config()
+    print(d)
+    d = LdaRunConfig.generate_config()
     print(d)
 
 

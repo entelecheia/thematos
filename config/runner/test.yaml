@@ -1,0 +1,4 @@
+defaults:
+  - topic
+  - override /model@model: test
+

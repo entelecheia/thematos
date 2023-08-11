@@ -7,7 +7,7 @@ defaults:
 - /model/train@train_args: topic
 _target_: thematos.models.lda.LdaModel
 _config_name_: lda
-_config_group_: model
+_config_group_: /model
 verbose: false
 task_name: topic
 task_root: workspace

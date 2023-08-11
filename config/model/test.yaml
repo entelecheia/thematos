@@ -1,0 +1,7 @@
+defaults:
+  - lda
+  - override /words@wordprior: test
+  - override /dataset@corpus: test
+
+model_args:
+  k: 10

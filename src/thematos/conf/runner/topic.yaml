@@ -1,0 +1,16 @@
+defaults:
+- /path@path: __batch__
+- /batch@batch: __init__
+- /model@model: lda
+- /runner/config@run_args: lda
+_target_: thematos.runners.topic.TopicRunner
+_config_name_: topic
+_config_group_: /runner
+verbose: false
+task_name: topic
+task_root: workspace
+version: 0.0.0
+module: null
+pipelines: []
+batch_name: runner
+num_workers: 0

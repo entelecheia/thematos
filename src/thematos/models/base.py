@@ -19,7 +19,7 @@ logger = HyFI.getLogger(__name__)
 
 
 class TopicModel(BatchTaskConfig):
-    _config_group_ = "model"
+    _config_group_ = "/model"
     _config_name_ = "topic"
 
     task_name: str = "topic"
@@ -238,7 +238,7 @@ class TopicModel(BatchTaskConfig):
             if self.ll_per_words is not None
             else None,
             perplexity=self.model.perplexity,
-            coherence_metrics=self.coherence_metrics.model_dump()
+            coherence=self.coherence_metrics.model_dump()
             if self.coherence_metrics
             else None,
         )
