@@ -327,7 +327,7 @@ class TopicModel(BatchTaskConfig):
 
     def save_ldavis(self):
         try:
-            import pyLDAvis
+            import pyLDAvis  # type: ignore[reportMissingImports]
         except ImportError:
             logger.warning(
                 "pyLDAvis is not installed. Please install it to save LDAvis."
