@@ -19,7 +19,7 @@ hyfi = "^1.26.3"
 lexikanon = "^0.5.2"
 tomotopy = "^0.12.5"
 # hyfi = { path = "../hyfi", develop = true }
-pyldavis = ">=3.4.0,<=3.4.1"
+# pyldavis = ">=3.4.0,<=3.4.1"
 
 [tool.poetry.group.dev]
 optional = true
