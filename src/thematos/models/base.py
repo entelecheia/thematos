@@ -19,7 +19,7 @@ logger = HyFI.getLogger(__name__)
 
 
 class TopicModel(BatchTaskConfig):
-    _config_group_ = "model"
+    _config_group_ = "/model"
     _config_name_ = "topic"
 
     task_name: str = "topic"
