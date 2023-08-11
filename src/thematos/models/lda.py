@@ -25,7 +25,7 @@ class LdaModel(TopicModel):
             self._model_ = tp.LDAModel(
                 corpus=self.tp_corpus,
                 seed=self.seed,
-                **self.model_args.model_dump(exclude=self.model_args._exclude_keys_),
+                **self.model_args_dict,
             )
         return self._model_
 
@@ -45,7 +45,10 @@ class LdaModel(TopicModel):
 
         ll_per_words = []
         for i in tqdm(range(0, train_args.iterations, train_args.interval)):
-            model.train(train_args.interval)
+            model.train(
+                iter=train_args.interval,
+                workers=self.batch.num_workers,
+            )
             logger.info("Iteration: %s\tLog-likelihood: %s", i, model.ll_per_word)
             ll_per_words.append((i, model.ll_per_word))
         self._ll_per_words_ = ll_per_words

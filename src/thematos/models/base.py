@@ -1,7 +1,7 @@
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -31,7 +31,7 @@ class TopicModel(BatchTaskConfig):
     train_args: TrainConfig = TrainConfig()
 
     coherence_metric_list: List[str] = ["u_mass", "c_uci", "c_npmi", "c_v"]
-    eval_coherence: bool = False
+    eval_coherence: bool = True
     set_wordprior: bool = False
     autosave: bool = True
     save_full: bool = True
@@ -56,8 +56,31 @@ class TopicModel(BatchTaskConfig):
         return self._model_
 
     @property
-    def coherence_metrics(self) -> Optional[CoherenceMetrics]:
-        return self._coherence_metrics_
+    def coherence_metrics_dict(self) -> Dict:
+        return self._coherence_metrics_.model_dump() if self._coherence_metrics_ else {}
+
+    @property
+    def model_summary_dict(self) -> Dict:
+        return self._model_summary_.model_dump() if self._model_summary_ else {}
+
+    @property
+    def train_args_dict(self) -> Dict:
+        return (
+            self.train_args.model_dump(exclude=self.train_args._exclude_keys_)
+            if self.train_args
+            else {}
+        )
+
+    @property
+    def model_args_dict(self) -> Dict:
+        return (
+            self.model_args.model_dump(exclude=self.model_args._exclude_keys_)
+            if self.model_args
+            else {}
+        )
+
+    def update_model_args(self, **kwargs) -> None:
+        self.model_args = self.model_args.model_copy(update=kwargs)
 
     @property
     def timestamp(self) -> str:
@@ -125,10 +148,6 @@ class TopicModel(BatchTaskConfig):
         It is the same as the number of columns in the document-topic distribution.
         """
         return len(self.topic_dists[0])
-
-    @property
-    def model_summary(self) -> ModelSummary:
-        return self._model_summary_
 
     def _set_wordprior(self) -> None:
         if self.wordprior is None:
@@ -210,7 +229,7 @@ class TopicModel(BatchTaskConfig):
         )
 
     def save_train_summary(self) -> None:
-        coh_values = self.coherence_metrics.model_dump()
+        coh_values = self.coherence_metrics_dict
         original_stdout = sys.stdout
         with open(self.train_summary_file, "w") as f:
             sys.stdout = f  # Change the standard output to the file.
@@ -231,21 +250,15 @@ class TopicModel(BatchTaskConfig):
             total_vocabs=len(self.model.vocabs) if self.model.vocabs else None,
             used_vocabs=len(self.model.used_vocabs),
             seed=self.seed,
-            train_config=self.train_args.model_dump(
-                exclude=self.train_args._exclude_keys_
-            ),
-            ll_per_word=self.ll_per_words.ll_per_word.mean()
-            if self.ll_per_words is not None
-            else None,
+            model_args=self.model_args_dict,
+            train_args=self.train_args_dict,
             perplexity=self.model.perplexity,
-            coherence=self.coherence_metrics.model_dump()
-            if self.coherence_metrics
-            else None,
+            coherence=self.coherence_metrics_dict,
         )
-        if not self.model_summary:
+        if not self.model_summary_dict:
             logger.warning("Model summary is not available.")
         HyFI.append_to_jsonl(
-            self.model_summary.model_dump(),
+            self.model_summary_dict,
             self.batch_model_summary_file,
         )
         logger.info("Model summary saved to %s", self.batch_model_summary_file)

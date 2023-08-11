@@ -21,7 +21,7 @@ coherence_metric_list:
 - c_uci
 - c_npmi
 - c_v
-eval_coherence: false
+eval_coherence: true
 set_wordprior: false
 autosave: true
 save_full: true
