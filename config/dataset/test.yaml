@@ -1,0 +1,8 @@
+defaults:
+  - topic_corpus
+
+data_load:
+  data_file: ${oc.select:datasets_path,datasets}/processed/khmer_tokenized/train.parquet
+id_col: id
+text_col: text
+verbose: true

@@ -1,0 +1,10 @@
+defaults:
+  - __init__
+
+project_name: test
+project_description: test thematos
+project_root: ${get_original_cwd:}
+global_hyfi_root: ${__home_path__:}
+global_workspace_name: workspace
+num_workers: 20
+verbose: true
