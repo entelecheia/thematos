@@ -1,5 +1,19 @@
 <!--next-version-placeholder-->
 
+## v0.6.0 (2023-08-11)
+
+### Feature
+
+* **thematos/models:** Add update_model_args method ([`1fd68c0`](https://github.com/entelecheia/thematos/commit/1fd68c0e5ae9ad29294558d4532e2178d548c796))
+* **runners/config:** Add TopicRunnerResult class ([`8d2b8d4`](https://github.com/entelecheia/thematos/commit/8d2b8d4b2bf39deb295a0553af85e26bf6068baa))
+* **thematos/runners:** Add TopicRunnerResult to __all__ ([`1c70d61`](https://github.com/entelecheia/thematos/commit/1c70d61b45b10ac0f7f69076b5c3e55ac93a217c))
+
+### Fix
+
+* **lda:** Add multi-worker support for model training ([`ac386c0`](https://github.com/entelecheia/thematos/commit/ac386c01d7f6dab17b37833baf49d86ab700a991))
+* **thematos:** Enable eval_coherence in topic model configuration ([`992f069`](https://github.com/entelecheia/thematos/commit/992f06958b102093cbbe337fad27d6650ddb9d1c))
+* **thematos/model:** Enable eval_coherence in lda.yaml ([`8ba0f13`](https://github.com/entelecheia/thematos/commit/8ba0f13e98817207329084e293d1b7a147c85938))
+
 ## v0.5.0 (2023-08-11)
 
 ### Feature
