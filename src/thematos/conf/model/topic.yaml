@@ -7,7 +7,7 @@ defaults:
 - /model/train@train_args: topic
 _target_: thematos.models.base.TopicModel
 _config_name_: topic
-_config_group_: model
+_config_group_: /model
 verbose: false
 task_name: topic
 task_root: workspace
