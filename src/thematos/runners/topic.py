@@ -46,7 +46,12 @@ class TopicRunner(BatchTaskConfig):
                 overrides=args,
                 summary=self.model.model_summary_dict,
             )
+            self.model.set_batch_num(self.model.batch_num + 1)
+        self.save()
+
+    def save(self) -> None:
         self.save_result_summary()
+        self.save_config()
 
     @property
     def result_summary_file(self) -> Path:

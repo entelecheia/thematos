@@ -5,16 +5,11 @@ defaults:
 run_args:
   k:
     - 10
-    - 20
-    - 30
-    - 40
-    - 50
-    - 60
-    - 70
-    - 80
-    - 90
-    - 100
+task_name: topic-test
 model:
   train_args:
-    iterations: 500
+    iterations: 100
   save_full: false
+  task_name: ${..task_name}
+  corpus:
+    task_name: ${..task_name}

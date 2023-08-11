@@ -1,0 +1,11 @@
+# @package _global_
+defaults:
+  - __init__
+  - /runner: test_1
+  - override /project: test
+
+workflow_name: test-1
+tasks:
+  - runner
+
+datasets_path: ${__get_path__:datasets}
