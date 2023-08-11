@@ -40,13 +40,18 @@ class TopicRunner(BatchTaskConfig):
         for args in tqdm(self.run_args.iter_configs(), total=self.run_args.total_runs):
             if self.verbose:
                 logger.info("Running with args: %s", args)
+            self.batch_num += 1
             self.model.update_model_args(**args)
             self.model.train()
             self._summaries_.add_model_summary(
                 overrides=args,
                 summary=self.model.model_summary_dict,
             )
+        self.save()
+
+    def save(self) -> None:
         self.save_result_summary()
+        self.save_config()
 
     @property
     def result_summary_file(self) -> Path:
