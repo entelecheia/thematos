@@ -42,7 +42,8 @@ class TopicRunner(BatchTaskConfig):
     def run(self) -> None:
         self._summaries_ = []
         for args in tqdm(self.run_args.iter_configs(), total=self.run_args.total_runs):
-            print(args)
+            self.model.train_args = self.model.train_args.model_copy(update=args)
+            self.model.train()
         #     self.model.config.update(config)
         #     self.model.run()
         #     self._summaries_.append(self.model.summary)
