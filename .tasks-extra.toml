@@ -18,3 +18,9 @@ shell = """
   poetry run hyfi cmd=copy_conf copier.dst_path=src/thematos/conf copier.exclude='**/*/about/__init__.yaml' copier.overwrite=True
 """
 help = "Copy hyfi conf to src/thematos/conf"
+
+[tool.poe.tasks.install-pyldavis]
+shell = """
+  pip3 install 'pyldavis>=3.4.1'
+"""
+help = "Install pyldavis version 3.4.1 or higher (require python 3.9 or higher)"
