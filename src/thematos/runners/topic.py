@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -9,7 +10,7 @@ from thematos.models import LdaModel
 
 from .config import LdaRunConfig, TopicRunnerResult
 
-logger = HyFI.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class TopicRunner(BatchTaskConfig):
