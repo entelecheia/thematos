@@ -275,6 +275,7 @@ class TopicModel(BatchTaskConfig):
         self.plot_ll_per_words()
         self.save_dists_data()
         self.save_ldavis()
+        self.generate_wordclouds()
         self.save_model_summary()
         self.save_config()
 
