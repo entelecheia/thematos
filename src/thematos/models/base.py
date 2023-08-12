@@ -11,7 +11,7 @@ from hyfi.task import BatchTaskConfig
 
 from thematos.datasets import Corpus
 
-from .config import LdaConfig, TrainConfig
+from .config import LdaConfig, TrainConfig, WordcloudConfig
 from .prior import WordPrior
 from .types import CoherenceMetrics, ModelSummary
 
@@ -29,6 +29,7 @@ class TopicModel(BatchTaskConfig):
     corpus: Corpus = Corpus()
     model_args: LdaConfig = LdaConfig()
     train_args: TrainConfig = TrainConfig()
+    wc_args: WordcloudConfig = WordcloudConfig()
 
     coherence_metric_list: List[str] = ["u_mass", "c_uci", "c_npmi", "c_v"]
     eval_coherence: bool = True
@@ -44,6 +45,8 @@ class TopicModel(BatchTaskConfig):
     _model_summary_: Optional[ModelSummary] = None
     _ll_per_words_: List[Tuple[int, float]] = []
     _doc_ids_: List[Any] = None
+    _doc_topic_dists_df_: Optional[pd.DataFrame] = None
+    _topic_term_dists_df_: Optional[pd.DataFrame] = None
 
     @property
     def model_id(self) -> str:
@@ -53,6 +56,8 @@ class TopicModel(BatchTaskConfig):
 
     @property
     def model(self):
+        if self._model_ is None:
+            raise ValueError("Model has not been trained yet.")
         return self._model_
 
     @property
@@ -65,19 +70,11 @@ class TopicModel(BatchTaskConfig):
 
     @property
     def train_args_dict(self) -> Dict:
-        return (
-            self.train_args.model_dump(exclude=self.train_args._exclude_keys_)
-            if self.train_args
-            else {}
-        )
+        return self.train_args.kwargs if self.train_args else {}
 
     @property
     def model_args_dict(self) -> Dict:
-        return (
-            self.model_args.model_dump(exclude=self.model_args._exclude_keys_)
-            if self.model_args
-            else {}
-        )
+        return self.model_args.kwargs if self.model_args else {}
 
     @property
     def timestamp(self) -> str:
@@ -103,9 +100,44 @@ class TopicModel(BatchTaskConfig):
         return pd.DataFrame(self._ll_per_words_, columns=["iter", "ll_per_word"])
 
     @property
-    def topic_dists(self) -> List[np.ndarray]:
-        assert self.model, "Model not found"
-        return [doc.get_topic_dist() for doc in self.model.docs]
+    def doc_topic_dists(self) -> np.ndarray:
+        dist_ = np.stack([doc.get_topic_dist() for doc in self.model.docs])
+        dist_ /= dist_.sum(axis=1, keepdims=True)
+        return dist_
+
+    @property
+    def topic_term_dists(self) -> np.ndarray:
+        return np.stack(
+            [self.model.get_topic_word_dist(k) for k in range(self.model.k)]
+        )
+
+    @property
+    def doc_num_words(self) -> np.ndarray:
+        return np.array([len(doc.words) for doc in self.model.docs])
+
+    @property
+    def used_vocab(self) -> List[str]:
+        return list(self.model.used_vocabs)
+
+    @property
+    def term_frequency(self) -> np.ndarray:
+        return self.model.used_vocab_freq
+
+    @property
+    def num_docs(self) -> int:
+        return len(self.model.docs)
+
+    @property
+    def num_words(self) -> int:
+        return self.model.num_words
+
+    @property
+    def num_total_vocabs(self) -> int:
+        return len(self.model.vocabs) if self.model.vocabs else None
+
+    @property
+    def num_used_vocab(self) -> int:
+        return len(self.model.used_vocabs)
 
     @property
     def num_topics(self) -> int:
@@ -113,7 +145,25 @@ class TopicModel(BatchTaskConfig):
 
         It is the same as the number of columns in the document-topic distribution.
         """
-        return len(self.topic_dists[0])
+        return self.model.k if self.model else len(self.doc_topic_dists[0])
+
+    @property
+    def topic_term_dists_df(self) -> pd.DataFrame:
+        return pd.DataFrame(self.topic_term_dists, columns=self.used_vocab)
+
+    @property
+    def doc_id_df(self) -> pd.DataFrame:
+        return pd.DataFrame(self.doc_ids, columns=["id"])
+
+    @property
+    def doc_topic_dists_df(self) -> pd.DataFrame:
+        if len(self.doc_topic_dists) != len(self.doc_ids):
+            raise ValueError(
+                f"Number of inferred topics ({len(self.doc_topic_dists)}) does not match with number of documents ({len(self.doc_ids)})"
+            )
+        columns = [f"topic{i}" for i in range(self.num_topics)]
+        dists_df = pd.DataFrame(self.doc_topic_dists, columns=columns)
+        return pd.concat([self.doc_id_df, dists_df], axis=1)
 
     @property
     def model_file(self) -> str:
@@ -132,8 +182,18 @@ class TopicModel(BatchTaskConfig):
         return str(self.output_dir / f_)
 
     @property
-    def topic_dists_file(self) -> str:
-        f_ = f"{self.model_id}-topic_dists.parquet"
+    def doc_topic_dists_file(self) -> str:
+        f_ = f"{self.model_id}-doc_topic_dists.parquet"
+        return str(self.output_dir / f_)
+
+    @property
+    def topic_term_dists_file(self) -> str:
+        f_ = f"{self.model_id}-topic_term_dists.parquet"
+        return str(self.output_dir / f_)
+
+    @property
+    def used_vocab_file(self) -> str:
+        f_ = f"{self.model_id}-used_vocab.txt"
         return str(self.output_dir / f_)
 
     @property
@@ -150,6 +210,11 @@ class TopicModel(BatchTaskConfig):
     def ldavis_file(self) -> str:
         f_ = f"{self.model_id}-ldavis.html"
         return str(self.output_dir / f_)
+
+    @property
+    def topic_wordcloud_file_format(self) -> str:
+        format_ = self.model_id + "-wordcloud_{topic_id:03d}.png"
+        return str(self.output_dir / "wordclouds" / format_)
 
     def update_model_args(self, **kwargs) -> None:
         self.model_args = self.model_args.model_copy(update=kwargs)
@@ -191,7 +256,6 @@ class TopicModel(BatchTaskConfig):
     def eval_coherence_value(
         self,
     ):
-        assert self.model, "Model not found"
         mdl = self.model
         coh_metrics = {}
         for metric in self.coherence_metric_list:
@@ -209,7 +273,7 @@ class TopicModel(BatchTaskConfig):
         self.save_model()
         self.save_ll_per_words()
         self.plot_ll_per_words()
-        self.save_document_topic_dists()
+        self.save_dists_data()
         self.save_ldavis()
         self.save_model_summary()
         self.save_config()
@@ -251,10 +315,10 @@ class TopicModel(BatchTaskConfig):
             timestamp=self.timestamp,
             model_id=self.model_id,
             model_type=self.model_type,
-            num_docs=len(self.model.docs),
-            num_words=self.model.num_words,
-            total_vocabs=len(self.model.vocabs) if self.model.vocabs else None,
-            used_vocabs=len(self.model.used_vocabs),
+            num_docs=self.num_docs,
+            num_words=self.num_words,
+            num_total_vocabs=self.num_total_vocabs,
+            num_used_vocabs=self.num_used_vocab,
             seed=self.seed,
             model_args=self.model_args_dict,
             train_args=self.train_args_dict,
@@ -269,32 +333,25 @@ class TopicModel(BatchTaskConfig):
         )
         logger.info("Model summary saved to %s", self.batch_model_summary_file)
 
-    def save_document_topic_dists(self):
-        corpus_ids = self.doc_ids
-        topic_dists = self.topic_dists
-
-        logger.info("Total inferred: %s, from: %s", len(topic_dists), len(corpus_ids))
-        if len(topic_dists) == len(corpus_ids):
-            self._save_document_topic_dists(topic_dists, corpus_ids)
-        else:
-            raise ValueError(
-                f"Number of inferred topics ({len(topic_dists)}) does not match with number of documents ({len(corpus_ids)})"
-            )
-
-    def _save_document_topic_dists(
-        self,
-        topic_dists: List[np.ndarray],
-        corpus_ids: List[Any],
-    ):
-        idx = range(self.num_topics)
-        topic_dists_df = pd.DataFrame(topic_dists, columns=[f"topic{i}" for i in idx])
-        id_df = pd.DataFrame(corpus_ids, columns=["id"])
-        topic_dists_df = pd.concat([id_df, topic_dists_df], axis=1)
+    def save_dists_data(self):
         if self.verbose:
-            print(topic_dists_df.tail())
-
+            print(self.doc_topic_dists_df.tail())
         HyFI.save_dataframes(
-            topic_dists_df, self.topic_dists_file, verbose=self.verbose
+            self.doc_topic_dists_df,
+            self.doc_topic_dists_file,
+            verbose=self.verbose,
+        )
+        if self.verbose:
+            print(self.topic_term_dists_df.tail())
+        HyFI.save_dataframes(
+            self.topic_term_dists_df,
+            self.topic_term_dists_file,
+            verbose=self.verbose,
+        )
+        HyFI.save_wordlist(
+            self.used_vocab,
+            self.used_vocab_file,
+            verbose=self.verbose,
         )
 
     def load(
@@ -312,18 +369,20 @@ class TopicModel(BatchTaskConfig):
         )
         self._load_model()
         self._load_ll_per_words()
-        self._load_document_topic_dists()
+        self._load_dists_data()
 
     def _load_ll_per_words(self):
         ll_df = HyFI.load_dataframes(self.ll_per_words_file, verbose=self.verbose)
         self._ll_per_words_ = [(ll.iter, ll.ll_per_word) for ll in ll_df.itertuples()]
 
-    def _load_document_topic_dists(self):
-        topic_dists_df = HyFI.load_dataframes(
-            self.topic_dists_file, verbose=self.verbose
+    def _load_dists_data(self):
+        self._doc_topic_dists_df_ = HyFI.load_dataframes(
+            self.doc_topic_dists_file, verbose=self.verbose
         )
-        self._topic_dists_ = topic_dists_df.iloc[:, 1:].values.tolist()
-        self._doc_ids_ = topic_dists_df["id"].values.tolist()
+        self._doc_ids_ = self._doc_topic_dists_df_["id"].values.tolist()
+        self._topic_term_dists_df_ = HyFI.load_dataframes(
+            self.topic_term_dists_file, verbose=self.verbose
+        )
 
     def save_ldavis(self):
         try:
@@ -334,24 +393,33 @@ class TopicModel(BatchTaskConfig):
             )
             return
 
-        assert self.model, "Model not found"
-        mdl = self.model
-
-        topic_term_dists = np.stack([mdl.get_topic_word_dist(k) for k in range(mdl.k)])
-        doc_topic_dists = np.stack([doc.get_topic_dist() for doc in mdl.docs])
-        doc_topic_dists /= doc_topic_dists.sum(axis=1, keepdims=True)
-        doc_lengths = np.array([len(doc.words) for doc in mdl.docs])
-        vocab = list(mdl.used_vocabs)
-        term_frequency = mdl.used_vocab_freq
-
         prepared_data = pyLDAvis.prepare(
-            topic_term_dists=topic_term_dists,
-            doc_topic_dists=doc_topic_dists,
-            doc_lengths=doc_lengths,
-            vocab=vocab,
-            term_frequency=term_frequency,
+            topic_term_dists=self.topic_term_dists,
+            doc_topic_dists=self.doc_topic_dists,
+            doc_lengths=self.doc_num_words,
+            vocab=self.used_vocab,
+            term_frequency=self.term_frequency,
             start_index=0,
             sort_topics=False,
         )
         pyLDAvis.save_html(prepared_data, self.ldavis_file)
         logger.info("LDAvis saved to %s", self.ldavis_file)
+
+    def get_topic_words(
+        self,
+        topic_id: int,
+        top_n: int = 10,
+    ) -> Dict[str, float]:
+        return dict(self.model.get_topic_words(topic_id, top_n=top_n))
+
+    def generate_wordclouds(
+        self,
+    ):
+        wc_args = self.wc_args
+        wc = wc_args.wc
+        for topic_id in range(self.num_topics):
+            output_file = self.topic_wordcloud_file_format.format(topic_id=topic_id)
+            wc.generate_from_frequencies(
+                self.get_topic_words(topic_id, top_n=wc_args.top_n),
+                output_file=output_file,
+            )
