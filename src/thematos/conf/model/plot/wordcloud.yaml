@@ -1,4 +1,4 @@
-_target_: thematos.models.config.WordCloudConfig
+_target_: thematos.models.config.WordcloudConfig
 _config_name_: wordcloud
 _config_group_: /model/plot
 top_n: 100
