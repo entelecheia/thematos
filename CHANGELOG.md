@@ -1,5 +1,16 @@
 <!--next-version-placeholder-->
 
+## v0.9.0 (2023-08-12)
+
+### Feature
+
+* **thematos/models:** Add wordclouds generation method ([`4e866cc`](https://github.com/entelecheia/thematos/commit/4e866ccccbf64d34f60ab079663838e8b036b19c))
+* **corpus:** Add function to concatenate n-grams ([`a78edc6`](https://github.com/entelecheia/thematos/commit/a78edc6d6ccf418287ad46322bb0665480f564a9))
+* **thematos/datasets:** Add NgramConfig class in ngrams.py ([`10a2e2e`](https://github.com/entelecheia/thematos/commit/10a2e2e6dc199a05809196f9045784192c9306fb))
+* **thematos-models:** Add image collage feature for word clouds in TopicModel ([`6953b9f`](https://github.com/entelecheia/thematos/commit/6953b9f03d8cf58eab50e19bd55000f274b811ff))
+* **thematos/models/config:** Add new config variables for WordcloudConfig class ([`d88d76e`](https://github.com/entelecheia/thematos/commit/d88d76e322a15ff133cc5cca03a4252624739165))
+* **thematos:** Add make_collage and related configs ([`231cebb`](https://github.com/entelecheia/thematos/commit/231cebb61b56c0d871bdb601e49c41f174f4e32b))
+
 ## v0.8.0 (2023-08-12)
 
 ### Feature
