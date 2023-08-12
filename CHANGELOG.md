@@ -1,5 +1,15 @@
 <!--next-version-placeholder-->
 
+## v0.10.0 (2023-08-12)
+
+### Feature
+
+* **thematos/datasets:** Add delimiter field in NgramConfig ([`6c0ff28`](https://github.com/entelecheia/thematos/commit/6c0ff28996e44925fd22159f33a2104c2d0c323c))
+* **thematos/datasets:** Add ngram config and logging in corpus.py ([`c2ec34b`](https://github.com/entelecheia/thematos/commit/c2ec34bb989f6ba9533622a15723f445fe817eaf))
+* **datasets:** Add NgramConfig to __all__ ([`787cdbc`](https://github.com/entelecheia/thematos/commit/787cdbc2cb06d6f4b017c87ba7e1e9266f4847b3))
+* **thematos:** Add new configuration for ngrams ([`96708f3`](https://github.com/entelecheia/thematos/commit/96708f354d30a5c1014a22d13542d14ff5ef982c))
+* **thematos/conf/dataset:** Add ngrams and timestamp_col fields to topic_corpus.yaml ([`828adbd`](https://github.com/entelecheia/thematos/commit/828adbd99529a21393035f3f365fc1561da13df0))
+
 ## v0.9.0 (2023-08-12)
 
 ### Feature
