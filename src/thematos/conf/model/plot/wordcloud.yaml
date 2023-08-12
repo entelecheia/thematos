@@ -1,0 +1,14 @@
+_target_: thematos.models.config.WordCloudConfig
+_config_name_: wordcloud
+_config_group_: /model/plot
+top_n: 100
+titles: null
+title_fontsize: 20
+title_color: green
+num_cols: 5
+num_rows: 1
+figsize: null
+dpi: 300
+mask_dir: null
+fontpath: null
+save: true
