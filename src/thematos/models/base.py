@@ -374,6 +374,9 @@ class TopicModel(BatchTaskConfig):
             self.doc_topic_dists_file, verbose=self.verbose
         )
         self._doc_ids_ = self._doc_topic_dists_df_["id"].values.tolist()
+        self._topic_term_dists_df_ = HyFI.load_dataframes(
+            self.topic_term_dists_file, verbose=self.verbose
+        )
 
     def save_ldavis(self):
         try:
