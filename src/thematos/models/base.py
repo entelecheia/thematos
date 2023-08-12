@@ -11,7 +11,7 @@ from hyfi.task import BatchTaskConfig
 
 from thematos.datasets import Corpus
 
-from .config import LdaConfig, TrainConfig
+from .config import LdaConfig, TrainConfig, WordcloudConfig
 from .prior import WordPrior
 from .types import CoherenceMetrics, ModelSummary
 
@@ -29,6 +29,7 @@ class TopicModel(BatchTaskConfig):
     corpus: Corpus = Corpus()
     model_args: LdaConfig = LdaConfig()
     train_args: TrainConfig = TrainConfig()
+    wc_args: WordcloudConfig = WordcloudConfig()
 
     coherence_metric_list: List[str] = ["u_mass", "c_uci", "c_npmi", "c_v"]
     eval_coherence: bool = True
@@ -209,6 +210,11 @@ class TopicModel(BatchTaskConfig):
     def ldavis_file(self) -> str:
         f_ = f"{self.model_id}-ldavis.html"
         return str(self.output_dir / f_)
+
+    @property
+    def topic_wordcloud_file_format(self) -> str:
+        format_ = self.model_id + "-wordcloud_{topic_id:03d}.png"
+        return str(self.output_dir / "wordclouds" / format_)
 
     def update_model_args(self, **kwargs) -> None:
         self.model_args = self.model_args.model_copy(update=kwargs)
@@ -398,3 +404,22 @@ class TopicModel(BatchTaskConfig):
         )
         pyLDAvis.save_html(prepared_data, self.ldavis_file)
         logger.info("LDAvis saved to %s", self.ldavis_file)
+
+    def get_topic_words(
+        self,
+        topic_id: int,
+        top_n: int = 10,
+    ) -> Dict[str, float]:
+        return dict(self.model.get_topic_words(topic_id, top_n=top_n))
+
+    def generate_wordclouds(
+        self,
+    ):
+        wc_args = self.wc_args
+        wc = wc_args.wc
+        for topic_id in range(self.num_topics):
+            output_file = self.topic_wordcloud_file_format.format(topic_id=topic_id)
+            wc.generate_from_frequencies(
+                self.get_topic_words(topic_id, top_n=wc_args.top_n),
+                output_file=output_file,
+            )
