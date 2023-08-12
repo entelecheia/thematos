@@ -1,0 +1,11 @@
+_target_: thematos.datasets.ngrams.NgramConfig
+_config_name_: tp_ngrams
+_config_group_: /ngrams
+min_cf: 20
+min_df: 10
+max_len: 5
+max_cand: 5000
+min_score: null
+normalized: true
+workers: 0
+delimiter: _
