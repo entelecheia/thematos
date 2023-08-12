@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Callable, Dict, Optional, Set, Tuple, Union
 
@@ -6,7 +7,7 @@ import wordcloud
 from hyfi import HyFI
 from hyfi.composer import BaseModel
 
-logger = HyFI.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class WordCloud(BaseModel):
