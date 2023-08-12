@@ -44,6 +44,8 @@ class TopicModel(BatchTaskConfig):
     _model_summary_: Optional[ModelSummary] = None
     _ll_per_words_: List[Tuple[int, float]] = []
     _doc_ids_: List[Any] = None
+    _doc_topic_dists_df_: Optional[pd.DataFrame] = None
+    _topic_term_dists_df_: Optional[pd.DataFrame] = None
 
     @property
     def model_id(self) -> str:
@@ -265,7 +267,7 @@ class TopicModel(BatchTaskConfig):
         self.save_model()
         self.save_ll_per_words()
         self.plot_ll_per_words()
-        self.save_dists()
+        self.save_dists_data()
         self.save_ldavis()
         self.save_model_summary()
         self.save_config()
@@ -325,7 +327,7 @@ class TopicModel(BatchTaskConfig):
         )
         logger.info("Model summary saved to %s", self.batch_model_summary_file)
 
-    def save_dists(self):
+    def save_dists_data(self):
         if self.verbose:
             print(self.doc_topic_dists_df.tail())
         HyFI.save_dataframes(
@@ -361,18 +363,17 @@ class TopicModel(BatchTaskConfig):
         )
         self._load_model()
         self._load_ll_per_words()
-        self._load_document_topic_dists()
+        self._load_dists_data()
 
     def _load_ll_per_words(self):
         ll_df = HyFI.load_dataframes(self.ll_per_words_file, verbose=self.verbose)
         self._ll_per_words_ = [(ll.iter, ll.ll_per_word) for ll in ll_df.itertuples()]
 
-    def _load_document_topic_dists(self):
-        topic_dists_df = HyFI.load_dataframes(
+    def _load_dists_data(self):
+        self._doc_topic_dists_df_ = HyFI.load_dataframes(
             self.doc_topic_dists_file, verbose=self.verbose
         )
-        self._topic_dists_ = topic_dists_df.iloc[:, 1:].values.tolist()
-        self._doc_ids_ = topic_dists_df["id"].values.tolist()
+        self._doc_ids_ = self._doc_topic_dists_df_["id"].values.tolist()
 
     def save_ldavis(self):
         try:
