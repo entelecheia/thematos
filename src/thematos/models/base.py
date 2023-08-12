@@ -275,6 +275,7 @@ class TopicModel(BatchTaskConfig):
         self.plot_ll_per_words()
         self.save_dists_data()
         self.save_ldavis()
+        self.generate_wordclouds()
         self.save_model_summary()
         self.save_config()
 
@@ -417,9 +418,31 @@ class TopicModel(BatchTaskConfig):
     ):
         wc_args = self.wc_args
         wc = wc_args.wc
+        images = []
         for topic_id in range(self.num_topics):
             output_file = self.topic_wordcloud_file_format.format(topic_id=topic_id)
-            wc.generate_from_frequencies(
+            img = wc.generate_from_frequencies(
                 self.get_topic_words(topic_id, top_n=wc_args.top_n),
                 output_file=output_file,
+            )
+            images.append(img)
+
+        if wc_args.make_collage:
+            output_dir = self.output_dir / "wordcloud_collage"
+            output_file_format = self.model_id + "_wordcloud_{page_num:02d}.png"
+            HyFI.make_subplot_pages_from_images(
+                images,
+                num_images_per_page=wc_args.num_images_per_page,
+                num_cols=wc_args.num_cols,
+                num_rows=wc_args.num_rows,
+                output_dir=output_dir,
+                output_file_format=output_file_format,
+                titles=wc_args.titles,
+                title_fontsize=wc_args.title_fontsize,
+                title_color=wc_args.title_color,
+                figsize=wc_args.figsize,
+                width_multiple=wc_args.width_multiple,
+                height_multiple=wc_args.height_multiple,
+                dpi=wc_args.dpi,
+                verbose=self.verbose,
             )

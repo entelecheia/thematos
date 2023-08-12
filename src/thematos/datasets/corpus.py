@@ -104,3 +104,11 @@ class Corpus(BatchTaskConfig):
 
     def __bool__(self):
         return bool(self._doc_ids_)
+
+    def concat_ngrams(self, delimiter="_"):
+        # extract the n-gram candidates first
+        cands = self.corpus.extract_ngrams(
+            min_cf=20, min_df=10, max_len=5, max_cand=1000, normalized=True
+        )
+        # concat n-grams in the corpus
+        self.corpus.concat_ngrams(cands, delimiter=delimiter)
