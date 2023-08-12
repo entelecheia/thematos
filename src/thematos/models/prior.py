@@ -1,9 +1,10 @@
+import logging
 from typing import Dict, List, Optional, Union
 
 from hyfi import HyFI
 from hyfi.composer import BaseModel
 
-logger = HyFI.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 PriorType = Dict[int, List[str]]
 
