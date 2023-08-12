@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 
 import tomotopy as tp
@@ -7,7 +8,7 @@ from tqdm.auto import tqdm
 from .base import TopicModel
 from .config import LdaConfig
 
-logger = HyFI.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class LdaModel(TopicModel):
