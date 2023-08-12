@@ -35,12 +35,17 @@ class WordcloudConfig(BaseModel):
 
     wc: WordCloud = WordCloud()
     top_n: int = 100
+    make_collage: bool = True
+    num_images_per_page: int = 5
+    num_cols: int = 5
+    num_rows: Optional[int] = None
+    output_file_format: str = "wordcloud_p{page_num:02d}.png"
     titles: Optional[List[str]] = None
     title_fontsize: int = 20
     title_color: str = "green"
-    num_cols: int = 5
-    num_rows: int = 1
     figsize: Optional[Tuple[int, int]] = None
+    width_multiple: float = 4
+    height_multiple: float = 2
     dpi: int = 300
     mask_dir: Optional[str] = None
     fontpath: Optional[str] = None
