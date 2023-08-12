@@ -1,6 +1,8 @@
-from typing import Optional
+from typing import List, Optional, Tuple
 
 from hyfi.composer import BaseModel
+
+from thematos.plots import WordCloud
 
 from .types import IDF
 
@@ -25,3 +27,21 @@ class TrainConfig(BaseModel):
     burn_in: int = 0
     interval: int = 10
     iterations: int = 100
+
+
+class WordcloudConfig(BaseModel):
+    _config_group_ = "/model/plot"
+    _config_name_ = "wordcloud"
+
+    wc: WordCloud = WordCloud()
+    top_n: int = 100
+    titles: Optional[List[str]] = None
+    title_fontsize: int = 20
+    title_color: str = "green"
+    num_cols: int = 5
+    num_rows: int = 1
+    figsize: Optional[Tuple[int, int]] = None
+    dpi: int = 300
+    mask_dir: Optional[str] = None
+    fontpath: Optional[str] = None
+    save: bool = True
