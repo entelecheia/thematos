@@ -1,5 +1,26 @@
 <!--next-version-placeholder-->
 
+## v0.8.0 (2023-08-12)
+
+### Feature
+
+* **thematos/models:** Add WordcloudConfig ([`9919ce9`](https://github.com/entelecheia/thematos/commit/9919ce972e6bfdd2794edef8f6c1795fba927541))
+* **thematos/models:** Add WordcloudConfig and generate_wordclouds method ([`118e7e6`](https://github.com/entelecheia/thematos/commit/118e7e6f5f191e4e34cada1e2b903d27744b4549))
+* **thematos/models:** Add WordcloudConfig class in config.py ([`198053c`](https://github.com/entelecheia/thematos/commit/198053cb8aee11a60f32539875880941a0e7e54a))
+* **thematos/plots:** Add WordCloud module ([`ff24048`](https://github.com/entelecheia/thematos/commit/ff24048040af0089cb03e68574c1276b27e8cc33))
+* **tests:** Add wordcloud notebook in tests/notebook ([`b213e41`](https://github.com/entelecheia/thematos/commit/b213e41666b10b197fcb0e0997733afca182de3e))
+* **thematos/plots:** Add WordCloud class ([`ecc71e3`](https://github.com/entelecheia/thematos/commit/ecc71e3658c7d017d7c2a0916af3c1e954935616))
+* **dependencies:** Add wordcloud version 1.9.2 ([`2c21075`](https://github.com/entelecheia/thematos/commit/2c21075014e5ab98d2574e7f3b6f5b6eee125dad))
+* **thematos:** Add defaults for wordcloud in config ([`47ee61f`](https://github.com/entelecheia/thematos/commit/47ee61f36cdfdcd486549ee964c30111404daf34))
+* **thematos:** Add wordcloud to topic model configuration ([`66600e2`](https://github.com/entelecheia/thematos/commit/66600e2768c319e05fa597411c3f50dc6be6e9a6))
+* **thematos/conf/model:** Add wordcloud to lda model configuration ([`8edb40a`](https://github.com/entelecheia/thematos/commit/8edb40a533514057d39340c3dfce0714055c9183))
+* **thematos:** Add wordcloud configuration model ([`b59dade`](https://github.com/entelecheia/thematos/commit/b59dade629bb4771cfd3a1e5562e56a52cc05e47))
+* **thematos:** Add wordcloud configuration ([`ca5944e`](https://github.com/entelecheia/thematos/commit/ca5944ec4b20039522772d6d397561c5aab4cbf1))
+
+### Fix
+
+* **thematos/models:** Add loading of topic term distributions ([`50c8bb5`](https://github.com/entelecheia/thematos/commit/50c8bb526f7c9aa5cc5eb2812e92d3a33d13fe28))
+
 ## v0.7.0 (2023-08-11)
 
 ### Feature
