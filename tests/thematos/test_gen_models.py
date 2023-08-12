@@ -7,6 +7,7 @@ from thematos.models import (
 )
 from thematos.runners import TopicRunner, LdaRunConfig
 from thematos.plots.wordcloud import WordCloud
+from thematos.datasets import Corpus, NgramConfig
 
 
 def test_gen_model_configs():
@@ -25,6 +26,10 @@ def test_gen_model_configs():
     d = WordCloud.generate_config()
     print(d)
     d = WordcloudConfig.generate_config()
+    print(d)
+    d = Corpus.generate_config()
+    print(d)
+    d = NgramConfig.generate_config()
     print(d)
 
 
