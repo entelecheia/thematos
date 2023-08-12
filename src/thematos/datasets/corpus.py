@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Any, List, Optional
 
@@ -7,9 +8,10 @@ import tomotopy as tp
 from hyfi import HyFI
 from hyfi.run import RunConfig
 from hyfi.task import BatchTaskConfig
-from hyfi.utils.contexts import elapsed_timer
 
-logger = HyFI.getLogger(__name__)
+from .ngrams import NgramConfig
+
+logger = logging.getLogger(__name__)
 
 
 class Corpus(BatchTaskConfig):
@@ -20,7 +22,10 @@ class Corpus(BatchTaskConfig):
     batch_name: str = "corpus"
     id_col: str = "id"
     text_col: str = "text"
+    timestamp_col: Optional[str] = None
     data_load: RunConfig = RunConfig(_config_name_="load_dataframe")
+    ngrams: Optional[NgramConfig] = NgramConfig()
+    ngramize: bool = True
     verbose: bool = False
 
     _data_: Optional[pd.DataFrame] = None
@@ -49,8 +54,10 @@ class Corpus(BatchTaskConfig):
         logger.info("Loading corpus...")
         self._doc_ids_ = []
         self._corpus_ = tp.utils.Corpus(tokenizer=tp.utils.SimpleTokenizer())
-        with elapsed_timer() as elapsed:
-            self._load_docs(elapsed)
+        self._corpus_.process(self.docs)
+        logger.info("Total %d documents are loaded.", len(self.docs))
+        if self.ngramize:
+            self.concat_ngrams()
         self.save_ids()
         self.save_config()
 
@@ -74,12 +81,6 @@ class Corpus(BatchTaskConfig):
             else:
                 self._doc_ids_ = self.data[self.id_col].values.tolist()
         return self._doc_ids_
-
-    def _load_docs(self, elapsed):
-        docs = self.docs
-        self._corpus_.process(docs)
-        logger.info("Corpus loaded in %s", elapsed)
-        logger.info("Total %d documents are loaded.", len(docs))
 
     @property
     def id_file(self) -> Path:
@@ -105,10 +106,33 @@ class Corpus(BatchTaskConfig):
     def __bool__(self):
         return bool(self._doc_ids_)
 
-    def concat_ngrams(self, delimiter="_"):
+    def concat_ngrams(self, delimiter: Optional[str] = None):
+        if not self.ngrams:
+            logger.info("N-grams config is not set. Skipping...")
+            return
         # extract the n-gram candidates first
-        cands = self.corpus.extract_ngrams(
-            min_cf=20, min_df=10, max_len=5, max_cand=1000, normalized=True
-        )
+        if not delimiter:
+            delimiter = self.ngrams.delimiter
+        args = self.ngrams.kwargs
+        args.pop("delimiter", None)
+        if not self.ngrams.min_score:
+            args.pop("min_score", None)
+        if self.verbose:
+            logger.info("Extracting n-grams...")
+        cands = self.corpus.extract_ngrams(**args)
+        if self.verbose:
+            logger.info("Total %d n-grams are extracted.", len(cands))
+            for cand in cands[:10]:
+                logger.info(cand)
+            for cand in cands[-10:]:
+                logger.info(cand)
         # concat n-grams in the corpus
+        if self.verbose:
+            logger.info("Concatenating n-grams...")
+            logger.info(self.corpus[0])
+            logger.info(self.corpus[-1])
         self.corpus.concat_ngrams(cands, delimiter=delimiter)
+        if self.verbose:
+            logger.info(self.corpus[0])
+            logger.info(self.corpus[-1])
+            logger.info("Total %d documents are n-gramized.", len(self.corpus))
