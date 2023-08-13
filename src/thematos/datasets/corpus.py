@@ -25,7 +25,7 @@ class Corpus(BatchTaskConfig):
     text_col: str = "text"
     timestamp_col: Optional[str] = None
     data_load: RunConfig = RunConfig(_config_name_="load_dataframe")
-    stopwords: Stopwords = Stopwords()
+    stopwords: Optional[Stopwords] = Stopwords()
     ngrams: Optional[NgramConfig] = NgramConfig()
     ngramize: bool = True
     verbose: bool = False
