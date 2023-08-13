@@ -225,6 +225,8 @@ class TopicModel(BatchTaskConfig):
         if self.wordprior is None:
             logger.info("No word prior set.")
             return
+        if self.verbose:
+            logger.info("Set word prior with %s.", self.wordprior)
         for tno, words in self.wordprior.items():
             if self.verbose:
                 logger.info("Set words %s to topic #%s as prior.", words, tno)
