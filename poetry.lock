@@ -1173,13 +1173,13 @@ packaging = "*"
 
 [[package]]
 name = "hyfi"
-version = "1.29.0"
+version = "1.29.1"
 description = "Hydra Fast Interface (Hydra and Pydantic based interface framework)"
 optional = false
 python-versions = ">=3.8.1,<3.12"
 files = [
-    {file = "hyfi-1.29.0-py3-none-any.whl", hash = "sha256:19060c37938a2f89b91fd2fc18c1f133c34fd5bb9ff70301a84cc50c74864282"},
-    {file = "hyfi-1.29.0.tar.gz", hash = "sha256:6f7d88154cfeef4f638178f3d95d00a03e8bbb6ce7b209462ed82f41730c6392"},
+    {file = "hyfi-1.29.1-py3-none-any.whl", hash = "sha256:b402427a74e85c72fbcaea653ac24198fdf4b1cd257ee06d5a279ce78e7a6181"},
+    {file = "hyfi-1.29.1.tar.gz", hash = "sha256:650dcbcd38c9477131e7313363a96d21a259f506618de5f99fbb30c610fc8ad6"},
 ]
 
 [package.dependencies]
@@ -1440,20 +1440,20 @@ files = [
 
 [[package]]
 name = "lexikanon"
-version = "0.6.0"
+version = "0.6.1"
 description = "A Python Library for Tokenizers"
 optional = false
 python-versions = ">=3.8.1,<3.12"
 files = [
-    {file = "lexikanon-0.6.0-py3-none-any.whl", hash = "sha256:adfdf16b4ffb565561f5d63fc9ffe04398acbf6a3de97ccd05d8b25ec5cc1662"},
-    {file = "lexikanon-0.6.0.tar.gz", hash = "sha256:15958633bec2495877bb12cc6f20e07e2c6321c54475b7d9cceea95a2a7dddc5"},
+    {file = "lexikanon-0.6.1-py3-none-any.whl", hash = "sha256:a3aa3fca3936f6097969b656be5d9baf4247d146fce8b0296c65d184262b41ff"},
+    {file = "lexikanon-0.6.1.tar.gz", hash = "sha256:d354622192a06b7a79ca0957b9b6f38cb6d6cffa7cfde09c62da9faef444ab7a"},
 ]
 
 [package.dependencies]
 click = ">=8.1.3,<9.0.0"
 ekonlpy = ">=2.0.2,<3.0.0"
 ftfy = ">=6.1.1,<7.0.0"
-hyfi = ">=1.25.1,<2.0.0"
+hyfi = ">=1.29.1,<2.0.0"
 nltk = ">=3.8.1,<4.0.0"
 scikit-learn = ">=1.3.0,<2.0.0"
 
@@ -3256,4 +3256,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<3.12"
-content-hash = "6c8de7c8ce48b792f7d5a21daca94d1c87148b3b0167fd20feb4efbb1fbf33c2"
+content-hash = "d8a0990be56ffd99a01525913baf1015b11918324230a66e973cfc6423437e96"
