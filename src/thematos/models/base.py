@@ -234,7 +234,7 @@ class TopicModel(BatchTaskConfig):
                         self.wordprior.max_prior_weight
                         if i == int(tno)
                         else self.wordprior.min_prior_weight
-                        for i in range(self.k)
+                        for i in range(self.num_topics)
                     ],
                 )
 
