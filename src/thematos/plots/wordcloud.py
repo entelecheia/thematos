@@ -74,5 +74,5 @@ class WordCloud(BaseModel):
             Path(output_file).parent.mkdir(parents=True, exist_ok=True)
             self._wc_.to_file(output_file)
             if verbose:
-                logger.info("Saved wordcloud to %s", output_file)
+                logger.debug("Saved wordcloud to %s", output_file)
         return self._wc_

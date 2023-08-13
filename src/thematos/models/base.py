@@ -12,7 +12,7 @@ from hyfi.task import BatchTaskConfig
 
 from thematos.datasets import Corpus
 
-from .config import LdaConfig, TrainConfig, WordcloudConfig
+from .config import LdaConfig, TrainConfig, TrainSummaryConfig, WordcloudConfig
 from .prior import WordPrior
 from .types import CoherenceMetrics, ModelSummary
 
@@ -30,6 +30,7 @@ class TopicModel(BatchTaskConfig):
     corpus: Corpus = Corpus()
     model_args: LdaConfig = LdaConfig()
     train_args: TrainConfig = TrainConfig()
+    train_summary_args: TrainSummaryConfig = TrainSummaryConfig()
     wc_args: WordcloudConfig = WordcloudConfig()
 
     coherence_metric_list: List[str] = ["u_mass", "c_uci", "c_npmi", "c_v"]
@@ -234,11 +235,14 @@ class TopicModel(BatchTaskConfig):
                         self.wordprior.max_prior_weight
                         if i == int(tno)
                         else self.wordprior.min_prior_weight
-                        for i in range(self.k)
+                        for i in range(self.num_topics)
                     ],
                 )
 
     def train(self) -> None:
+        # reset model
+        self._model_ = None
+
         if self.set_wordprior:
             self._set_wordprior()
 
@@ -272,6 +276,7 @@ class TopicModel(BatchTaskConfig):
 
     def save(self) -> None:
         self.save_model()
+        self.save_train_summary()
         self.save_ll_per_words()
         self.plot_ll_per_words()
         self.save_dists_data()
@@ -303,9 +308,10 @@ class TopicModel(BatchTaskConfig):
     def save_train_summary(self) -> None:
         coh_values = self.coherence_metrics_dict
         original_stdout = sys.stdout
+        Path(self.train_summary_file).parent.mkdir(parents=True, exist_ok=True)
         with open(self.train_summary_file, "w") as f:
             sys.stdout = f  # Change the standard output to the file.
-            self.model.summary()
+            self.model.summary(**self.train_summary_args.kwargs)
             if coh_values:
                 print("<Topic Coherence Scores>")
                 for cm, cv in coh_values.items():
@@ -425,10 +431,13 @@ class TopicModel(BatchTaskConfig):
             img = wc.generate_from_frequencies(
                 self.get_topic_words(topic_id, top_n=wc_args.top_n),
                 output_file=output_file,
+                verbose=self.verbose,
             )
             images.append(img)
 
         if wc_args.make_collage:
+            titles = wc_args.titles or [f"Topic {i}" for i in range(self.num_topics)]
+            logger.info("Making wordcloud collage with titles: %s", titles)
             output_dir = self.output_dir / "wordcloud_collage"
             output_file_format = self.model_id + "_wordcloud_{page_num:02d}.png"
             HyFI.make_subplot_pages_from_images(
@@ -438,7 +447,7 @@ class TopicModel(BatchTaskConfig):
                 num_rows=wc_args.num_rows,
                 output_dir=output_dir,
                 output_file_format=output_file_format,
-                titles=wc_args.titles,
+                titles=titles,
                 title_fontsize=wc_args.title_fontsize,
                 title_color=wc_args.title_color,
                 figsize=wc_args.figsize,

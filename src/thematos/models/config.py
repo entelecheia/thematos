@@ -1,6 +1,7 @@
-from typing import List, Optional, Tuple
+import sys
+from typing import Any, List, Optional, Tuple
 
-from hyfi.composer import BaseModel
+from hyfi.composer import BaseModel, Field
 
 from thematos.plots import WordCloud
 
@@ -27,6 +28,22 @@ class TrainConfig(BaseModel):
     burn_in: int = 0
     interval: int = 10
     iterations: int = 100
+
+
+class TrainSummaryConfig(BaseModel):
+    _config_group_ = "/model/summary"
+    _config_name_ = "topic_train"
+
+    initial_hp: bool = Field(
+        True, description="whether to show the initial parameters at model creation"
+    )
+    params: bool = Field(
+        True, description="whether to show the current parameters of the model"
+    )
+    topic_word_top_n: int = Field(
+        10, description="the number of words by topic to display"
+    )
+    flush: bool = Field(False, description="whether to forcibly flush the stream")
 
 
 class WordcloudConfig(BaseModel):

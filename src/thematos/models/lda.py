@@ -39,9 +39,10 @@ class LdaModel(TopicModel):
         logger.info("Number of words: %s", model.num_words)
         logger.info("Removed top words: %s", model.removed_top_words)
         logger.info(
-            "Training model by iterating over the corpus %s times, %s iterations at a time",
+            "Training model by iterating over the corpus %s times, %s iterations at a time with %s workers",
             train_args.iterations,
             train_args.interval,
+            self.batch.num_workers,
         )
 
         ll_per_words = []
@@ -54,7 +55,7 @@ class LdaModel(TopicModel):
             ll_per_words.append((i, model.ll_per_word))
         self._ll_per_words_ = ll_per_words
         if self.verbose:
-            model.summary()
+            self.model.summary(**self.train_summary_args.kwargs)
         self._model_ = model
 
     def _load_model(self):

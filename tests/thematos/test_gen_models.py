@@ -2,6 +2,7 @@ from thematos.models import (
     TopicModel,
     LdaModel,
     TrainConfig,
+    TrainSummaryConfig,
     LdaConfig,
     WordcloudConfig,
 )
@@ -16,6 +17,8 @@ def test_gen_model_configs():
     d = LdaModel.generate_config()
     print(d)
     d = TrainConfig.generate_config()
+    print(d)
+    d = TrainSummaryConfig.generate_config()
     print(d)
     d = LdaConfig.generate_config()
     print(d)

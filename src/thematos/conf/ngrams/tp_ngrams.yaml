@@ -5,7 +5,7 @@ min_cf: 20
 min_df: 10
 max_len: 5
 max_cand: 5000
-min_score: null
+min_score: 0.5
 normalized: true
 workers: 0
 delimiter: _

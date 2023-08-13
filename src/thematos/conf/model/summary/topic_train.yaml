@@ -1,0 +1,7 @@
+_target_: thematos.models.config.TrainSummaryConfig
+_config_name_: topic_train
+_config_group_: /model/summary
+initial_hp: true
+params: true
+topic_word_top_n: 10
+flush: false
