@@ -55,7 +55,7 @@ class LdaModel(TopicModel):
             ll_per_words.append((i, model.ll_per_word))
         self._ll_per_words_ = ll_per_words
         if self.verbose:
-            model.summary()
+            self.model.summary(**self.train_summary_args.kwargs)
         self._model_ = model
 
     def _load_model(self):
