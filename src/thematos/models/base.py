@@ -272,6 +272,7 @@ class TopicModel(BatchTaskConfig):
 
     def save(self) -> None:
         self.save_model()
+        self.save_train_summary()
         self.save_ll_per_words()
         self.plot_ll_per_words()
         self.save_dists_data()
