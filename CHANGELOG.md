@@ -1,5 +1,16 @@
 <!--next-version-placeholder-->
 
+## v0.12.0 (2023-08-13)
+
+### Feature
+
+* **datasets/corpus:** Add Stopwords class and integrate with tokenizer ([`2d6de3b`](https://github.com/entelecheia/thematos/commit/2d6de3bface8f8f41050f575b6ea17465b92818f))
+* **thematos:** Add stopwords initialization in topic_corpus configuration ([`714dc89`](https://github.com/entelecheia/thematos/commit/714dc89a5777241449509f83f1e8a96db3ecdd4d))
+
+### Fix
+
+* **thematos/models:** Add verbose logging for word prior setting in TopicModel ([`7ab1029`](https://github.com/entelecheia/thematos/commit/7ab10293085a4947392563c8910598fc93ff0c37))
+
 ## v0.11.0 (2023-08-13)
 
 ### Feature
