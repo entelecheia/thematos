@@ -308,6 +308,7 @@ class TopicModel(BatchTaskConfig):
     def save_train_summary(self) -> None:
         coh_values = self.coherence_metrics_dict
         original_stdout = sys.stdout
+        Path(self.train_summary_file).parent.mkdir(parents=True, exist_ok=True)
         with open(self.train_summary_file, "w") as f:
             sys.stdout = f  # Change the standard output to the file.
             self.model.summary(**self.train_summary_args.kwargs)
