@@ -54,6 +54,7 @@ class Corpus(BatchTaskConfig):
         logger.info("Loading corpus...")
         self._doc_ids_ = []
         self._corpus_ = tp.utils.Corpus(tokenizer=tp.utils.SimpleTokenizer())
+        logger.info("Processing documents in the column '%s'...", self.text_col)
         self._corpus_.process(self.docs)
         logger.info("Total %d documents are loaded.", len(self.docs))
         if self.ngramize:
