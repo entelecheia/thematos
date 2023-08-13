@@ -12,7 +12,7 @@ from hyfi.task import BatchTaskConfig
 
 from thematos.datasets import Corpus
 
-from .config import LdaConfig, TrainConfig, WordcloudConfig, TrainSummaryConfig
+from .config import LdaConfig, TrainConfig, TrainSummaryConfig, WordcloudConfig
 from .prior import WordPrior
 from .types import CoherenceMetrics, ModelSummary
 
