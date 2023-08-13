@@ -12,7 +12,7 @@ from hyfi.task import BatchTaskConfig
 
 from thematos.datasets import Corpus
 
-from .config import LdaConfig, TrainConfig, WordcloudConfig
+from .config import LdaConfig, TrainConfig, WordcloudConfig, TrainSummaryConfig
 from .prior import WordPrior
 from .types import CoherenceMetrics, ModelSummary
 
@@ -30,6 +30,7 @@ class TopicModel(BatchTaskConfig):
     corpus: Corpus = Corpus()
     model_args: LdaConfig = LdaConfig()
     train_args: TrainConfig = TrainConfig()
+    train_summary_args: TrainSummaryConfig = TrainSummaryConfig()
     wc_args: WordcloudConfig = WordcloudConfig()
 
     coherence_metric_list: List[str] = ["u_mass", "c_uci", "c_npmi", "c_v"]
@@ -306,7 +307,7 @@ class TopicModel(BatchTaskConfig):
         original_stdout = sys.stdout
         with open(self.train_summary_file, "w") as f:
             sys.stdout = f  # Change the standard output to the file.
-            self.model.summary()
+            self.model.summary(**self.train_summary_args.kwargs)
             if coh_values:
                 print("<Topic Coherence Scores>")
                 for cm, cv in coh_values.items():
@@ -430,6 +431,8 @@ class TopicModel(BatchTaskConfig):
             images.append(img)
 
         if wc_args.make_collage:
+            if not wc_args.titles:
+                wc_args.titles = [f"Topic {i}" for i in range(self.num_topics)]
             output_dir = self.output_dir / "wordcloud_collage"
             output_file_format = self.model_id + "_wordcloud_{page_num:02d}.png"
             HyFI.make_subplot_pages_from_images(
