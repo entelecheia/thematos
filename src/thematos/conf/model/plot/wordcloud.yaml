@@ -10,7 +10,7 @@ num_cols: 5
 num_rows: null
 output_file_format: wordcloud_p{page_num:02d}.png
 titles: null
-title_fontsize: 15
+title_fontsize: 14
 title_color: green
 figsize: null
 width_multiple: 4
