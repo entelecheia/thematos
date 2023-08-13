@@ -8,6 +8,7 @@ import tomotopy as tp
 from hyfi import HyFI
 from hyfi.run import RunConfig
 from hyfi.task import BatchTaskConfig
+from lexikanon.stopwords import Stopwords
 
 from .ngrams import NgramConfig
 
@@ -24,6 +25,7 @@ class Corpus(BatchTaskConfig):
     text_col: str = "text"
     timestamp_col: Optional[str] = None
     data_load: RunConfig = RunConfig(_config_name_="load_dataframe")
+    stopwords: Stopwords = Stopwords()
     ngrams: Optional[NgramConfig] = NgramConfig()
     ngramize: bool = True
     verbose: bool = False
@@ -53,7 +55,10 @@ class Corpus(BatchTaskConfig):
             return
         logger.info("Loading corpus...")
         self._doc_ids_ = []
-        self._corpus_ = tp.utils.Corpus(tokenizer=tp.utils.SimpleTokenizer())
+        self._corpus_ = tp.utils.Corpus(
+            tokenizer=tp.utils.SimpleTokenizer(),
+            stopwords=self.stopwords,
+        )
         logger.info("Processing documents in the column '%s'...", self.text_col)
         self._corpus_.process(self.docs)
         logger.info("Total %d documents are loaded.", len(self.docs))
