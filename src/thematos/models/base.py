@@ -430,12 +430,13 @@ class TopicModel(BatchTaskConfig):
             img = wc.generate_from_frequencies(
                 self.get_topic_words(topic_id, top_n=wc_args.top_n),
                 output_file=output_file,
+                verbose=self.verbose,
             )
             images.append(img)
 
         if wc_args.make_collage:
-            if not wc_args.titles:
-                wc_args.titles = [f"Topic {i}" for i in range(self.num_topics)]
+            titles = wc_args.titles or [f"Topic {i}" for i in range(self.num_topics)]
+            logger.info("Making wordcloud collage with titles: %s", titles)
             output_dir = self.output_dir / "wordcloud_collage"
             output_file_format = self.model_id + "_wordcloud_{page_num:02d}.png"
             HyFI.make_subplot_pages_from_images(
@@ -445,7 +446,7 @@ class TopicModel(BatchTaskConfig):
                 num_rows=wc_args.num_rows,
                 output_dir=output_dir,
                 output_file_format=output_file_format,
-                titles=wc_args.titles,
+                titles=titles,
                 title_fontsize=wc_args.title_fontsize,
                 title_color=wc_args.title_color,
                 figsize=wc_args.figsize,
