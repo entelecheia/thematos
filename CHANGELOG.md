@@ -1,5 +1,26 @@
 <!--next-version-placeholder-->
 
+## v0.11.0 (2023-08-13)
+
+### Feature
+
+* **thematos/models:** Add TrainSummaryConfig in config.py ([`bfe7517`](https://github.com/entelecheia/thematos/commit/bfe75176dc94ba6b0f5e586dda95f940df47ff96))
+* **thematos/models:** Add TrainSummaryConfig in imports and TopicModel, modify the method of calling model.summary, assign default titles if not set in wc_args ([`ef40b3f`](https://github.com/entelecheia/thematos/commit/ef40b3f6ebda13ecc80e2d786c5e0c1ffcea4689))
+* **thematos/models:** Include TrainSummaryConfig in imports and __all__ list. ([`111ea9f`](https://github.com/entelecheia/thematos/commit/111ea9f1527d7a1dfbd4f2b55a09eb73dee1f57d))
+* **thematos/conf/model:** Add new file for topic train configuration ([`2e19572`](https://github.com/entelecheia/thematos/commit/2e195726ab41ae52c2d55f0327e2d8fbb2a4b100))
+* **thematos:** Add topic_train to topic model configuration ([`c819175`](https://github.com/entelecheia/thematos/commit/c819175500a145fb4c713413e6c079d4b4853e25))
+* **thematos/model:** Add topic_train to lda.yaml training args ([`291791c`](https://github.com/entelecheia/thematos/commit/291791cb351cdbbc601e553ef2b51cba5a9fca65))
+
+### Fix
+
+* **thematos:** Add directory creation for train summary file ([`acbce7d`](https://github.com/entelecheia/thematos/commit/acbce7d29985d3e627b05c9b7277dc629d41a082))
+* **thematos:** Reset model in train method ([`aaea9bb`](https://github.com/entelecheia/thematos/commit/aaea9bbc58b6aa0c5f995e166db0c9f97bf58d37))
+* **thematos/models:** Add save_train_summary method ([`fd57a66`](https://github.com/entelecheia/thematos/commit/fd57a66984a830a0cf0b476bc6144aa427bfc7d3))
+* **thematos:** Replace 'k' with 'num_topics' in TopicModel class ([`8a14d3c`](https://github.com/entelecheia/thematos/commit/8a14d3c89ee38c61bf1e6df5471278221a45975f))
+* **thematos/datasets:** Add document processing logging in 'corpus' ([`5226cd6`](https://github.com/entelecheia/thematos/commit/5226cd657f9281d5f95ccbd8fb9dda0a3305c31b))
+* **lda:** Add num_workers to training log message ([`d39d2d8`](https://github.com/entelecheia/thematos/commit/d39d2d87af852199a0eb4f5d85469f26d35a5f78))
+* **dependencies:** Upgrade lexikanon to 0.6.0 ([`2983fed`](https://github.com/entelecheia/thematos/commit/2983feda4028fdc07f561a85e19bada1d30a2705))
+
 ## v0.10.0 (2023-08-12)
 
 ### Feature
