@@ -5,6 +5,7 @@ defaults:
 - /dataset@corpus: topic_corpus
 - /model/config@model_args: lda
 - /model/train@train_args: topic
+- /model/summary@train_summary_args: topic_train
 - /model/plot@wc_args: wordcloud
 _target_: thematos.models.base.TopicModel
 _config_name_: topic
