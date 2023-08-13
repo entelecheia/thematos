@@ -240,6 +240,9 @@ class TopicModel(BatchTaskConfig):
                 )
 
     def train(self) -> None:
+        # reset model
+        self._model_ = None
+
         if self.set_wordprior:
             self._set_wordprior()
 
