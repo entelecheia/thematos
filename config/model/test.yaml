@@ -4,4 +4,11 @@ defaults:
   - override /dataset@corpus: test
 
 model_args:
-  k: 10
+  k: 5
+  min_cf: 10
+  min_df: 10
+  rm_top: 10
+set_wordprior: true
+wordprior:
+  data_file: ${__project_root_path__:}/tests/assets/words/word_prior.yaml
+  verbose: true
