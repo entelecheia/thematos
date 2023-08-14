@@ -8,11 +8,14 @@ run_args:
 task_name: topic-test
 model:
   train_args:
-    iterations: 100
+    iterations: 50
   save_full: false
   task_name: ${..task_name}
   corpus:
     task_name: ${..task_name}
   batch:
     num_workers: 0
+corpus_to_infer:
+  task_name: ${..task_name}
+  verbose: true
 verbose: true
