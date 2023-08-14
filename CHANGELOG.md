@@ -1,5 +1,16 @@
 <!--next-version-placeholder-->
 
+## v0.13.0 (2023-08-14)
+
+### Feature
+
+* **TopicModel:** Add topic top words saving functionality ([`463c12f`](https://github.com/entelecheia/thematos/commit/463c12fd36f51802b551a92d7955fb3b17bcd164))
+
+### Fix
+
+* **corpus:** Improve logging and data access ([`3bf526c`](https://github.com/entelecheia/thematos/commit/3bf526c63e2e3882248d909462f4d0e0fa73e479))
+* **thematos/models:** Add functionality to extend topic_words_freq_tuple to topic_top_words_dists ([`f2e84e2`](https://github.com/entelecheia/thematos/commit/f2e84e29135e5faa8c80377b271401d4dad8e085))
+
 ## v0.12.0 (2023-08-13)
 
 ### Feature
