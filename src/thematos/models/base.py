@@ -519,8 +519,7 @@ class TopicModel(BatchTaskConfig):
             workers=num_workers,
             together=together,
         )
-        if self.verbose:
-            logger.info("Number of documents inferred: %d", len(inferred_corpus))
+        logger.info("Number of documents inferred: %d", len(inferred_corpus))
         output_file = output_file or (
             self.output_dir / "inferred_topics" / self.inferred_doc_topic_dists_filename
         )
@@ -532,8 +531,8 @@ class TopicModel(BatchTaskConfig):
         doc_topic_dists_df = self.get_doc_topic_dists_df(doc_topic_dists, doc_ids)
         ll_df = pd.DataFrame({"log_likelihood": ll})
         doc_topic_dists_df = pd.concat([doc_topic_dists_df, ll_df], axis=1)
-        # if self.verbose:
-        logger.info("Inferred topics:\n%s", doc_topic_dists_df.head())
+        if self.verbose:
+          logger.info("Inferred topics:\n%s", doc_topic_dists_df.head())
         HyFI.save_dataframes(
             doc_topic_dists_df,
             output_file,
