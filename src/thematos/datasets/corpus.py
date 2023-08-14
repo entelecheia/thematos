@@ -81,11 +81,7 @@ class Corpus(BatchTaskConfig):
     @property
     def doc_ids(self) -> List[Any]:
         if not self._doc_ids_:
-            if self.id_file.exists():
-                ids_ = HyFI.load_dataframe(self.id_file, verbose=self.verbose)
-                self._doc_ids_ = ids_[self.id_col].values.tolist()
-            else:
-                self._doc_ids_ = self.data[self.id_col].values.tolist()
+            self._doc_ids_ = self.data[self.id_col].values.tolist()
         return self._doc_ids_
 
     @property
