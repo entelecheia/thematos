@@ -532,7 +532,7 @@ class TopicModel(BatchTaskConfig):
         ll_df = pd.DataFrame({"log_likelihood": ll})
         doc_topic_dists_df = pd.concat([doc_topic_dists_df, ll_df], axis=1)
         if self.verbose:
-          logger.info("Inferred topics:\n%s", doc_topic_dists_df.head())
+            logger.info("Inferred topics:\n%s", doc_topic_dists_df.head())
         HyFI.save_dataframes(
             doc_topic_dists_df,
             output_file,
