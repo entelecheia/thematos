@@ -163,7 +163,7 @@ class TopicModel(BatchTaskConfig):
                 f"Number of inferred topics ({len(doc_topic_dists)}) does not match with number of documents ({len(doc_ids)})"
             )
         columns = [f"topic{i}" for i in range(self.num_topics)]
-        dists_df = pd.DataFrame(self.doc_topic_dists, columns=columns)
+        dists_df = pd.DataFrame(doc_topic_dists, columns=columns)
         doc_id_df = pd.DataFrame(doc_ids, columns=["id"])
         return pd.concat([doc_id_df, dists_df], axis=1)
 
@@ -503,20 +503,20 @@ class TopicModel(BatchTaskConfig):
     def inferred_doc_topic_dists_filename(self) -> str:
         return f"{self.model_id}-inferred_doc_topic_dists.parquet"
 
-    def infer_topics(
+    def infer(
         self,
         corpus: Corpus,
         output_file: Optional[Union[str, Path]] = None,
-        iter: int = 100,
+        iterations: int = 100,
         tolerance: float = -1,
-        workers: int = 0,
+        num_workers: int = 0,
         together: bool = False,
     ):
         inferred_corpus, ll = self.model.infer(
-            corpus,
-            iter=iter,
+            corpus.corpus,
+            iter=iterations,
             tolerance=tolerance,
-            workers=workers,
+            workers=num_workers,
             together=together,
         )
         if self.verbose:
@@ -532,8 +532,8 @@ class TopicModel(BatchTaskConfig):
         doc_topic_dists_df = self.get_doc_topic_dists_df(doc_topic_dists, doc_ids)
         ll_df = pd.DataFrame({"log_likelihood": ll})
         doc_topic_dists_df = pd.concat([doc_topic_dists_df, ll_df], axis=1)
-        if self.verbose:
-            logger.info("Inferred topics:\n%s", doc_topic_dists_df.head())
+        # if self.verbose:
+        logger.info("Inferred topics:\n%s", doc_topic_dists_df.head())
         HyFI.save_dataframes(
             doc_topic_dists_df,
             output_file,
