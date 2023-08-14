@@ -15,3 +15,4 @@ model:
     task_name: ${..task_name}
   batch:
     num_workers: 0
+verbose: true

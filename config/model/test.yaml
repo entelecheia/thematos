@@ -12,3 +12,4 @@ set_wordprior: true
 wordprior:
   data_file: ${__project_root_path__:}/tests/assets/words/word_prior.yaml
   verbose: true
+verbose: true

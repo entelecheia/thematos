@@ -1,11 +1,22 @@
 # @package _global_
 defaults:
   - __init__
-  - /runner: test
+  - /runner@train: test
+  - /runner@infer: test
   - override /project: test
 
 workflow_name: test
 tasks:
-  - runner
+  # - train
+  - infer
 
+infer:
+  calls:
+    - infer
+  infer_args:
+    model_config_file: ${__project_root_path__:}/workspace/topic-test/model/configs/model(1)_config.yaml
+  corpus_to_infer:
+    text_col: tokens
+    data_load:
+      data_file: ${__project_root_path__:}/tests/assets/sample_data/discard.parquet
 datasets_path: ${__get_path__:datasets}
