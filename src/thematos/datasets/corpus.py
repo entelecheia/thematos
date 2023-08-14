@@ -38,6 +38,8 @@ class Corpus(BatchTaskConfig):
     def data(self) -> pd.DataFrame:
         if self._data_ is None:
             self._data_ = self.load_data()
+            if self.verbose:
+                logger.info(self._data_[self.text_col].head())
         return self._data_
 
     def load_data(self) -> pd.DataFrame:
@@ -69,7 +71,9 @@ class Corpus(BatchTaskConfig):
 
     @property
     def docs(self) -> List[str]:
-        doc = self.data[self.text_col][0]
+        doc = self.data[self.text_col].head(1).values[0]
+        if self.verbose:
+            logger.info("The first document: %s", doc)
         # check the type of the first document to see if it is a list of words
         # or a string
         # if the type is ndarray, convert it to string
@@ -81,11 +85,7 @@ class Corpus(BatchTaskConfig):
     @property
     def doc_ids(self) -> List[Any]:
         if not self._doc_ids_:
-            if self.id_file.exists():
-                ids_ = HyFI.load_dataframe(self.id_file, verbose=self.verbose)
-                self._doc_ids_ = ids_[self.id_col].values.tolist()
-            else:
-                self._doc_ids_ = self.data[self.id_col].values.tolist()
+            self._doc_ids_ = self.data[self.id_col].values.tolist()
         return self._doc_ids_
 
     @property
