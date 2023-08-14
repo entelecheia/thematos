@@ -1,9 +1,9 @@
 import logging
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, List, Optional, Union
 
 from hyfi import HyFI
-from hyfi.task import BatchTaskConfig
+from hyfi.runner import BaseRunner
 from tqdm.auto import tqdm
 
 from thematos.models import LdaModel
@@ -13,7 +13,7 @@ from .config import LdaRunConfig, TopicRunnerResult
 logger = logging.getLogger(__name__)
 
 
-class TopicRunner(BatchTaskConfig):
+class TopicRunner(BaseRunner):
     _config_group_ = "/runner"
     _config_name_ = "topic"
 
@@ -25,12 +25,11 @@ class TopicRunner(BatchTaskConfig):
     num_workers: int = 0
     verbose: bool = False
 
+    calls: Optional[List[Union[str, Dict]]] = ["train"]
+
     _summaries_: Optional[TopicRunnerResult] = None
 
-    def __call__(self):
-        self.run()
-
-    def run(self) -> None:
+    def train(self) -> None:
         self._summaries_ = TopicRunnerResult(
             runner_task_name=self.task_name,
             runner_batch_name=self.batch_name,
