@@ -2,7 +2,7 @@ defaults:
   - topic_corpus
 
 data_load:
-  data_file: ${oc.select:datasets_path,datasets}/processed/khmer_tokenized/train.parquet
+  data_file: ${__project_root_path__:}/tests/assets/sample_data/train.parquet
 id_col: id
-text_col: text
+text_col: tokens
 verbose: true

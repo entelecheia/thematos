@@ -1,0 +1,9 @@
+_target_: thematos.runners.config.InferConfig
+_config_name_: infer_topics
+_config_group_: /runner/config
+model_config_file: null
+output_file: null
+iterations: 100
+tolerance: -1
+num_workers: 0
+together: false

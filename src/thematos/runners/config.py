@@ -1,8 +1,8 @@
 import itertools
 import logging
-from typing import Any, Dict, List
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
-from hyfi import HyFI
 from hyfi.composer import BaseModel
 
 logger = logging.getLogger(__name__)
@@ -40,3 +40,15 @@ class TopicRunnerResult(BaseModel):
     ):
         self.overrides.append(overrides)
         self.model_summary.append(summary)
+
+
+class InferConfig(BaseModel):
+    _config_group_ = "/runner/config"
+    _config_name_ = "infer_topics"
+
+    model_config_file: Optional[Union[str, Path]] = None
+    output_file: Optional[Union[str, Path]] = None
+    iterations: int = 100
+    tolerance: float = -1
+    num_workers: int = 0
+    together: bool = False

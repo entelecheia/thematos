@@ -3,6 +3,8 @@ defaults:
 - /batch@batch: __init__
 - /model@model: lda
 - /runner/config@run_args: lda
+- /dataset@corpus_to_infer: topic_corpus
+- /runner/config@infer_args: infer_topics
 _target_: thematos.runners.topic.TopicRunner
 _config_name_: topic
 _config_group_: /runner
@@ -13,4 +15,6 @@ version: 0.0.0
 module: null
 pipelines: []
 batch_name: runner
+calls:
+- train
 num_workers: 0

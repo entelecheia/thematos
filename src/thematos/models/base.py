@@ -153,19 +153,19 @@ class TopicModel(BatchTaskConfig):
     def topic_term_dists_df(self) -> pd.DataFrame:
         return pd.DataFrame(self.topic_term_dists, columns=self.used_vocab)
 
-    @property
-    def doc_id_df(self) -> pd.DataFrame:
-        return pd.DataFrame(self.doc_ids, columns=["id"])
-
-    @property
-    def doc_topic_dists_df(self) -> pd.DataFrame:
-        if len(self.doc_topic_dists) != len(self.doc_ids):
+    def get_doc_topic_dists_df(
+        self,
+        doc_topic_dists: Optional[np.ndarray],
+        doc_ids: Optional[List[Any]],
+    ) -> pd.DataFrame:
+        if len(doc_topic_dists) != len(doc_ids):
             raise ValueError(
-                f"Number of inferred topics ({len(self.doc_topic_dists)}) does not match with number of documents ({len(self.doc_ids)})"
+                f"Number of inferred topics ({len(doc_topic_dists)}) does not match with number of documents ({len(doc_ids)})"
             )
         columns = [f"topic{i}" for i in range(self.num_topics)]
-        dists_df = pd.DataFrame(self.doc_topic_dists, columns=columns)
-        return pd.concat([self.doc_id_df, dists_df], axis=1)
+        dists_df = pd.DataFrame(doc_topic_dists, columns=columns)
+        doc_id_df = pd.DataFrame(doc_ids, columns=["id"])
+        return pd.concat([doc_id_df, dists_df], axis=1)
 
     @property
     def model_file(self) -> str:
@@ -345,15 +345,20 @@ class TopicModel(BatchTaskConfig):
         logger.info("Model summary saved to %s", self.batch_model_summary_file)
 
     def save_dists_data(self):
+        doc_topic_dists_df = self.get_doc_topic_dists_df(
+            self.doc_topic_dists, self.doc_ids
+        )
         if self.verbose:
-            print(self.doc_topic_dists_df.tail())
+            logger.info("==== Document-Topic Distributions ====")
+            logger.info(doc_topic_dists_df.tail())
         HyFI.save_dataframes(
-            self.doc_topic_dists_df,
+            doc_topic_dists_df,
             self.doc_topic_dists_file,
             verbose=self.verbose,
         )
         if self.verbose:
-            print(self.topic_term_dists_df.tail())
+            logger.info("==== Topic-Word Distributions ====")
+            logger.info(self.topic_term_dists_df.tail())
         HyFI.save_dataframes(
             self.topic_term_dists_df,
             self.topic_term_dists_file,
@@ -493,3 +498,44 @@ class TopicModel(BatchTaskConfig):
                 dpi=wc_args.dpi,
                 verbose=self.verbose,
             )
+
+    @property
+    def inferred_doc_topic_dists_filename(self) -> str:
+        return f"{self.model_id}-inferred_doc_topic_dists.parquet"
+
+    def infer(
+        self,
+        corpus: Corpus,
+        output_file: Optional[Union[str, Path]] = None,
+        iterations: int = 100,
+        tolerance: float = -1,
+        num_workers: int = 0,
+        together: bool = False,
+    ):
+        inferred_corpus, ll = self.model.infer(
+            corpus.corpus,
+            iter=iterations,
+            tolerance=tolerance,
+            workers=num_workers,
+            together=together,
+        )
+        logger.info("Number of documents inferred: %d", len(inferred_corpus))
+        output_file = output_file or (
+            self.output_dir / "inferred_topics" / self.inferred_doc_topic_dists_filename
+        )
+
+        doc_ids = corpus.doc_ids
+        doc_topic_dists = np.stack([doc.get_topic_dist() for doc in inferred_corpus])
+        doc_topic_dists /= doc_topic_dists.sum(axis=1, keepdims=True)
+
+        doc_topic_dists_df = self.get_doc_topic_dists_df(doc_topic_dists, doc_ids)
+        ll_df = pd.DataFrame({"log_likelihood": ll})
+        doc_topic_dists_df = pd.concat([doc_topic_dists_df, ll_df], axis=1)
+        if self.verbose:
+          logger.info("Inferred topics:\n%s", doc_topic_dists_df.head())
+        HyFI.save_dataframes(
+            doc_topic_dists_df,
+            output_file,
+            verbose=self.verbose,
+        )
+        logger.info("Inferred topics saved to %s", output_file)
