@@ -444,6 +444,7 @@ class TopicModel(BatchTaskConfig):
             topic_words_freq_tuple = [
                 (topic_id, w, topic_words[w]) for w in topic_words
             ]
+            topic_top_words_dists.extend(topic_words_freq_tuple)
 
         HyFI.save_wordlist(
             list(set(topic_top_words)),
