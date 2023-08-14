@@ -11,7 +11,7 @@ __package_path__ = os.path.dirname(__file__)
 HyFI.initialize_global_hyfi(
     package_path=__package_path__,
     version=__version__,
-    plugins=[],
+    plugins=["lexikanon"],
 )
 
 # Initialize the logger
