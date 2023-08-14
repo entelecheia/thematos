@@ -282,8 +282,9 @@ class TopicModel(BatchTaskConfig):
         self.save_ll_per_words()
         self.plot_ll_per_words()
         self.save_dists_data()
-        self.save_ldavis()
+        self.save_topic_top_words()
         self.generate_wordclouds()
+        self.save_ldavis()
         self.save_model_summary()
         self.save_config()
 
@@ -421,6 +422,39 @@ class TopicModel(BatchTaskConfig):
         top_n: int = 10,
     ) -> Dict[str, float]:
         return dict(self.model.get_topic_words(topic_id, top_n=top_n))
+
+    @property
+    def topic_top_words_file(self) -> str:
+        f_ = f"{self.model_id}-topic_top_words.txt"
+        return str(self.output_dir / f_)
+
+    @property
+    def topic_top_words_dists_file(self) -> str:
+        f_ = f"{self.model_id}-topic_top_words_dists.csv"
+        return str(self.output_dir / f_)
+
+    def save_topic_top_words(self, top_n: int = 50):
+        # set of top words
+        topic_top_words = []
+        # tuple of (topic_id, word, freq) for each topic
+        topic_top_words_dists = []
+        for topic_id in range(self.num_topics):
+            topic_words = self.get_topic_words(topic_id, top_n=top_n)
+            topic_top_words.extend(topic_words.keys())
+            topic_words_freq_tuple = [
+                (topic_id, w, topic_words[w]) for w in topic_words
+            ]
+
+        HyFI.save_wordlist(
+            list(set(topic_top_words)),
+            self.topic_top_words_file,
+            verbose=self.verbose,
+        )
+        HyFI.save_dataframes(
+            pd.DataFrame(topic_top_words_dists, columns=["topic_id", "word", "freq"]),
+            self.topic_top_words_dists_file,
+            verbose=self.verbose,
+        )
 
     def generate_wordclouds(
         self,
