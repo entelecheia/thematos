@@ -1,5 +1,21 @@
 <!--next-version-placeholder-->
 
+## v0.14.0 (2023-08-14)
+
+### Feature
+
+* **tests:** Add workflow test in thematos ([`8ae381f`](https://github.com/entelecheia/thematos/commit/8ae381f6a61a7402d066b2871c98313f9d32b881))
+* **topic:** Add model loading and inference methods ([`fe625f6`](https://github.com/entelecheia/thematos/commit/fe625f6060437f260cfa9e26be143c8f4f542ada))
+* **thematos/runners/config:** Add InferConfig class ([`7e1aa0c`](https://github.com/entelecheia/thematos/commit/7e1aa0cc7b3ae0f113da38203de9dfa29725be7a))
+* **runners:** Add InferConfig to the module exports ([`701aab3`](https://github.com/entelecheia/thematos/commit/701aab33e75f7bf30eb7b28e7193bd20bc06a2cd))
+* **thematos/config:** Add model_config_file in infer_topics.yaml ([`8af15a3`](https://github.com/entelecheia/thematos/commit/8af15a3bfd74e51ed8ebca973ccbf1f2d99c4c72))
+* **runner:** Add infer topics configuration in topic runner ([`130128c`](https://github.com/entelecheia/thematos/commit/130128c1eed3282c5106c3f94d6b9bb11c4bb7e4))
+* **thematos/config:** Add infer_topics configuration ([`7ec0eca`](https://github.com/entelecheia/thematos/commit/7ec0eca33d45525ff6b0240033cdc574c4e514be))
+* **thematos:** Add lexikanon to plugins ([`edef2e0`](https://github.com/entelecheia/thematos/commit/edef2e06fe78817c34dd903274a5da5f7ba60055))
+* **runner:** Add train calls to topic.yaml ([`5a3756d`](https://github.com/entelecheia/thematos/commit/5a3756d2cecdf2e8020a7bbcd9cefcc94a6de589))
+* **tests:** Add sample_data files for testing ([`aeeb33e`](https://github.com/entelecheia/thematos/commit/aeeb33ee8ba62cb1b5e2a29ef32a70debee14de9))
+* **tests:** Add new word_prior assets ([`f4cdb4c`](https://github.com/entelecheia/thematos/commit/f4cdb4c39cefef397bf4caa22c4524d179b652d0))
+
 ## v0.13.0 (2023-08-14)
 
 ### Feature
