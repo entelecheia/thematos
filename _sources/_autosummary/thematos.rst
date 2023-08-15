@@ -34,4 +34,8 @@
    :recursive:
 
    thematos.conf
+   thematos.datasets
+   thematos.models
+   thematos.plots
+   thematos.runners
 

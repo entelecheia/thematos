@@ -179,6 +179,28 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/thematos.html">thematos</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/thematos.conf.html">thematos.conf</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/thematos.datasets.html">thematos.datasets</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/thematos.datasets.corpus.html">thematos.datasets.corpus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/thematos.datasets.ngrams.html">thematos.datasets.ngrams</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/thematos.models.html">thematos.models</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/thematos.models.base.html">thematos.models.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/thematos.models.config.html">thematos.models.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/thematos.models.lda.html">thematos.models.lda</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/thematos.models.prior.html">thematos.models.prior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/thematos.models.types.html">thematos.models.types</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/thematos.plots.html">thematos.plots</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/thematos.plots.wordcloud.html">thematos.plots.wordcloud</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/thematos.runners.html">thematos.runners</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/thematos.runners.config.html">thematos.runners.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/thematos.runners.topic.html">thematos.runners.topic</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -345,7 +367,7 @@ document.write(`
 <span class="n">HyFI</span><span class="o">.</span><span class="n">initialize_global_hyfi</span><span class="p">(</span>
     <span class="n">package_path</span><span class="o">=</span><span class="n">__package_path__</span><span class="p">,</span>
     <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
-    <span class="n">plugins</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">plugins</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lexikanon&quot;</span><span class="p">],</span>
 <span class="p">)</span>
 
 <span class="c1"># Initialize the logger</span>

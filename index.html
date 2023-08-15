@@ -179,6 +179,28 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/thematos.html">thematos</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/thematos.conf.html">thematos.conf</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/thematos.datasets.html">thematos.datasets</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.datasets.corpus.html">thematos.datasets.corpus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.datasets.ngrams.html">thematos.datasets.ngrams</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/thematos.models.html">thematos.models</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.models.base.html">thematos.models.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.models.config.html">thematos.models.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.models.lda.html">thematos.models.lda</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.models.prior.html">thematos.models.prior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.models.types.html">thematos.models.types</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/thematos.plots.html">thematos.plots</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.plots.wordcloud.html">thematos.plots.wordcloud</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/thematos.runners.html">thematos.runners</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.runners.config.html">thematos.runners.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.runners.topic.html">thematos.runners.topic</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -415,17 +437,16 @@ document.write(`
 <a class="reference external" href="https://github.com/entelecheia/thematos/releases"><img alt="version-image" src="https://img.shields.io/github/v/release/entelecheia/thematos?sort=semver" /></a>
 <a class="reference external" href="https://github.com/entelecheia/thematos/releases"><img alt="release-date-image" src="https://img.shields.io/github/release-date/entelecheia/thematos" /></a>
 <a class="reference external" href="https://github.com/entelecheia/thematos/blob/main/LICENSE"><img alt="license-image" src="https://img.shields.io/github/license/entelecheia/thematos" /></a>
+<a class="reference external" href="https://doi.org/10.5281/zenodo.8247719"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.8247719.svg" /></a>
 <a class="reference external" href="https://thematos.entelecheia.ai"><img alt="jupyter-book-image" src="https://jupyterbook.org/en/stable/_images/badge.svg" /></a>
 <a class="reference external" href="https://codecov.io/gh/entelecheia/thematos"><img alt="codecov" src="https://codecov.io/gh/entelecheia/thematos/branch/main/graph/badge.svg?token=JP5P7C8ZOO" /></a></p>
-<!-- Links: -->
-<!-- Links: -->
 <p>A Python Library for Topic Modeling</p>
 <ul class="simple">
 <li><p>Documentation: <a class="reference external" href="https://thematos.entelecheia.ai">https://thematos.entelecheia.ai</a></p></li>
 <li><p>GitHub: <a class="github reference external" href="https://github.com/entelecheia/thematos">entelecheia/thematos</a></p></li>
 <li><p>PyPI: <a class="reference external" href="https://pypi.org/project/thematos">https://pypi.org/project/thematos</a></p></li>
 </ul>
-<p>ThematOS is a comprehensive and user-friendly Python library designed for topic modeling, a key technique in natural language processing (NLP) and machine learning (ML) used to extract hidden patterns and themes from large collections of text data. The name ThematOS is derived from the Greek word θέματος (topic), reflecting the library’s primary focus on uncovering the underlying structure of textual data.</p>
+<p>ThematOS is a Python library specifically designed for topic modeling, a critical method in natural language processing (NLP) and machine learning (ML) that uncovers hidden patterns and themes within extensive text data collections. The name stems from the Greek word θέματος, symbolizing the library’s core focus on revealing the intrinsic structure of textual information. Built upon the <a class="reference external" href="https://hyfi.entelecheia.ai">Hydra Fast Interface (HyFI)</a> framework, ThematOS is a HyFI-based library, enabling seamless integration into existing HyFI-based projects or utilization as a standalone library.</p>
 <section id="changelog">
 <h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading">#</a></h2>
 <p>See the <a class="reference external" href="https://github.com/entelecheia/thematos/blob/main/CHANGELOG.md">CHANGELOG</a> for more information.</p>
@@ -446,6 +467,28 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/thematos.html">thematos</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/thematos.conf.html">thematos.conf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/thematos.datasets.html">thematos.datasets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.datasets.corpus.html">thematos.datasets.corpus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.datasets.ngrams.html">thematos.datasets.ngrams</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/thematos.models.html">thematos.models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.models.base.html">thematos.models.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.models.config.html">thematos.models.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.models.lda.html">thematos.models.lda</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.models.prior.html">thematos.models.prior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.models.types.html">thematos.models.types</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/thematos.plots.html">thematos.plots</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.plots.wordcloud.html">thematos.plots.wordcloud</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/thematos.runners.html">thematos.runners</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.runners.config.html">thematos.runners.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/thematos.runners.topic.html">thematos.runners.topic</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -453,6 +496,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 </div>
+<!-- Links: -->
+<!-- Links: -->
 </section>
 </section>
 
