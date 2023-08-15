@@ -1,5 +1,15 @@
 <!--next-version-placeholder-->
 
+## v0.14.1 (2023-08-15)
+
+### Fix
+
+* **book:** Update introduction information and links ([`acbeb30`](https://github.com/entelecheia/thematos/commit/acbeb30b980e0f20f71632f17cdc0799404d8b82))
+
+### Documentation
+
+* **README:** Update badges and project description ([`8c957b9`](https://github.com/entelecheia/thematos/commit/8c957b97ccea21b9b70f4bac8396e4bf3e8fd75c))
+
 ## v0.14.0 (2023-08-14)
 
 ### Feature
