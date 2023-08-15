@@ -18,17 +18,18 @@ ThematOS is a Python library specifically designed for topic modeling, a critica
 
 ## Citation
 
-````tex
+```tex
 @software{lee_2023_8248129,
   author       = {Young Joon Lee},
-  title        = {entelecheia/thematos: v0.14.1},
+  title        = {ThematOS: A HyFI-based library for Topic Modeling},
   month        = aug,
   year         = 2023,
   publisher    = {Zenodo},
   version      = {v0.14.1},
   doi          = {10.5281/zenodo.8248128},
   url          = {https://doi.org/10.5281/zenodo.8248128}
-}```
+}
+```
 
 ```tex
 @software{lee_2023_hyfi,
@@ -38,7 +39,7 @@ ThematOS is a Python library specifically designed for topic modeling, a critica
   publisher    = {GitHub},
   url          = {https://github.com/entelecheia/lexikanon}
 }
-````
+```
 
 ## Changelog
 
