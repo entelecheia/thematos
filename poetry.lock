@@ -1432,20 +1432,20 @@ files = [
 
 [[package]]
 name = "lexikanon"
-version = "0.6.1"
+version = "0.6.2"
 description = "A Python Library for Tokenizers"
 optional = false
 python-versions = ">=3.8.1,<3.12"
 files = [
-    {file = "lexikanon-0.6.1-py3-none-any.whl", hash = "sha256:a3aa3fca3936f6097969b656be5d9baf4247d146fce8b0296c65d184262b41ff"},
-    {file = "lexikanon-0.6.1.tar.gz", hash = "sha256:d354622192a06b7a79ca0957b9b6f38cb6d6cffa7cfde09c62da9faef444ab7a"},
+    {file = "lexikanon-0.6.2-py3-none-any.whl", hash = "sha256:d4c6908d699f72bdcc356ac7dc189e47473b1a5298d7a3cc87ff085ebaa297fa"},
+    {file = "lexikanon-0.6.2.tar.gz", hash = "sha256:5a163ef1fd3ac8c9d9ba5473445eaf7634b78160643a691d3c6e58a6cc45a06d"},
 ]
 
 [package.dependencies]
 click = ">=8.1.3,<9.0.0"
 ekonlpy = ">=2.0.2,<3.0.0"
 ftfy = ">=6.1.1,<7.0.0"
-hyfi = ">=1.29.1,<2.0.0"
+hyfi = ">=1.29.6,<2.0.0"
 nltk = ">=3.8.1,<4.0.0"
 scikit-learn = ">=1.3.0,<2.0.0"
 
@@ -3248,4 +3248,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<3.12"
-content-hash = "bc08330823aeefd64e674e96c76af3a5bf57a95e584cafcb394d972da7bb8239"
+content-hash = "387cd3e47b9bb01a1ae268cedbb72f64847f6db3afd6c3729f03f796c7937163"
