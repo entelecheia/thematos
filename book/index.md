@@ -16,6 +16,30 @@ A Python Library for Topic Modeling
 
 ThematOS is a Python library specifically designed for topic modeling, a critical method in natural language processing (NLP) and machine learning (ML) that uncovers hidden patterns and themes within extensive text data collections. The name stems from the Greek word θέματος, symbolizing the library's core focus on revealing the intrinsic structure of textual information. Built upon the [Hydra Fast Interface (HyFI)](https://hyfi.entelecheia.ai) framework, ThematOS is a HyFI-based library, enabling seamless integration into existing HyFI-based projects or utilization as a standalone library.
 
+## Citation
+
+````tex
+@software{lee_2023_8248129,
+  author       = {Young Joon Lee},
+  title        = {entelecheia/thematos: v0.14.1},
+  month        = aug,
+  year         = 2023,
+  publisher    = {Zenodo},
+  version      = {v0.14.1},
+  doi          = {10.5281/zenodo.8248128},
+  url          = {https://doi.org/10.5281/zenodo.8248128}
+}```
+
+```tex
+@software{lee_2023_hyfi,
+  author       = {Young Joon Lee},
+  title        = {Lexikanon: A HyFI-based library for Tokenizers},
+  year         = 2023,
+  publisher    = {GitHub},
+  url          = {https://github.com/entelecheia/lexikanon}
+}
+````
+
 ## Changelog
 
 See the [CHANGELOG] for more information.
@@ -36,8 +60,8 @@ This project is released under the [MIT License][license-url].
 
 <!-- Links: -->
 
-[zenodo-image]: https://zenodo.org/badge/DOI/10.5281/zenodo.8247719.svg
-[zenodo-url]: https://doi.org/10.5281/zenodo.8247719
+[zenodo-image]: https://zenodo.org/badge/DOI/10.5281/zenodo.8248128.svg
+[zenodo-url]: https://doi.org/10.5281/zenodo.8248128
 [codecov-image]: https://codecov.io/gh/entelecheia/thematos/branch/main/graph/badge.svg?token=JP5P7C8ZOO
 [codecov-url]: https://codecov.io/gh/entelecheia/thematos
 [pypi-image]: https://img.shields.io/pypi/v/thematos
