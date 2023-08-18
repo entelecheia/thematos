@@ -1,5 +1,11 @@
 <!--next-version-placeholder-->
 
+## v0.14.2 (2023-08-18)
+
+### Fix
+
+* **dependencies:** Upgrade hyfi to 1.29.8 (fix plugin issues) ([`1cd28a5`](https://github.com/entelecheia/thematos/commit/1cd28a5e99dd2303dfecf5ad9c0fa2afb6ac5aec))
+
 ## v0.14.1 (2023-08-15)
 
 ### Fix
