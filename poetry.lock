@@ -1165,13 +1165,13 @@ packaging = "*"
 
 [[package]]
 name = "hyfi"
-version = "1.29.7"
+version = "1.29.8"
 description = "Hydra Fast Interface (Hydra and Pydantic based interface framework)"
 optional = false
 python-versions = ">=3.8.1,<3.12"
 files = [
-    {file = "hyfi-1.29.7-py3-none-any.whl", hash = "sha256:99b677f3e8c5b21e65b846373bc4f5aebb8fb2ea8b6119be18bf17015417f1d8"},
-    {file = "hyfi-1.29.7.tar.gz", hash = "sha256:e1a0198228de327e15c04700c1094ba46e1da0053042a3d7c51accd3c5387671"},
+    {file = "hyfi-1.29.8-py3-none-any.whl", hash = "sha256:7901d290d112dd3f20a51415dc70526aab97956e6ade8e11905b4de9e7b70fbb"},
+    {file = "hyfi-1.29.8.tar.gz", hash = "sha256:165d702f9b9576159397b02b120e6fb9f4710fa5987f923052096d3d44ab825b"},
 ]
 
 [package.dependencies]
@@ -1432,20 +1432,20 @@ files = [
 
 [[package]]
 name = "lexikanon"
-version = "0.6.2"
+version = "0.6.3"
 description = "A Python Library for Tokenizers"
 optional = false
 python-versions = ">=3.8.1,<3.12"
 files = [
-    {file = "lexikanon-0.6.2-py3-none-any.whl", hash = "sha256:d4c6908d699f72bdcc356ac7dc189e47473b1a5298d7a3cc87ff085ebaa297fa"},
-    {file = "lexikanon-0.6.2.tar.gz", hash = "sha256:5a163ef1fd3ac8c9d9ba5473445eaf7634b78160643a691d3c6e58a6cc45a06d"},
+    {file = "lexikanon-0.6.3-py3-none-any.whl", hash = "sha256:09f517168779ecc858f74544dc21a0dfa6c10cd0fbd2fdccdbf7fd0f283ce60f"},
+    {file = "lexikanon-0.6.3.tar.gz", hash = "sha256:f2fd6e13c3e3fc0742ebef2eb95802d732a8f228dac33f6854a43bbe86875662"},
 ]
 
 [package.dependencies]
 click = ">=8.1.3,<9.0.0"
 ekonlpy = ">=2.0.2,<3.0.0"
 ftfy = ">=6.1.1,<7.0.0"
-hyfi = ">=1.29.6,<2.0.0"
+hyfi = ">=1.29.8,<2.0.0"
 nltk = ">=3.8.1,<4.0.0"
 scikit-learn = ">=1.3.0,<2.0.0"
 
@@ -3248,4 +3248,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<3.12"
-content-hash = "fea455e7fb96b2e5670a7584c4d62e3cc7b8b49426b67558ded119844b797685"
+content-hash = "59136a5ddb1efa303dc28695fe1e831098c3d4b4f70f8c7d9e9eeffeffe68b94"
