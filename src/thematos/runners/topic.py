@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Union
 
 from hyfi import HyFI
-from hyfi.runner import BaseRunner
+from hyfi.runner import Runner
 from tqdm.auto import tqdm
 
 from thematos.datasets import Corpus
@@ -14,7 +14,7 @@ from .config import InferConfig, LdaRunConfig, TopicRunnerResult
 logger = logging.getLogger(__name__)
 
 
-class TopicRunner(BaseRunner):
+class TopicRunner(Runner):
     _config_group_ = "/runner"
     _config_name_ = "topic"
 
