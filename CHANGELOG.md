@@ -1,5 +1,16 @@
 <!--next-version-placeholder-->
 
+## v0.14.3 (2023-08-24)
+
+### Fix
+
+* **thematos/runners:** Replace BaseRunner with Runner in TopicRunner ([`3533197`](https://github.com/entelecheia/thematos/commit/35331970711a5ab8093f6654695c9cdb8c58bdfc))
+* **thematos:** Change TopicModel parent from BatchTaskConfig to BatchTask ([`8c0a71d`](https://github.com/entelecheia/thematos/commit/8c0a71d88da870892b62a4392a9bc1abd980f9c2))
+* **thematos/datasets:** Change from BatchTaskConfig to BatchTask and RunConfig to Run ([`6c65558`](https://github.com/entelecheia/thematos/commit/6c655582f4bfb43b41a0cf87786da195d8bd6a97))
+* **init_project:** Rename to initialize and update parameters ([`c855dbe`](https://github.com/entelecheia/thematos/commit/c855dbe8ef32c70a3585cab616f430439fb143e7))
+* **Makefile:** Add trust flag to copier copy command ([`4904341`](https://github.com/entelecheia/thematos/commit/4904341c3961449d2b496aed3c9e317024988e2c))
+* **dependencies:** Upgrade hyfi to 1.32.1 ([`adfd8cf`](https://github.com/entelecheia/thematos/commit/adfd8cf358c5fab2c37e5dcef317dea91120762d))
+
 ## v0.14.2 (2023-08-18)
 
 ### Fix
