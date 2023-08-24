@@ -2,3 +2,8 @@
 .tasks-extra.toml
 CHANGELOG.md
 pyproject.toml
+src/thematos/__cli__.py
+src/thematos/_version.py
+src/thematos/__init__.py
+tests/thematos/test_cli.py
+.gitignore
