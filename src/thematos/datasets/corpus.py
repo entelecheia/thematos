@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 import tomotopy as tp
 from hyfi import HyFI
-from hyfi.run import RunConfig
-from hyfi.task import BatchTaskConfig
+from hyfi.run import Run
+from hyfi.task import BatchTask
 from lexikanon.stopwords import Stopwords
 
 from .ngrams import NgramConfig
@@ -15,7 +15,7 @@ from .ngrams import NgramConfig
 logger = logging.getLogger(__name__)
 
 
-class Corpus(BatchTaskConfig):
+class Corpus(BatchTask):
     _config_group_: str = "/dataset"
     _config_name_: str = "topic_corpus"
 
@@ -24,7 +24,7 @@ class Corpus(BatchTaskConfig):
     id_col: str = "id"
     text_col: str = "text"
     timestamp_col: Optional[str] = None
-    data_load: RunConfig = RunConfig(_config_name_="load_dataframe")
+    data_load: Run = Run(_config_name_="load_dataframe")
     stopwords: Optional[Stopwords] = Stopwords()
     ngrams: Optional[NgramConfig] = NgramConfig()
     ngramize: bool = True
