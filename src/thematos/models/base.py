@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import tomotopy as tp
 from hyfi import HyFI
-from hyfi.task import BatchTaskConfig
+from hyfi.task import BatchTask
 
 from thematos.datasets import Corpus
 
@@ -19,7 +19,7 @@ from .types import CoherenceMetrics, ModelSummary
 logger = logging.getLogger(__name__)
 
 
-class TopicModel(BatchTaskConfig):
+class TopicModel(BatchTask):
     _config_group_ = "/model"
     _config_name_ = "topic"
 
