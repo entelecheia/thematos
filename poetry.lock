@@ -2889,38 +2889,40 @@ files = [
 
 [[package]]
 name = "tomotopy"
-version = "0.12.5"
+version = "0.12.7"
 description = "Tomoto, Topic Modeling Tool for Python"
 optional = false
 python-versions = "*"
 files = [
-    {file = "tomotopy-0.12.5-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:204ea544cad805fc4334c9b6a2c58b2280a5a8074fe96eeb84b49a79b10bc252"},
-    {file = "tomotopy-0.12.5-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:8cdb9cf0f6e5c591f0d1929f91b9fc670f477b2e138de16d8ee4edc786125c29"},
-    {file = "tomotopy-0.12.5-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b2c0ea490d13be0e1cfe3ce2a11157746f5f0336cd6b3f9b3added66343fc2de"},
-    {file = "tomotopy-0.12.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:66a4eab734768fd6501f6ef32d1cb869178206d052debc20802d81286460de7f"},
-    {file = "tomotopy-0.12.5-cp310-cp310-win32.whl", hash = "sha256:81479144ced30ba0f4a61b30011c36e415b2e11e376a7df5087e42e8d30a57b8"},
-    {file = "tomotopy-0.12.5-cp310-cp310-win_amd64.whl", hash = "sha256:8a5bb109b779959871e1296d7c5492f969d279e54dcedbc701351ee7bbe2d4da"},
-    {file = "tomotopy-0.12.5-cp311-cp311-macosx_10_14_x86_64.whl", hash = "sha256:ea8626584177c65ed1a053d5b260d41f076b8373efa78d3ce20de45d7521947d"},
-    {file = "tomotopy-0.12.5-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:150a2f9013baf847e8ecd657720cad73f6bba3782703508fcb5ed5eb0842ca82"},
-    {file = "tomotopy-0.12.5-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a6a89c5531503adecd03b2aa44da2c4e173901c0ef8dbdbcea7a28093523b8cc"},
-    {file = "tomotopy-0.12.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:21abfef331251d74543b6fae46a580331a9a742c63928bd475985dfc764e0a68"},
-    {file = "tomotopy-0.12.5-cp311-cp311-win32.whl", hash = "sha256:e82882f7f2a97fdeae36721ef9622c147d47ac2dc2bb81652186cdfc763b220c"},
-    {file = "tomotopy-0.12.5-cp311-cp311-win_amd64.whl", hash = "sha256:305fb21735a514575a18f2e603381e19489abaf09a86c7ebe48cee913f08d6ee"},
-    {file = "tomotopy-0.12.5-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0a08fe24534ad73090d2a6be9fe9216a513c5d18b154fdd9a64bf79fb847f344"},
-    {file = "tomotopy-0.12.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9780157a42403ef3543b2afbd586a071e71cd10db6558c472dadf2dbaaed0a3f"},
-    {file = "tomotopy-0.12.5-cp37-cp37m-win32.whl", hash = "sha256:bc52ec71190e99e8ab89007227dfc8761b540a5f9ed5c3b91365afb45a62b55f"},
-    {file = "tomotopy-0.12.5-cp37-cp37m-win_amd64.whl", hash = "sha256:d3c07389e51d33c6a81e5bc74d66981b5a18c69062403f1d7640554bfddcb544"},
-    {file = "tomotopy-0.12.5-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1a8ad2e308fb5be1b70134e8b087342c1fd290ded4d87ed53db1ebc06f1dd9d5"},
-    {file = "tomotopy-0.12.5-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7bb5c71340e21219dc6678e7aa9725f1d734cc00c0449fbf93c2f5c4ae86661a"},
-    {file = "tomotopy-0.12.5-cp38-cp38-win32.whl", hash = "sha256:a1aad2289a714a0d3b4c3c444889896adb925df0706b0260b01a96612df17c73"},
-    {file = "tomotopy-0.12.5-cp38-cp38-win_amd64.whl", hash = "sha256:f4b22a0d9ca51c8edd34d62df8270dad13264a833532582161dcf0909d60fabb"},
-    {file = "tomotopy-0.12.5-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:aa8de854127886a2c4775cb314c71a06b0b89417336326c861132c85d00fc3ce"},
-    {file = "tomotopy-0.12.5-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:b7a1b0cc6ecafa40225b135a327535fe40a65f1ec0be8f219c4c91a7d6b51f28"},
-    {file = "tomotopy-0.12.5-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b97847cf45c1a4ce16d2d3221c22ff1c686cd90aa3c989e33eb00bf3301bf886"},
-    {file = "tomotopy-0.12.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a88035e01289f293d6e5545a9e9a2aa4cbfc0452a847ab2d8b5ec061cef40d61"},
-    {file = "tomotopy-0.12.5-cp39-cp39-win32.whl", hash = "sha256:9f3a52b4f09bc11c492297e7ec97a6ef9b64c306462a4111ab7f484be315504f"},
-    {file = "tomotopy-0.12.5-cp39-cp39-win_amd64.whl", hash = "sha256:977e2be1e47e00fd18d940d02295736d260a095b524847a35404f8c31dec4caa"},
-    {file = "tomotopy-0.12.5.tar.gz", hash = "sha256:4a2c395337135458e0cb703d9d9c7d080170627771b8951de70ca6b84296b0c3"},
+    {file = "tomotopy-0.12.7-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:b8d7df54465346899af88d8d1537f82cfd62171c6096496908fb84bde1687e74"},
+    {file = "tomotopy-0.12.7-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:719a0ce0f323340a4f90d8ad9e41895c3f51fb4b8d51a9107a5ddda8015d4dbf"},
+    {file = "tomotopy-0.12.7-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ca63d089108f9866f0402781c6543f9ef6b7ca733d2964c18ab5cdf77a826720"},
+    {file = "tomotopy-0.12.7-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:bc3eca878003ac4526139215cc8588f3a6547ccf40da55df3279cd776ad05d5c"},
+    {file = "tomotopy-0.12.7-cp310-cp310-win32.whl", hash = "sha256:60696eb12aadeb5f2945d0d7f20ac20de93f3ea780d820afdd2052c9d6bfebbc"},
+    {file = "tomotopy-0.12.7-cp310-cp310-win_amd64.whl", hash = "sha256:e3639ebf5dcd389ce3d501d28c2744e32df176ccb75cbf0c3d0fa3fbcae2988d"},
+    {file = "tomotopy-0.12.7-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:910be923a8d27e671fc87b4ee735f153ccadfa91e65224bf8878354589f4c3c0"},
+    {file = "tomotopy-0.12.7-cp311-cp311-macosx_11_0_x86_64.whl", hash = "sha256:a0da5b0eb95e6340c8ae6714407c6668e7ef9acc0e4e0afb4f399e5ff7162781"},
+    {file = "tomotopy-0.12.7-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:18969cd07700b3e86eb44cc18466f87da28cf10c4a156bc72ad37832b54ebc33"},
+    {file = "tomotopy-0.12.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5e95a43c1d0f56bf499b7a2d83b91a1a1eb751a5798209f7d9cd06b37b953c74"},
+    {file = "tomotopy-0.12.7-cp311-cp311-win32.whl", hash = "sha256:d17a4cb035aa0403083262ee24756025d43b94633325591a6a9bac3256d469e6"},
+    {file = "tomotopy-0.12.7-cp311-cp311-win_amd64.whl", hash = "sha256:b74f933b738cbe96116580956f93859f0b3d71282e117be3a657010d0d0eb77f"},
+    {file = "tomotopy-0.12.7-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:81bd8c595cbcad563bcba7af5cb18e611656191b9c79e70564aae8376761c5b4"},
+    {file = "tomotopy-0.12.7-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:79b4a31fe29f4c55520a25b56b673cd89a42b37a30bb9e98eb8155c104c34f7b"},
+    {file = "tomotopy-0.12.7-cp312-cp312-win32.whl", hash = "sha256:7ef8287399f8a2d25d180cb148380d34aa9de61ac8af52e2bb6d9e926ece3976"},
+    {file = "tomotopy-0.12.7-cp312-cp312-win_amd64.whl", hash = "sha256:4a983f3bc54bd1d2088df769adbd78ebb98dffce7e0d09bb9aa12909ba7ccb9f"},
+    {file = "tomotopy-0.12.7-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:1338a46ea8bd9263e58abf8d886e96cc8ac2aae56184dfd3992b046b5aa933e1"},
+    {file = "tomotopy-0.12.7-cp38-cp38-macosx_11_0_x86_64.whl", hash = "sha256:c11806e827a0eee18591f1aa87a647256d54dcf80d7f734c408a7f580f3caf30"},
+    {file = "tomotopy-0.12.7-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3a91053b837ac7ba39bb7669d58d2e180e3a52c3d1e62e50ef3bd57bac043435"},
+    {file = "tomotopy-0.12.7-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cb34141434ac96d4894f9a5745c1ef434bd40dc2783c104f72fcde74d5e982c7"},
+    {file = "tomotopy-0.12.7-cp38-cp38-win32.whl", hash = "sha256:d43b7476c3f9077d77f64f51fce6e8e1a58d7d7f504acf0f2297af916640e2ea"},
+    {file = "tomotopy-0.12.7-cp38-cp38-win_amd64.whl", hash = "sha256:0c7f48fdcad99dbd8bc25ceea8d3e161b6a88ea47c3c0b394468027b3a4a42ae"},
+    {file = "tomotopy-0.12.7-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:66624abd5a9cbd8969a97725e5046de744d236330927a66d31a62f2146c1b115"},
+    {file = "tomotopy-0.12.7-cp39-cp39-macosx_11_0_x86_64.whl", hash = "sha256:81d2519701a6fe156aff5b74aeba57d8750133bed0632abc5a3293c845b7e890"},
+    {file = "tomotopy-0.12.7-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5729f45cbed6df28af0f7a51daeca87022194376c3fddf9df9bed2a304b5fd0e"},
+    {file = "tomotopy-0.12.7-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:239390fb1680f39ac09b030a1fcb06d3da7f187de28d962594922ba3ba1f9da6"},
+    {file = "tomotopy-0.12.7-cp39-cp39-win32.whl", hash = "sha256:33c468b1f5ec18c4e871739b6c91141c3391c7996283b38a3907dfdba6ca78fd"},
+    {file = "tomotopy-0.12.7-cp39-cp39-win_amd64.whl", hash = "sha256:247eec27266fc2ec6d48f30255462be59f7cffaf797b54c074f46f7e32490473"},
+    {file = "tomotopy-0.12.7.tar.gz", hash = "sha256:e1a4e0b6426489ed11cb1940e17d6704d77672dd86314418c0108a6ffb9a78f6"},
 ]
 
 [package.dependencies]
