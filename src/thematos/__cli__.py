@@ -1,4 +1,5 @@
 """Command line interface for thematos"""
+
 from hyfi import hyfi_main
 
 

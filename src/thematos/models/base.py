@@ -234,9 +234,11 @@ class TopicModel(BatchTask):
                 self.model.set_word_prior(
                     word,
                     [
-                        self.wordprior.max_prior_weight
-                        if i == int(tno)
-                        else self.wordprior.min_prior_weight
+                        (
+                            self.wordprior.max_prior_weight
+                            if i == int(tno)
+                            else self.wordprior.min_prior_weight
+                        )
                         for i in range(self.num_topics)
                     ],
                 )
