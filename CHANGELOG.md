@@ -1,5 +1,11 @@
 <!--next-version-placeholder-->
 
+## v0.14.4 (2024-03-27)
+
+### Fix
+
+* **dependencies:** Update Python hyfi, lexikanon, black versions ([`f83ffdb`](https://github.com/entelecheia/thematos/commit/f83ffdb2c327507959a369a4b27a07a94189812d))
+
 ## v0.14.3 (2023-08-24)
 
 ### Fix
