@@ -17,7 +17,7 @@ python = "^3.9, <3.13"
 click = "^8.1.3"
 hyfi = "^1.36.3"
 lexikanon = "^0.6.5"
-tomotopy = ">=0.12.5,<0.14.0"
+tomotopy = "^0.13.0"
 wordcloud = "^1.9.2"
 # hyfi = { path = "../hyfi", develop = true }
 
