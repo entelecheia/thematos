@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "thematos"
-version = "0.14.4"
+version = "0.14.5"
 description = "A Python Library for Topic Modeling"
 authors = ["Young Joon Lee <entelecheia@hotmail.com>"]
 license = "MIT"

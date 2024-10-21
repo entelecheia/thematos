@@ -1,5 +1,12 @@
 <!--next-version-placeholder-->
 
+## v0.14.5 (2024-10-21)
+
+### Fix
+
+* **dependencies:** Update tomotopy to ^0.13.0 ([`f4f545b`](https://github.com/entelecheia/thematos/commit/f4f545baa89c63c499693c63e525de5b575a7726))
+* **book:** Update jupyter-book version in requirements.txt ([`cfb6764`](https://github.com/entelecheia/thematos/commit/cfb6764836226cbd6add2ac7a8838cc2e22733cd))
+
 ## v0.14.4 (2024-03-27)
 
 ### Fix
