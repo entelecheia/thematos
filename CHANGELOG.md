@@ -1,5 +1,55 @@
 <!--next-version-placeholder-->
 
+## v1.0.1 (2026-10-19)
+
+### Bug Fixes
+
+- Reject collage grids that cannot hold a page of images
+  ([#91](https://github.com/entelecheia/thematos/pull/91),
+  [`6fbbace`](https://github.com/entelecheia/thematos/commit/6fbbace75e954ace949a06f0148eeb96c01d7f6c))
+
+- Reject model_id values that resolve outside output_dir
+  ([#91](https://github.com/entelecheia/thematos/pull/91),
+  [`6fbbace`](https://github.com/entelecheia/thematos/commit/6fbbace75e954ace949a06f0148eeb96c01d7f6c))
+
+- Resolve follow-up issues (#87-#90) ([#91](https://github.com/entelecheia/thematos/pull/91),
+  [`6fbbace`](https://github.com/entelecheia/thematos/commit/6fbbace75e954ace949a06f0148eeb96c01d7f6c))
+
+- Train exactly the requested iterations when not a multiple of interval
+  ([#91](https://github.com/entelecheia/thematos/pull/91),
+  [`6fbbace`](https://github.com/entelecheia/thematos/commit/6fbbace75e954ace949a06f0148eeb96c01d7f6c))
+
+- Write JSON when WordPrior.data_file ends in .json
+  ([#91](https://github.com/entelecheia/thematos/pull/91),
+  [`6fbbace`](https://github.com/entelecheia/thematos/commit/6fbbace75e954ace949a06f0148eeb96c01d7f6c))
+
+### Continuous Integration
+
+- Always validate PRs beyond the files API limit (entelecheia/hyfi#479)
+  ([#91](https://github.com/entelecheia/thematos/pull/91),
+  [`6fbbace`](https://github.com/entelecheia/thematos/commit/6fbbace75e954ace949a06f0148eeb96c01d7f6c))
+
+- Count renamed paths and avoid grep -q in the docs-only check (entelecheia/hyfi#479)
+  ([#91](https://github.com/entelecheia/thematos/pull/91),
+  [`6fbbace`](https://github.com/entelecheia/thematos/commit/6fbbace75e954ace949a06f0148eeb96c01d7f6c))
+
+- Make releases retryable and keep ci-ok reported for docs-only PRs (entelecheia/hyfi#479)
+  ([#91](https://github.com/entelecheia/thematos/pull/91),
+  [`6fbbace`](https://github.com/entelecheia/thematos/commit/6fbbace75e954ace949a06f0148eeb96c01d7f6c))
+
+- Run full validation when the PR files API fails (entelecheia/hyfi#479)
+  ([#91](https://github.com/entelecheia/thematos/pull/91),
+  [`6fbbace`](https://github.com/entelecheia/thematos/commit/6fbbace75e954ace949a06f0148eeb96c01d7f6c))
+
+- State that only tags from this release workflow can be republished (entelecheia/hyfi#479)
+  ([#91](https://github.com/entelecheia/thematos/pull/91),
+  [`6fbbace`](https://github.com/entelecheia/thematos/commit/6fbbace75e954ace949a06f0148eeb96c01d7f6c))
+
+- Validate the tag before a republish (entelecheia/hyfi#479)
+  ([#91](https://github.com/entelecheia/thematos/pull/91),
+  [`6fbbace`](https://github.com/entelecheia/thematos/commit/6fbbace75e954ace949a06f0148eeb96c01d7f6c))
+
+
 ## v1.0.0 (2026-10-19)
 
 ### Bug Fixes
