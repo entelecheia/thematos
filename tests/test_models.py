@@ -156,3 +156,13 @@ def test_training_stops_at_requested_iterations(tmp_path: Path) -> None:
     ).train(corpus)
     assert model.model.global_step == 11
     assert model.ll_per_words["iter"].tolist() == [0, 10]
+
+
+@pytest.mark.parametrize(("model_type", "name"), [("/abs", "x"), ("LDA", "x/../../escaped")])
+def test_model_id_stays_inside_output_dir(tmp_path: Path, model_type: str, name: str) -> None:
+    # #89: model_id is joined to output_dir, so it must not resolve outside it
+    model = LdaModel(output_dir=tmp_path / "out", model_type=model_type, name=name)
+    with pytest.raises(ValueError, match="outside output_dir"):
+        _ = model.model_file
+    ok = LdaModel(output_dir=tmp_path / "out", name="m")
+    assert ok.model_file == tmp_path / "out" / "LDA_m_k(10).mdl"

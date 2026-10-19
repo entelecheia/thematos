@@ -65,7 +65,11 @@ class TopicModel(Model):
 
     @property
     def model_id(self) -> str:
-        return f"{self.model_type.upper()}_{self.name}_k({self.model_args.k})"
+        model_id = f"{self.model_type.upper()}_{self.name}_k({self.model_args.k})"
+        # every artifact path joins model_id to output_dir, so keep it from escaping
+        if not (self.output_dir / model_id).resolve().is_relative_to(self.output_dir.resolve()):
+            raise ValueError(f"model_id {model_id!r} resolves outside output_dir")
+        return model_id
 
     @property
     def model(self) -> Any:
