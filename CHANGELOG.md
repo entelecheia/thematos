@@ -1,5 +1,14 @@
 <!--next-version-placeholder-->
 
+## v1.0.2 (2026-10-19)
+
+### Bug Fixes
+
+- Check every artifact path, after its suffix, stays inside output_dir
+  ([#93](https://github.com/entelecheia/thematos/pull/93),
+  [`9a647f1`](https://github.com/entelecheia/thematos/commit/9a647f14b8e8a02743a839c502b8e5c53033325c))
+
+
 ## v1.0.1 (2026-10-19)
 
 ### Bug Fixes
