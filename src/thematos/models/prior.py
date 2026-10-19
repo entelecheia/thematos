@@ -1,3 +1,4 @@
+import json
 import logging
 from collections.abc import ItemsView, Iterator
 from pathlib import Path
@@ -62,7 +63,7 @@ class WordPrior(Model):
             logger.info("Loaded %d priors", len(self._priors_))
 
     def save(self) -> None:
-        """Save words to ``data_file``"""
+        """Save words to ``data_file``: JSON for a ``.json`` file, YAML otherwise."""
         if not self._loaded_:
             self.load(missing_ok=True)
         if not self.priors:
@@ -72,7 +73,11 @@ class WordPrior(Model):
             raise ValueError("WordPrior.save needs `data_file`")
         path = Path(self.data_file)
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(yaml.safe_dump(self.priors, allow_unicode=True), encoding="utf-8")
+        if path.suffix.lower() == ".json":
+            text = json.dumps(self.priors, ensure_ascii=False, indent=2)
+        else:
+            text = yaml.safe_dump(self.priors, allow_unicode=True)
+        path.write_text(text, encoding="utf-8")
         if self.verbose:
             logger.info("Saved %d words to %s", len(self.priors), self.data_file)
 

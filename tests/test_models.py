@@ -1,5 +1,6 @@
 """Library behavior that the workflow tests do not reach: priors, corpus inputs, load, masks."""
 
+import json
 from pathlib import Path
 
 import numpy as np
@@ -166,3 +167,11 @@ def test_model_id_stays_inside_output_dir(tmp_path: Path, model_type: str, name:
         _ = model.model_file
     ok = LdaModel(output_dir=tmp_path / "out", name="m")
     assert ok.model_file == tmp_path / "out" / "LDA_m_k(10).mdl"
+
+
+def test_wordprior_save_keeps_json(tmp_path: Path) -> None:
+    # #90: save() wrote YAML into a .json data_file
+    path = tmp_path / "prior.json"
+    WordPrior(data_file=str(path), prior_data={0: ["Rate"], 1: ["oil"]}).save()
+    assert json.loads(path.read_text(encoding="utf-8")) == {"0": ["rate"], "1": ["oil"]}
+    assert WordPrior(data_file=str(path)).priors == {0: ["rate"], 1: ["oil"]}
