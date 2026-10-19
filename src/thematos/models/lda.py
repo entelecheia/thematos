@@ -29,7 +29,9 @@ class LdaModel(TopicModel):
         )
         ll_per_words = []
         for i in range(0, train_args.iterations, train_args.interval):
-            model.train(train_args.interval, workers=self.num_workers)
+            # the last step trains only what remains, so the model matches `iterations`
+            step = min(train_args.interval, train_args.iterations - i)
+            model.train(step, workers=self.num_workers)
             logger.info("Iteration: %s\tLog-likelihood: %s", i, model.ll_per_word)
             ll_per_words.append((i, model.ll_per_word))
         self._ll_per_words_ = ll_per_words
