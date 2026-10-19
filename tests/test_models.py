@@ -142,3 +142,17 @@ def test_collage_grid_must_hold_a_page(tmp_path: Path) -> None:
     assert not list(tmp_path.glob("*.png"))
     files = save_image_pages(images, num_images_per_page=2, num_rows=1, **args)
     assert [f.name for f in files] == ["p0.png", "p1.png"]
+
+
+def test_training_stops_at_requested_iterations(tmp_path: Path) -> None:
+    # #88: iterations=11, interval=10 used to train 20 iterations
+    corpus = Corpus(data_file=TRAIN, text_col="tokens")
+    model = LdaModel(
+        output_dir=tmp_path,
+        seed=1,
+        model_args={"k": 2},
+        train_args={"iterations": 11, "interval": 10},
+        eval_coherence=False,
+    ).train(corpus)
+    assert model.model.global_step == 11
+    assert model.ll_per_words["iter"].tolist() == [0, 10]
