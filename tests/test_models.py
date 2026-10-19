@@ -12,6 +12,7 @@ from thematos.datasets import Corpus
 from thematos.datasets.corpus import read_dataframe
 from thematos.models import LdaModel, WordPrior
 from thematos.plots import WordCloud
+from thematos.plots.wordcloud import save_image_pages
 from thematos.steps import build_corpus
 
 from .conftest import TRAIN, WORD_PRIOR
@@ -130,3 +131,14 @@ def test_wordcloud_mask_from_file(tmp_path: Path) -> None:
     )
     assert (wc.width, wc.height) == (120, 60)
     assert Image.open(out).size == (120, 60)
+
+
+def test_collage_grid_must_hold_a_page(tmp_path: Path) -> None:
+    # #87: 3 images, 20 per page, 1x2 grid used to drop the third image silently
+    images = [np.zeros((4, 4, 3), dtype=np.uint8)] * 3
+    args = {"output_dir": tmp_path, "output_file_format": "p{page_num}.png", "num_cols": 2}
+    with pytest.raises(ValueError, match="num_rows"):
+        save_image_pages(images, num_images_per_page=20, num_rows=1, **args)
+    assert not list(tmp_path.glob("*.png"))
+    files = save_image_pages(images, num_images_per_page=2, num_rows=1, **args)
+    assert [f.name for f in files] == ["p0.png", "p1.png"]
