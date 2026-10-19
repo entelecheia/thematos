@@ -175,3 +175,22 @@ def test_wordprior_save_keeps_json(tmp_path: Path) -> None:
     WordPrior(data_file=str(path), prior_data={0: ["Rate"], 1: ["oil"]}).save()
     assert json.loads(path.read_text(encoding="utf-8")) == {"0": ["rate"], "1": ["oil"]}
     assert WordPrior(data_file=str(path)).priors == {0: ["rate"], 1: ["oil"]}
+
+
+def test_artifacts_are_not_written_through_symlinks(tmp_path: Path) -> None:
+    # #92: model_id was checked without the suffix, so a symlinked .mdl path was followed
+    out, outside = tmp_path / "out", tmp_path / "outside"
+    out.mkdir()
+    outside.mkdir()
+    model = LdaModel(output_dir=out, name="m")
+    (out / "LDA_m_k(10).mdl").symlink_to(outside / "stolen.mdl")
+    with pytest.raises(ValueError, match="outside output_dir"):
+        _ = model.model_file
+    (out / "wordclouds").symlink_to(outside, target_is_directory=True)
+    with pytest.raises(ValueError, match="outside output_dir"):
+        model._contained(Path(model.topic_wordcloud_file_format.format(topic_id=0)))
+    (out / "model-summary.jsonl").symlink_to(outside / "summary.jsonl")
+    with pytest.raises(ValueError, match="outside output_dir"):
+        _ = model.model_summary_file
+    assert model.ll_per_words_file == out / "LDA_m_k(10)-ll_per_word.csv"  # plain paths still work
+    assert list(outside.iterdir()) == []
