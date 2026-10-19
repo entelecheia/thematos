@@ -1,37 +1,40 @@
 import logging
+import math
+from collections.abc import Callable, Sequence
 from pathlib import Path
-from typing import Callable, Dict, Optional, Set, Tuple, Union
 
 import numpy as np
 import wordcloud
-from hyfi import HyFI
-from hyfi.composer import BaseModel
+from matplotlib.figure import Figure
+from PIL import Image
+from pydantic import PrivateAttr
+
+from thematos._base import Model
 
 logger = logging.getLogger(__name__)
 
 
-class WordCloud(BaseModel):
-    _config_group_ = "/plot"
-    _config_name_ = "wordcloud"
+class WordCloud(Model):
+    """Keyword arguments for ``wordcloud.WordCloud``; ``mask`` may be an image path."""
 
-    font_path: Optional[str] = None
+    font_path: str | None = None
     width: int = 400
     height: int = 200
     prefer_horizontal: float = 0.9
-    mask: Optional[Union[str, np.ndarray]] = None
+    mask: str | np.ndarray | None = None
     contour_width: float = 0
     contour_color: str = "steelblue"
     scale: float = 1
     min_font_size: int = 4
-    max_font_size: Optional[int] = None
+    max_font_size: int | None = None
     font_step: int = 1
     max_words: int = 200
-    stopwords: Optional[Set] = None
+    stopwords: set[str] | None = None
     background_color: str = "black"
     mode: str = "RGB"
-    relative_scaling: Union[float, str] = "auto"
-    color_func: Optional[Callable] = None
-    regexp: Optional[str] = None
+    relative_scaling: float | str = "auto"
+    color_func: Callable | None = None
+    regexp: str | None = None
     collocations: bool = True
     colormap: str = "PuBu"
     normalize_plurals: bool = True
@@ -40,39 +43,73 @@ class WordCloud(BaseModel):
     min_word_length: int = 0
     collocation_threshold: int = 30
 
-    _wc_: Optional[wordcloud.WordCloud] = None
+    _wc_: wordcloud.WordCloud | None = PrivateAttr(None)
 
     @property
-    def wc(self) -> Optional[wordcloud.WordCloud]:
+    def wc(self) -> wordcloud.WordCloud | None:
         return self._wc_
 
     def generate_from_frequencies(
         self,
-        frequencies: Dict[str, float],
-        max_font_size: Optional[int] = None,
-        output_file: Optional[str] = None,
-        lang: str = "en",
+        frequencies: dict[str, float],
+        max_font_size: int | None = None,
+        output_file: str | Path | None = None,
         verbose: bool = False,
     ) -> wordcloud.WordCloud:
-        _, self.font_path = HyFI.get_plot_font(
-            fontpath=self.font_path,
-            lang=lang,
-        )
+        kwargs = dict(self)
         if max_font_size:
-            self.max_font_size = max_font_size
-
-        if isinstance(self.mask, str) and HyFI.is_file(self.mask):
+            kwargs["max_font_size"] = max_font_size
+        if isinstance(self.mask, str):
             if verbose:
                 logger.info("Loading mask from %s", self.mask)
-            self.mask = HyFI.load_image_as_ndarray(self.mask)
-            self.width = self.mask.shape[1]
-            self.height = self.mask.shape[0]
+            mask = np.array(Image.open(self.mask))
+            kwargs.update(mask=mask, width=mask.shape[1], height=mask.shape[0])
 
-        self._wc_ = wordcloud.WordCloud(**self.kwargs)
+        self._wc_ = wordcloud.WordCloud(**kwargs)
         self._wc_.generate_from_frequencies(frequencies)
         if output_file:
             Path(output_file).parent.mkdir(parents=True, exist_ok=True)
-            self._wc_.to_file(output_file)
+            self._wc_.to_file(str(output_file))
             if verbose:
                 logger.debug("Saved wordcloud to %s", output_file)
         return self._wc_
+
+
+def save_image_pages(
+    images: Sequence[wordcloud.WordCloud | np.ndarray],
+    output_dir: str | Path,
+    output_file_format: str,
+    num_images_per_page: int,
+    num_cols: int,
+    num_rows: int | None = None,
+    titles: Sequence[str] | None = None,
+    title_fontsize: int = 10,
+    title_color: str = "black",
+    figsize: tuple[float, float] | None = None,
+    width_multiple: float = 4,
+    height_multiple: float = 2,
+    dpi: int = 100,
+) -> list[Path]:
+    """Lay images out in grids of ``num_images_per_page`` and save one file per page."""
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    files = []
+    for page_num, start in enumerate(range(0, len(images), num_images_per_page)):
+        page = images[start : start + num_images_per_page]
+        rows = num_rows or math.ceil(len(page) / num_cols)
+        size = figsize or (num_cols * width_multiple, rows * height_multiple)
+        fig = Figure(figsize=size)  # no pyplot: leaves the caller's backend alone
+        axes = fig.subplots(rows, num_cols, squeeze=False)
+        for i, ax in enumerate(axes.flat):
+            ax.axis("off")
+            if i >= len(page):
+                ax.set_visible(False)
+                continue
+            ax.imshow(page[i])
+            if titles and start + i < len(titles):
+                ax.set_title(titles[start + i], fontsize=title_fontsize, color=title_color)
+        fig.tight_layout()
+        output_file = output_dir / output_file_format.format(page_num=page_num)
+        fig.savefig(output_file, dpi=dpi)
+        files.append(output_file)
+    return files

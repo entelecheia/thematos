@@ -1,49 +1,54 @@
 import logging
 from pathlib import Path
-from typing import Any, List, Optional
+from typing import Any
 
 import numpy as np
 import pandas as pd
 import tomotopy as tp
-from hyfi import HyFI
-from hyfi.run import Run
-from hyfi.task import BatchTask
 from lexikanon.stopwords import Stopwords
+from pydantic import Field, PrivateAttr
+
+from thematos._base import Model
 
 from .ngrams import NgramConfig
 
 logger = logging.getLogger(__name__)
 
 
-class Corpus(BatchTask):
-    _config_group_: str = "/dataset"
-    _config_name_: str = "topic_corpus"
+def read_dataframe(path: str | Path) -> pd.DataFrame:
+    """Read a ``.parquet``, ``.csv``, or ``.jsonl`` file into a DataFrame."""
+    path = Path(path)
+    if path.suffix == ".parquet":
+        return pd.read_parquet(path)
+    if path.suffix == ".csv":
+        return pd.read_csv(path)
+    if path.suffix == ".jsonl":
+        return pd.read_json(path, lines=True)
+    raise ValueError(f"unsupported data file type: {path}")
 
-    task_name: str = "topic"
-    batch_name: str = "corpus"
+
+class Corpus(Model):
+    """Documents from a DataFrame (``data``) or a file (``data_file``), as a tomotopy corpus."""
+
+    data: pd.DataFrame | None = Field(None, exclude=True, repr=False)
+    data_file: Path | None = None
     id_col: str = "id"
     text_col: str = "text"
-    timestamp_col: Optional[str] = None
-    data_load: Run = Run(_config_name_="load_dataframe")
-    stopwords: Optional[Stopwords] = Stopwords()
-    ngrams: Optional[NgramConfig] = NgramConfig()
+    stopwords: Stopwords | None = Field(default_factory=Stopwords)
+    ngrams: NgramConfig | None = Field(default_factory=NgramConfig)
     ngramize: bool = True
     verbose: bool = False
 
-    _data_: Optional[pd.DataFrame] = None
-    _corpus_: Optional[tp.utils.Corpus] = None
-    _doc_ids_: List[Any] = None
-
-    @property
-    def data(self) -> pd.DataFrame:
-        if self._data_ is None:
-            self._data_ = self.load_data()
-            if self.verbose:
-                logger.info(self._data_[self.text_col].head())
-        return self._data_
+    _corpus_: tp.utils.Corpus | None = PrivateAttr(None)
 
     def load_data(self) -> pd.DataFrame:
-        return HyFI.partial(self.data_load.config)()
+        if self.data is None:
+            if self.data_file is None:
+                raise ValueError("Corpus needs `data` or `data_file`")
+            self.data = read_dataframe(self.data_file)
+            if self.verbose:
+                logger.info(self.data[self.text_col].head())
+        return self.data
 
     @property
     def corpus(self) -> tp.utils.Corpus:
@@ -51,94 +56,66 @@ class Corpus(BatchTask):
             self.load()
         return self._corpus_
 
-    def load(self):
-        if self._corpus_:
-            logger.infro("Corpus is already loaded")
-            return
+    def load(self) -> "Corpus":
+        """Tokenize the documents (and concatenate n-grams) into a tomotopy corpus."""
+        if self._corpus_ is not None:
+            logger.info("Corpus is already loaded")
+            return self
         logger.info("Loading corpus...")
-        self._doc_ids_ = []
-        self._corpus_ = tp.utils.Corpus(
-            tokenizer=tp.utils.SimpleTokenizer(),
-            stopwords=self.stopwords,
-        )
+        corpus = tp.utils.Corpus(tokenizer=tp.utils.SimpleTokenizer(), stopwords=self.stopwords)
         logger.info("Processing documents in the column '%s'...", self.text_col)
-        self._corpus_.process(self.docs)
-        logger.info("Total %d documents are loaded.", len(self.docs))
+        docs = self.docs
+        corpus.process(docs)
+        logger.info("Total %d documents are loaded.", len(docs))
+        self._corpus_ = corpus
         if self.ngramize:
-            self.concat_ngrams()
-        self.save_ids()
-        self.save_config()
+            try:
+                self.concat_ngrams()
+            except Exception:
+                self._corpus_ = None  # never cache a corpus without its n-grams
+                raise
+        return self
 
     @property
-    def docs(self) -> List[str]:
-        doc = self.data[self.text_col].head(1).values[0]
+    def docs(self) -> list[str]:
+        texts = self.load_data()[self.text_col]
+        doc = texts.iloc[0]
         if self.verbose:
             logger.info("The first document: %s", doc)
-        # check the type of the first document to see if it is a list of words
-        # or a string
-        # if the type is ndarray, convert it to string
-        if isinstance(doc, str):
-            return self.data[self.text_col].values.tolist()
-        elif isinstance(doc, np.ndarray or list):
-            return self.data[self.text_col].str.join(" ").values.tolist()
+        # a column of token lists (ndarray after a parquet round trip) is joined into strings
+        if isinstance(doc, np.ndarray | list):
+            return texts.str.join(" ").tolist()
+        return texts.tolist()
 
     @property
-    def doc_ids(self) -> List[Any]:
-        if not self._doc_ids_:
-            self._doc_ids_ = self.data[self.id_col].values.tolist()
-        return self._doc_ids_
+    def doc_ids(self) -> list[Any]:
+        return self.load_data()[self.id_col].tolist()
 
-    @property
-    def id_file(self) -> Path:
-        return self.batch_dir / f"{self.batch_name}_doc_ids.parquet"
+    def __repr__(self) -> str:
+        if self._corpus_ is not None:
+            return f"<Corpus {len(self._corpus_)} documents>"
+        return "<Corpus>"
 
-    def save_ids(self):
-        """Save doc ids to file"""
-        data = pd.DataFrame(self.doc_ids, columns=[self.id_col])
-        HyFI.save_dataframes(data, self.id_file, verbose=self.verbose)
+    __str__ = __repr__
 
-    def __repr__(self):
-        if self._doc_ids_:
-            return f"<Corpus {len(self._doc_ids_)} documents>"
-        else:
-            return "<Corpus>"
+    def __bool__(self) -> bool:
+        return self._corpus_ is not None and len(self._corpus_) > 0
 
-    def __str__(self):
-        if self._doc_ids_:
-            return f"<Corpus {len(self._doc_ids_)} documents>"
-        else:
-            return "<Corpus>"
-
-    def __bool__(self):
-        return bool(self._doc_ids_)
-
-    def concat_ngrams(self, delimiter: Optional[str] = None):
+    def concat_ngrams(self, delimiter: str | None = None) -> None:
         if not self.ngrams:
             logger.info("N-grams config is not set. Skipping...")
             return
-        # extract the n-gram candidates first
-        if not delimiter:
-            delimiter = self.ngrams.delimiter
-        args = self.ngrams.kwargs
+        args = self.ngrams.model_dump()
+        delimiter = delimiter or args.pop("delimiter")
         args.pop("delimiter", None)
         if not self.ngrams.min_score:
             args.pop("min_score", None)
-        if self.verbose:
-            logger.info("Extracting n-grams...")
-        cands = self.corpus.extract_ngrams(**args)
+        corpus = self.corpus
+        cands = corpus.extract_ngrams(**args)
         if self.verbose:
             logger.info("Total %d n-grams are extracted.", len(cands))
-            for cand in cands[:10]:
+            for cand in cands[:10] + cands[-10:]:
                 logger.info(cand)
-            for cand in cands[-10:]:
-                logger.info(cand)
-        # concat n-grams in the corpus
+        corpus.concat_ngrams(cands, delimiter=delimiter)
         if self.verbose:
-            logger.info("Concatenating n-grams...")
-            logger.info(self.corpus[0])
-            logger.info(self.corpus[-1])
-        self.corpus.concat_ngrams(cands, delimiter=delimiter)
-        if self.verbose:
-            logger.info(self.corpus[0])
-            logger.info(self.corpus[-1])
-            logger.info("Total %d documents are n-gramized.", len(self.corpus))
+            logger.info("Total %d documents are n-gramized.", len(corpus))

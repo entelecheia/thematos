@@ -1,0 +1,21 @@
+# Infer topic distributions for new documents with a model saved by thematos_lda.
+# Use the same model settings (output_dir, name, k) as the training run, so model_id matches.
+# hyfi run workflow=thematos_lda_infer dataset.data_file=<new.parquet> model.model_args.k=10
+# Output: ${model.output_dir}/inferred_topics/<model_id>-inferred_doc_topic_dists.parquet
+defaults:
+  - /dataset@_global_.dataset: topic_corpus
+  - /model@_global_.model: lda
+
+name: thematos_lda_infer
+steps:
+  - run: thematos.datasets.corpus.read_dataframe
+    with:
+      path: ${dataset.data_file}
+  - run: thematos.steps.build_corpus
+    with:
+      corpus: ${dataset}
+  - run: thematos.steps.infer
+    with:
+      model: ${model}
+      iterations: 100
+      num_workers: 1

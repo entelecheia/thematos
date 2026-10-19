@@ -1,16 +1,22 @@
-# workging directory
-workspace/
-
-# hypothesis: https://github.com/HypothesisWorks/hypothesis
-.hypothesis/
+# VSCode
 .vscode/
+
+# Working directory
+.hypothesis/
+tmp/
+workspace/
+testspace/
+tests/**/*.gif
+secrets/**/*
+
+#MKDOCS
+site/
 
 # Ignore node_modules directory
 node_modules/
 
 # Jupyter Notebook
 _build/
-_autosummary/
 
 # Python
 *.py[cod]
@@ -32,3 +38,8 @@ coverage.xml
 *.cover
 htmlcov/
 pytest-coverage.*
+
+# uv / hyfi 2.0
+.venv/
+.ruff_cache/
+.hyfi/

@@ -2,19 +2,16 @@ from .base import TopicModel
 from .config import LdaConfig, TrainConfig, TrainSummaryConfig, WordcloudConfig
 from .lda import LdaModel
 from .prior import WordPrior
-
-# TODO: #55 Add analysis classes
-# from .analysis import TopicAnalysis, TopicAnalysisConfig
-
-# TODO: #56 Add other topic models
-# from .hdp import HdpModel
+from .types import CoherenceMetrics, ModelSummary
 
 __all__ = [
-    "LdaModel",
+    "CoherenceMetrics",
     "LdaConfig",
+    "LdaModel",
+    "ModelSummary",
     "TopicModel",
-    "WordPrior",
     "TrainConfig",
     "TrainSummaryConfig",
+    "WordPrior",
     "WordcloudConfig",
 ]

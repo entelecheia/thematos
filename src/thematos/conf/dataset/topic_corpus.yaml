@@ -1,20 +1,20 @@
+# A corpus for topic models. Pass the documents with dataset.data_file=<.parquet|.csv|.jsonl>.
 defaults:
-- /path@path: __batch__
-- /batch@batch: __init__
-- /run@data_load: load_dataframe
-- /stopwords@stopwords: __init__
-- /ngrams@ngrams: tp_ngrams
-_target_: thematos.datasets.corpus.Corpus
-_config_name_: topic_corpus
-_config_group_: /dataset
-verbose: false
-task_name: topic
-task_root: workspace
-version: 0.0.0
-module: null
-pipelines: []
-batch_name: corpus
+  - /stopwords@stopwords: default # lexikanon
+  - _self_
+
+_target_: thematos.datasets.Corpus
+data_file: null
 id_col: id
 text_col: text
-timestamp_col: null
 ngramize: true
+ngrams:
+  min_cf: 20
+  min_df: 10
+  max_len: 5
+  max_cand: 5000
+  min_score: 0.5
+  normalized: true
+  workers: 0
+  delimiter: _
+verbose: false

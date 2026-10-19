@@ -1,28 +1,39 @@
-_target_: thematos.plots.wordcloud.WordCloud
-_config_name_: wordcloud
-_config_group_: /plot
-font_path: null
-width: 400
-height: 200
-prefer_horizontal: 0.9
-mask: null
-contour_width: 0
-contour_color: steelblue
-scale: 1
-min_font_size: 4
-max_font_size: null
-font_step: 1
-max_words: 200
-stopwords: null
-background_color: black
-mode: RGB
-relative_scaling: auto
-color_func: null
-regexp: null
-collocations: true
-colormap: PuBu
-normalize_plurals: true
-repeat: false
-include_numbers: false
-min_word_length: 0
-collocation_threshold: 30
+_target_: thematos.models.WordcloudConfig
+wc:
+  font_path: null
+  width: 400
+  height: 200
+  prefer_horizontal: 0.9
+  mask: null
+  contour_width: 0
+  contour_color: steelblue
+  scale: 1
+  min_font_size: 4
+  max_font_size: null
+  font_step: 1
+  max_words: 200
+  stopwords: null
+  background_color: black
+  mode: RGB
+  relative_scaling: auto
+  color_func: null
+  regexp: null
+  collocations: true
+  colormap: PuBu
+  normalize_plurals: true
+  repeat: false
+  include_numbers: false
+  min_word_length: 0
+  collocation_threshold: 30
+top_n: 100
+make_collage: true
+num_images_per_page: 20
+num_cols: 5
+num_rows: null
+titles: null
+title_fontsize: 14
+title_color: green
+figsize: null
+width_multiple: 4
+height_multiple: 2
+dpi: 300

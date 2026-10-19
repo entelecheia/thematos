@@ -1,0 +1,44 @@
+site_name: ThematOS
+site_url: https://thematos.entelecheia.ai
+site_author: Young Joon Lee
+site_description: LDA topic modeling on tomotopy, with HyFI 2.0 config groups and workflows
+repo_name: entelecheia/thematos
+repo_url: https://github.com/entelecheia/thematos
+edit_uri: edit/main/docs/
+copyright: Copyright &copy; 2023 Young Joon Lee
+
+theme:
+  name: material
+  palette:
+    scheme: slate
+  features:
+    - navigation.instant
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+  favicon: https://assets.entelecheia.ai/favicon.png
+  logo: https://assets.entelecheia.ai/logo.png
+
+markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.snippets:
+      check_paths: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: false
+            members_order: source
+
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - Migrating from 0.x: migration.md
+  - API: api.md

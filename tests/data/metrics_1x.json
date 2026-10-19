@@ -1,0 +1,117 @@
+{
+  "recorded_with": {
+    "code": "thematos main @ 7432cbd (0.14.5), LdaModel via HyFI.compose('model=test') from the 1.x config/ tree",
+    "overrides": [
+      "model.batch.seed=42",
+      "model.batch.num_workers=1"
+    ],
+    "platform": "macOS 27 arm64 (tomotopy isa=arm64)",
+    "python": "3.12.13",
+    "versions": {
+      "thematos": "0.14.5",
+      "hyfi": "1.37.0",
+      "lexikanon": "0.6.5",
+      "tomotopy": "0.13.0",
+      "numpy": "1.26.4",
+      "pandas": "2.2.1"
+    },
+    "same_result_with_tomotopy_0_14_0": true,
+    "note": "tomotopy 0.14 renamed train(iter=) to train(iterations=); the 0.14.0 check ran the 1.x code with that one call made positional."
+  },
+  "corpus": {
+    "data_file": "tests/assets/sample_data/train.parquet",
+    "text_col": "tokens",
+    "ngramize": true,
+    "stopwords": "lexikanon default (empty)"
+  },
+  "wordprior": "tests/assets/words/word_prior.yaml",
+  "seed": 42,
+  "num_workers": 1,
+  "model_args": {
+    "tw": 1,
+    "min_cf": 10,
+    "min_df": 10,
+    "rm_top": 10,
+    "k": 5,
+    "alpha": 0.1,
+    "eta": 0.01
+  },
+  "train_args": {
+    "burn_in": 0,
+    "interval": 10,
+    "iterations": 100
+  },
+  "num_docs": 464,
+  "num_words": 93769,
+  "num_used_vocabs": 1705,
+  "perplexity": 1490.6653737788115,
+  "ll_per_word": -7.306977858844543,
+  "coherence": {
+    "u_mass": -1.4471456714938689,
+    "c_uci": -1.606508611545424,
+    "c_npmi": -0.031104471741825408,
+    "c_v": 0.5951377356052399
+  },
+  "top_words": [
+    [
+      "vaccine",
+      "export",
+      "global",
+      "trade",
+      "region",
+      "risk",
+      "india",
+      "china",
+      "covid-19",
+      "industry"
+    ],
+    [
+      "digital",
+      "health",
+      "programme",
+      "technology",
+      "system",
+      "ministry",
+      "access",
+      "skill",
+      "community",
+      "woman"
+    ],
+    [
+      "bank",
+      "financial",
+      "loan",
+      "asean",
+      "business",
+      "worker",
+      "sector",
+      "credit",
+      "nbc",
+      "political"
+    ],
+    [
+      "energy",
+      "water",
+      "rice",
+      "project",
+      "climate",
+      "power",
+      "mr",
+      "climate_change",
+      "food",
+      "phase"
+    ],
+    [
+      "price",
+      "rise",
+      "oil",
+      "inflation",
+      "yen",
+      "forecast",
+      "central_bank",
+      "week",
+      "dollar",
+      "month"
+    ]
+  ]
+}
