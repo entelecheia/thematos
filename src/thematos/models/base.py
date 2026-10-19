@@ -1,5 +1,6 @@
 import json
 import logging
+import math
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -180,9 +181,15 @@ class TopicModel(Model):
         doc_id_df = pd.DataFrame(doc_ids, columns=["id"])
         return pd.concat([doc_id_df, dists_df], axis=1)
 
+    def _contained(self, path: Path) -> Path:
+        """``path``, after checking that it resolves (symlinks followed) inside output_dir."""
+        if not path.resolve().is_relative_to(self.output_dir.resolve()):
+            raise ValueError(f"artifact path {path} resolves outside output_dir")
+        return path
+
     def _output_file(self, suffix: str) -> Path:
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        return self.output_dir / f"{self.model_id}{suffix}"
+        return self._contained(self.output_dir / f"{self.model_id}{suffix}")
 
     @property
     def model_file(self) -> Path:
@@ -227,7 +234,7 @@ class TopicModel(Model):
     @property
     def model_summary_file(self) -> Path:
         """One JSON line per trained model, shared by every model in ``output_dir``."""
-        return self.output_dir / "model-summary.jsonl"
+        return self._contained(self.output_dir / "model-summary.jsonl")
 
     @property
     def topic_wordcloud_file_format(self) -> str:
@@ -437,7 +444,11 @@ class TopicModel(Model):
         images = [
             wc_args.wc.generate_from_frequencies(
                 self.get_topic_words(topic_id, top_n=wc_args.top_n),
-                output_file=self.topic_wordcloud_file_format.format(topic_id=topic_id),
+                output_file=str(
+                    self._contained(
+                        Path(self.topic_wordcloud_file_format.format(topic_id=topic_id))
+                    )
+                ),
                 verbose=self.verbose,
             )
             for topic_id in range(self.num_topics)
@@ -445,10 +456,14 @@ class TopicModel(Model):
         if wc_args.make_collage:
             titles = wc_args.titles or [f"Topic {i}" for i in range(self.num_topics)]
             logger.info("Making wordcloud collage with titles: %s", titles)
+            collage_dir = self.output_dir / "wordcloud_collage"
+            collage_format = self.model_id + "_wordcloud_{page_num:02d}.png"
+            for page_num in range(math.ceil(len(images) / wc_args.num_images_per_page)):
+                self._contained(collage_dir / collage_format.format(page_num=page_num))
             save_image_pages(
                 images,
-                output_dir=self.output_dir / "wordcloud_collage",
-                output_file_format=self.model_id + "_wordcloud_{page_num:02d}.png",
+                output_dir=collage_dir,
+                output_file_format=collage_format,
                 num_images_per_page=wc_args.num_images_per_page,
                 num_cols=wc_args.num_cols,
                 num_rows=wc_args.num_rows,
@@ -463,7 +478,7 @@ class TopicModel(Model):
 
     @property
     def inferred_doc_topic_dists_file(self) -> Path:
-        return (
+        return self._contained(
             self.output_dir
             / "inferred_topics"
             / f"{self.model_id}-inferred_doc_topic_dists.parquet"
