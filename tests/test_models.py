@@ -1,5 +1,6 @@
 """Library behavior that the workflow tests do not reach: priors, corpus inputs, load, masks."""
 
+import json
 from pathlib import Path
 
 import numpy as np
@@ -12,6 +13,7 @@ from thematos.datasets import Corpus
 from thematos.datasets.corpus import read_dataframe
 from thematos.models import LdaModel, WordPrior
 from thematos.plots import WordCloud
+from thematos.plots.wordcloud import save_image_pages
 from thematos.steps import build_corpus
 
 from .conftest import TRAIN, WORD_PRIOR
@@ -130,3 +132,46 @@ def test_wordcloud_mask_from_file(tmp_path: Path) -> None:
     )
     assert (wc.width, wc.height) == (120, 60)
     assert Image.open(out).size == (120, 60)
+
+
+def test_collage_grid_must_hold_a_page(tmp_path: Path) -> None:
+    # #87: 3 images, 20 per page, 1x2 grid used to drop the third image silently
+    images = [np.zeros((4, 4, 3), dtype=np.uint8)] * 3
+    args = {"output_dir": tmp_path, "output_file_format": "p{page_num}.png", "num_cols": 2}
+    with pytest.raises(ValueError, match="num_rows"):
+        save_image_pages(images, num_images_per_page=20, num_rows=1, **args)
+    assert not list(tmp_path.glob("*.png"))
+    files = save_image_pages(images, num_images_per_page=2, num_rows=1, **args)
+    assert [f.name for f in files] == ["p0.png", "p1.png"]
+
+
+def test_training_stops_at_requested_iterations(tmp_path: Path) -> None:
+    # #88: iterations=11, interval=10 used to train 20 iterations
+    corpus = Corpus(data_file=TRAIN, text_col="tokens")
+    model = LdaModel(
+        output_dir=tmp_path,
+        seed=1,
+        model_args={"k": 2},
+        train_args={"iterations": 11, "interval": 10},
+        eval_coherence=False,
+    ).train(corpus)
+    assert model.model.global_step == 11
+    assert model.ll_per_words["iter"].tolist() == [0, 10]
+
+
+@pytest.mark.parametrize(("model_type", "name"), [("/abs", "x"), ("LDA", "x/../../escaped")])
+def test_model_id_stays_inside_output_dir(tmp_path: Path, model_type: str, name: str) -> None:
+    # #89: model_id is joined to output_dir, so it must not resolve outside it
+    model = LdaModel(output_dir=tmp_path / "out", model_type=model_type, name=name)
+    with pytest.raises(ValueError, match="outside output_dir"):
+        _ = model.model_file
+    ok = LdaModel(output_dir=tmp_path / "out", name="m")
+    assert ok.model_file == tmp_path / "out" / "LDA_m_k(10).mdl"
+
+
+def test_wordprior_save_keeps_json(tmp_path: Path) -> None:
+    # #90: save() wrote YAML into a .json data_file
+    path = tmp_path / "prior.json"
+    WordPrior(data_file=str(path), prior_data={0: ["Rate"], 1: ["oil"]}).save()
+    assert json.loads(path.read_text(encoding="utf-8")) == {"0": ["rate"], "1": ["oil"]}
+    assert WordPrior(data_file=str(path)).priors == {0: ["rate"], 1: ["oil"]}

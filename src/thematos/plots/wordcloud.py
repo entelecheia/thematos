@@ -90,7 +90,16 @@ def save_image_pages(
     height_multiple: float = 2,
     dpi: int = 100,
 ) -> list[Path]:
-    """Lay images out in grids of ``num_images_per_page`` and save one file per page."""
+    """Lay images out in grids of ``num_images_per_page`` and save one file per page.
+
+    Raises ``ValueError`` when an explicit ``num_rows`` x ``num_cols`` grid cannot hold a page.
+    """
+    page_size = min(num_images_per_page, len(images))
+    if num_rows and num_rows * num_cols < page_size:
+        raise ValueError(
+            f"num_rows ({num_rows}) x num_cols ({num_cols}) cannot hold {page_size} images per "
+            "page; raise num_rows, leave it unset, or lower num_images_per_page"
+        )
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     files = []
