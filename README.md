@@ -2,7 +2,6 @@
 
 [![pypi-image]][pypi-url]
 [![license-image]][license-url]
-[![DOI][zenodo-image]][zenodo-url]
 
 LDA topic modeling on [tomotopy](https://bab2min.github.io/tomotopy/). ThematOS is a plain Python library; it also ships [HyFI 2.0](https://hyfi.entelecheia.ai) config groups and workflows, so a training run, a parameter sweep, or an inference run can be started from the command line and recorded in a run manifest. The name comes from the Greek θέματος, "of the theme".
 
@@ -58,25 +57,12 @@ Artifacts go under the project workspace (`workspace/topic/model/` by default) a
 
 ## Citation
 
-```tex
-@software{lee_2023_8248129,
-  author       = {Young Joon Lee},
-  title        = {ThematOS: A HyFI-based library for Topic Modeling},
-  month        = aug,
-  year         = 2023,
-  publisher    = {Zenodo},
-  version      = {v0.14.1},
-  doi          = {10.5281/zenodo.8248128},
-  url          = {https://doi.org/10.5281/zenodo.8248128}
-}
-```
+See [CITATION.cff](https://github.com/entelecheia/thematos/blob/main/CITATION.cff), or use GitHub's "Cite this repository" button.
 
 ## License
 
 [MIT][license-url]
 
-[zenodo-image]: https://zenodo.org/badge/DOI/10.5281/zenodo.8248128.svg
-[zenodo-url]: https://doi.org/10.5281/zenodo.8248128
 [pypi-image]: https://img.shields.io/pypi/v/thematos
 [pypi-url]: https://pypi.org/project/thematos
 [license-image]: https://img.shields.io/github/license/entelecheia/thematos
