@@ -38,6 +38,13 @@ def test_wordprior_merges_file_and_data(tmp_path: Path) -> None:
     assert not WordPrior()
     with pytest.raises(ValueError, match="data_file"):
         WordPrior(prior_data={0: ["a"]}).save()
+    with pytest.raises(FileNotFoundError):
+        _ = WordPrior(data_file=str(tmp_path / "missing.yaml")).priors
+
+    # add() before reading keeps the file's other topics
+    early = WordPrior(data_file=saved.data_file)
+    early.add(1, "b")
+    assert early.priors == {0: ["a"], 1: ["b"]}
 
 
 def test_configs_reject_unknown_keys() -> None:
@@ -67,6 +74,8 @@ def test_corpus_from_text_column() -> None:
     assert repr(corpus) == "<Corpus 4 documents>" and corpus
     assert corpus.doc_ids == [1, 2, 3, 4]
     assert len(corpus.corpus) == 4
+    build_corpus(DOCS.head(2), corpus=corpus)  # new data rebuilds the corpus
+    assert len(corpus.corpus) == 2 and corpus.doc_ids == [1, 2]
     with pytest.raises(ValueError, match="data_file"):
         Corpus().load()
 
@@ -88,6 +97,9 @@ def test_save_load_round_trip(tmp_path: Path) -> None:
         output_dir=tmp_path, seed=3, model_args={"k": 2}, train_args={"iterations": 10}
     )
     trained.train(corpus).save()
+    trained.eval_coherence = False
+    trained.train(corpus)  # retraining drops the previous coherence scores
+    assert trained.coherence_metrics_dict == {}
 
     loaded = LdaModel(output_dir=tmp_path, model_args={"k": 2}).load()
     assert loaded.num_topics == 2

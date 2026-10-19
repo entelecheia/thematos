@@ -262,6 +262,8 @@ class TopicModel(Model):
             self.corpus = corpus
             self._doc_ids_ = None
         self._model_ = self._new_model()
+        self._coherence_metrics_ = None
+        self._ll_per_words_ = []
         if self.set_wordprior:
             self._set_wordprior()
         self._timestamp_ = datetime.now().strftime("%Y%m%d_%H%M%S")

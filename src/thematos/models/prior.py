@@ -23,10 +23,11 @@ class WordPrior(Model):
     verbose: bool = False
 
     _priors_: PriorType = PrivateAttr(default_factory=dict)
+    _loaded_: bool = PrivateAttr(False)
 
     @property
     def priors(self) -> PriorType:
-        if not self._priors_:
+        if not self._loaded_:
             self.load()
         return self._priors_
 
@@ -35,28 +36,34 @@ class WordPrior(Model):
         if isinstance(prior, str):
             prior = [prior]
         prior = [w.lower() for w in prior] if self.lowercase else prior
-        self._priors_[id_] = list(set(self._priors_.get(id_, []) + prior))
+        priors = self.priors  # load the file first, so save() keeps its other topics
+        priors[id_] = list(set(priors.get(id_, []) + prior))
 
-    def load(self) -> None:
-        """Load words from file and ``prior_data``"""
+    def load(self, missing_ok: bool = False) -> None:
+        """Load words from ``data_file`` and ``prior_data``.
+
+        A missing ``data_file`` raises ``FileNotFoundError`` unless ``missing_ok`` (used by
+        :meth:`save` to create the file).
+        """
         priors: dict = {}
-        if self.data_file and Path(self.data_file).is_file():
+        if self.data_file and (Path(self.data_file).is_file() or not missing_ok):
             priors = yaml.safe_load(Path(self.data_file).read_text(encoding="utf-8")) or {}
             if self.verbose:
                 logger.info("Loaded %d words from %s", len(priors), self.data_file)
-        elif self.data_file:
-            logger.warning("Word prior file not found: %s", self.data_file)
         if self.prior_data:
             priors.update(self.prior_data)
         self._priors_ = {
             int(id_): list({w.lower() if self.lowercase else w for w in prior})
             for id_, prior in priors.items()
         }
+        self._loaded_ = True
         if self.verbose:
             logger.info("Loaded %d priors", len(self._priors_))
 
     def save(self) -> None:
         """Save words to ``data_file``"""
+        if not self._loaded_:
+            self.load(missing_ok=True)
         if not self.priors:
             logger.warning("No priors to save")
             return

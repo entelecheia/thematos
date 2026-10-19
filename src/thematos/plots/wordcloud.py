@@ -106,7 +106,7 @@ def save_image_pages(
                 ax.set_visible(False)
                 continue
             ax.imshow(page[i])
-            if titles:
+            if titles and start + i < len(titles):
                 ax.set_title(titles[start + i], fontsize=title_fontsize, color=title_color)
         fig.tight_layout()
         output_file = output_dir / output_file_format.format(page_num=page_num)

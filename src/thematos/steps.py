@@ -21,6 +21,7 @@ def build_corpus(data: pd.DataFrame | None = None, *, corpus: Corpus) -> Corpus:
     """Tokenize ``data`` (or ``corpus.data_file`` when no data is piped in) into ``corpus``."""
     if data is not None:
         corpus.data = data
+        corpus._corpus_ = None  # rebuild from the new data
     return corpus.load()
 
 

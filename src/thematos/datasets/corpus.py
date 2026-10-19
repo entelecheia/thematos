@@ -69,7 +69,11 @@ class Corpus(Model):
         logger.info("Total %d documents are loaded.", len(docs))
         self._corpus_ = corpus
         if self.ngramize:
-            self.concat_ngrams()
+            try:
+                self.concat_ngrams()
+            except Exception:
+                self._corpus_ = None  # never cache a corpus without its n-grams
+                raise
         return self
 
     @property
