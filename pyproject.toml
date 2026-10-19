@@ -22,7 +22,7 @@ classifiers = [
 ]
 dependencies = [
     "hyfi>=2,<3",
-    "lexikanon",
+    "lexikanon>=1,<2",
     "matplotlib>=3.7",
     "numpy>=1.23.5",
     "pandas>=2",
@@ -51,9 +51,6 @@ dev = [{ include-group = "test" }, { include-group = "lint" }, { include-group =
 
 [tool.uv]
 default-groups = ["dev"]
-
-[tool.uv.sources]
-lexikanon = { git = "https://github.com/entelecheia/lexikanon", branch = "feat/118-hyfi-2-migration" }
 
 [build-system]
 requires = ["hatchling"]
