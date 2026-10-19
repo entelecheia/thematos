@@ -1,29 +1,29 @@
-from typing import Any, Dict, Optional
+from typing import Any
 
 import tomotopy as tp
-from hyfi.composer import BaseModel
+from pydantic import BaseModel
 
 
 class CoherenceMetrics(BaseModel):
-    u_mass: Optional[float] = None
-    c_uci: Optional[float] = None
-    c_npmi: Optional[float] = None
-    c_v: Optional[float] = None
+    u_mass: float | None = None
+    c_uci: float | None = None
+    c_npmi: float | None = None
+    c_v: float | None = None
 
 
 class ModelSummary(BaseModel):
-    timestamp: str = None
-    model_id: str = None
-    model_type: str = None
-    num_docs: int = None
-    num_words: int = None
-    num_total_vocabs: Optional[int] = None
-    num_used_vocabs: int = None
-    seed: Optional[int] = None
-    model_args: Dict[str, Any] = None
-    train_args: Dict[str, Any] = None
-    perplexity: float = None
-    coherence: Optional[Dict[str, float]] = None
+    timestamp: str
+    model_id: str
+    model_type: str
+    num_docs: int
+    num_words: int
+    num_total_vocabs: int | None = None
+    num_used_vocabs: int
+    seed: int | None = None
+    model_args: dict[str, Any]
+    train_args: dict[str, Any]
+    perplexity: float
+    coherence: dict[str, float | None] | None = None
 
 
 IDF = tp.TermWeight.IDF

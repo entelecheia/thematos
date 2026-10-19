@@ -1,0 +1,21 @@
+# Train one LDA model per (k, alpha, eta); each model is saved, summarized, and plotted.
+# hyfi run workflow=thematos_lda_sweep dataset.data_file=<corpus.parquet> 'workflow.steps.2.with.k=[5,10,20]'
+# Model summaries: ${model.output_dir}/model-summary.jsonl (one line per model).
+defaults:
+  - /dataset@_global_.dataset: topic_corpus
+  - /model@_global_.model: lda
+
+name: thematos_lda_sweep
+steps:
+  - run: thematos.datasets.corpus.read_dataframe
+    with:
+      path: ${dataset.data_file}
+  - run: thematos.steps.build_corpus
+    with:
+      corpus: ${dataset}
+  - run: thematos.steps.sweep
+    with:
+      model: ${model}
+      k: [10, 20]
+      alpha: [0.1]
+      eta: [0.01]

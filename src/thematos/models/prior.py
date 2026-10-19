@@ -1,93 +1,91 @@
 import logging
-from typing import Dict, List, Optional, Union
+from collections.abc import ItemsView, Iterator
+from pathlib import Path
 
-from hyfi import HyFI
-from hyfi.composer import BaseModel
+import yaml
+from pydantic import PrivateAttr
+
+from thematos._base import Model
 
 logger = logging.getLogger(__name__)
 
-PriorType = Dict[int, List[str]]
+PriorType = dict[int, list[str]]
 
 
-class WordPrior(BaseModel):
-    _config_group_: str = "/words"
-    _config_name_: str = "wordprior"
+class WordPrior(Model):
+    """Seed words per topic, from ``prior_data`` and/or a YAML or JSON ``data_file``."""
 
     lowercase: bool = True
-    prior_data: Optional[PriorType] = None
-    data_file: Optional[str] = None
+    prior_data: PriorType | None = None
+    data_file: str | None = None
     min_prior_weight: float = 0.01
     max_prior_weight: float = 1.0
     verbose: bool = False
 
-    _priors_: PriorType = {}
+    _priors_: PriorType = PrivateAttr(default_factory=dict)
 
     @property
-    def priors(self) -> List[str]:
+    def priors(self) -> PriorType:
         if not self._priors_:
             self.load()
         return self._priors_
 
-    def add(self, id_: int, prior: Union[str, List[str]]):
+    def add(self, id_: int, prior: str | list[str]) -> None:
         """Add a prior to the word prior"""
         if isinstance(prior, str):
             prior = [prior]
         prior = [w.lower() for w in prior] if self.lowercase else prior
         self._priors_[id_] = list(set(self._priors_.get(id_, []) + prior))
 
-    def load(self):
-        """Load words from file or function"""
-        if self.data_file:
-            self._priors_ = HyFI.to_dict(HyFI.load(self.data_file))
+    def load(self) -> None:
+        """Load words from file and ``prior_data``"""
+        priors: dict = {}
+        if self.data_file and Path(self.data_file).is_file():
+            priors = yaml.safe_load(Path(self.data_file).read_text(encoding="utf-8")) or {}
             if self.verbose:
-                logger.info(
-                    "Loaded %d words from %s",
-                    len(self._priors_),
-                    self.data_file,
-                )
-        else:
-            self._priors_ = {}
-
+                logger.info("Loaded %d words from %s", len(priors), self.data_file)
+        elif self.data_file:
+            logger.warning("Word prior file not found: %s", self.data_file)
         if self.prior_data:
-            for id_, prior in self.prior_data.items():
-                self._priors_[id_] = prior
-
+            priors.update(self.prior_data)
         self._priors_ = {
             int(id_): list({w.lower() if self.lowercase else w for w in prior})
-            for id_, prior in self._priors_.items()
+            for id_, prior in priors.items()
         }
         if self.verbose:
             logger.info("Loaded %d priors", len(self._priors_))
 
-    def save(self):
-        """Save words to file"""
+    def save(self) -> None:
+        """Save words to ``data_file``"""
         if not self.priors:
             logger.warning("No priors to save")
             return
-        HyFI.save(self.priors, self.data_file)
+        if not self.data_file:
+            raise ValueError("WordPrior.save needs `data_file`")
+        Path(self.data_file).write_text(
+            yaml.safe_dump(self.priors, allow_unicode=True), encoding="utf-8"
+        )
         if self.verbose:
             logger.info("Saved %d words to %s", len(self.priors), self.data_file)
 
-    def items(self):
+    def items(self) -> ItemsView[int, list[str]]:
         return self.priors.items()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[int]:  # type: ignore[override]
         return iter(self.priors)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.priors)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<WordPrior {len(self.priors)} priors>"
 
-    def __str__(self):
-        return f"<WordPrior {len(self.priors)} priors>"
+    __str__ = __repr__
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return bool(self.priors)
 
-    def __eq__(self, other: "WordPrior"):
-        return self.priors == other.priors
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, WordPrior) and self.priors == other.priors
 
-    def __ne__(self, other: "WordPrior"):
-        return self.priors != other.priors
+    __hash__ = None  # type: ignore[assignment]

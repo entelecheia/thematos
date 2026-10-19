@@ -1,29 +1,33 @@
 defaults:
-- /path@path: __batch__
-- /batch@batch: __init__
-- /words@wordprior: wordprior
-- /dataset@corpus: topic_corpus
-- /model/config@model_args: lda
-- /model/train@train_args: topic
-- /model/summary@train_summary_args: topic_train
-- /model/plot@wc_args: wordcloud
-_target_: thematos.models.lda.LdaModel
-_config_name_: lda
-_config_group_: /model
-verbose: false
-task_name: topic
-task_root: workspace
-version: 0.0.0
-module: null
-pipelines: []
-batch_name: model
+  - /words@wordprior: wordprior
+  - /plot@wc_args: wordcloud
+  - _self_
+
+_target_: thematos.models.LdaModel
+output_dir: ${project.workspace}/topic/model
+name: model
 model_type: LDA
-coherence_metric_list:
-- u_mass
-- c_uci
-- c_npmi
-- c_v
+seed: null # null draws a random seed; set one to reproduce a run
+num_workers: 1 # 0 uses every core; results then depend on the machine
+model_args:
+  tw: 1 # tomotopy.TermWeight.IDF
+  min_cf: 5
+  min_df: 0
+  rm_top: 0
+  k: 10
+  alpha: 0.1
+  eta: 0.01
+train_args:
+  burn_in: 0
+  interval: 10
+  iterations: 100
+train_summary_args:
+  initial_hp: true
+  params: true
+  topic_word_top_n: 10
+  flush: false
+coherence_metric_list: [u_mass, c_uci, c_npmi, c_v]
 eval_coherence: true
 set_wordprior: false
-autosave: true
 save_full: true
+verbose: false
