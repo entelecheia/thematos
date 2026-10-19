@@ -36,8 +36,9 @@ class WordPrior(Model):
         if isinstance(prior, str):
             prior = [prior]
         prior = [w.lower() for w in prior] if self.lowercase else prior
-        priors = self.priors  # load the file first, so save() keeps its other topics
-        priors[id_] = list(set(priors.get(id_, []) + prior))
+        if not self._loaded_:  # load the file first so save() keeps its other topics
+            self.load(missing_ok=True)  # a new data_file is created by save()
+        self._priors_[id_] = list(set(self._priors_.get(id_, []) + prior))
 
     def load(self, missing_ok: bool = False) -> None:
         """Load words from ``data_file`` and ``prior_data``.
@@ -69,9 +70,9 @@ class WordPrior(Model):
             return
         if not self.data_file:
             raise ValueError("WordPrior.save needs `data_file`")
-        Path(self.data_file).write_text(
-            yaml.safe_dump(self.priors, allow_unicode=True), encoding="utf-8"
-        )
+        path = Path(self.data_file)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(yaml.safe_dump(self.priors, allow_unicode=True), encoding="utf-8")
         if self.verbose:
             logger.info("Saved %d words to %s", len(self.priors), self.data_file)
 

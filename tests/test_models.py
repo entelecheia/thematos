@@ -46,6 +46,12 @@ def test_wordprior_merges_file_and_data(tmp_path: Path) -> None:
     early.add(1, "b")
     assert early.priors == {0: ["a"], 1: ["b"]}
 
+    # review of #86: add() + save() creates a new file, parent directories included
+    fresh = WordPrior(data_file=str(tmp_path / "new-dir" / "prior.yaml"))
+    fresh.add(0, "Rate")
+    fresh.save()
+    assert WordPrior(data_file=fresh.data_file).priors == {0: ["rate"]}
+
 
 def test_configs_reject_unknown_keys() -> None:
     with pytest.raises(ValidationError):
