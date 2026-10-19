@@ -1,5 +1,53 @@
 <!--next-version-placeholder-->
 
+## v1.0.0 (2026-10-19)
+
+### Bug Fixes
+
+- Let WordPrior create a new data file ([#86](https://github.com/entelecheia/thematos/pull/86),
+  [`ec07033`](https://github.com/entelecheia/thematos/commit/ec070336f308479d2e2b7ba22e55b81c1ef87fa7))
+
+- Stale corpus, prior, and metric state found in review
+  ([#86](https://github.com/entelecheia/thematos/pull/86),
+  [`ec07033`](https://github.com/entelecheia/thematos/commit/ec070336f308479d2e2b7ba22e55b81c1ef87fa7))
+
+### Build System
+
+- Move to uv, hatchling, and the HyFI 2.0 CI workflows
+  ([#86](https://github.com/entelecheia/thematos/pull/86),
+  [`ec07033`](https://github.com/entelecheia/thematos/commit/ec070336f308479d2e2b7ba22e55b81c1ef87fa7))
+
+- Require the released lexikanon 1.x ([#86](https://github.com/entelecheia/thematos/pull/86),
+  [`ec07033`](https://github.com/entelecheia/thematos/commit/ec070336f308479d2e2b7ba22e55b81c1ef87fa7))
+
+### Chores
+
+- **deps**: Bump hyfi from 1.36.4 to 1.37.0
+  ([`c8e2a83`](https://github.com/entelecheia/thematos/commit/c8e2a839dcbae19ecc7122d948dacc30d77d36e4))
+
+- **deps**: Bump wordcloud from 1.9.3 to 1.9.4
+  ([`25107c4`](https://github.com/entelecheia/thematos/commit/25107c479b8ae6d952cd3a954cae724dadbbff4e))
+
+### Documentation
+
+- Drop the Zenodo badge and citation block ([#86](https://github.com/entelecheia/thematos/pull/86),
+  [`ec07033`](https://github.com/entelecheia/thematos/commit/ec070336f308479d2e2b7ba22e55b81c1ef87fa7))
+
+- Usage, migration guide, AGENTS.md, and REVIEW.md for 1.0
+  ([#86](https://github.com/entelecheia/thematos/pull/86),
+  [`ec07033`](https://github.com/entelecheia/thematos/commit/ec070336f308479d2e2b7ba22e55b81c1ef87fa7))
+
+### Features
+
+- Migrate to HyFI 2.0 (plain library + config groups)
+  ([#86](https://github.com/entelecheia/thematos/pull/86),
+  [`ec07033`](https://github.com/entelecheia/thematos/commit/ec070336f308479d2e2b7ba22e55b81c1ef87fa7))
+
+- Plain topic models with HyFI 2.0 config groups and workflows
+  ([#86](https://github.com/entelecheia/thematos/pull/86),
+  [`ec07033`](https://github.com/entelecheia/thematos/commit/ec070336f308479d2e2b7ba22e55b81c1ef87fa7))
+
+
 ## v0.14.5 (2024-10-21)
 
 ### Fix

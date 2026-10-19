@@ -1,6 +1,6 @@
 [project]
 name = "thematos"
-version = "0.14.5"
+version = "1.0.0"
 description = "LDA topic modeling on tomotopy, with HyFI 2.0 config groups and workflows"
 authors = [{ name = "Young Joon Lee", email = "entelecheia@hotmail.com" }]
 license = "MIT"
