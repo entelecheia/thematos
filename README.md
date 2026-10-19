@@ -1,20 +1,60 @@
-# ThematOS: A HyFI-based library for Topic Modeling
+# ThematOS
 
 [![pypi-image]][pypi-url]
-[![version-image]][release-url]
-[![release-date-image]][release-url]
 [![license-image]][license-url]
 [![DOI][zenodo-image]][zenodo-url]
-[![codecov][codecov-image]][codecov-url]
-[![jupyter-book-image]][docs-url]
 
-A Python Library for Topic Modeling
+LDA topic modeling on [tomotopy](https://bab2min.github.io/tomotopy/). ThematOS is a plain Python library; it also ships [HyFI 2.0](https://hyfi.entelecheia.ai) config groups and workflows, so a training run, a parameter sweep, or an inference run can be started from the command line and recorded in a run manifest. The name comes from the Greek θέματος, "of the theme".
 
-- Documentation: [https://thematos.entelecheia.ai][docs-url]
-- GitHub: [https://github.com/entelecheia/thematos][repo-url]
-- PyPI: [https://pypi.org/project/thematos][pypi-url]
+- [Documentation][docs-url]
+- [Migrating from 0.x](https://thematos.entelecheia.ai/migration/)
 
-ThematOS is a Python library specifically designed for topic modeling, a critical method in natural language processing (NLP) and machine learning (ML) that uncovers hidden patterns and themes within extensive text data collections. The name stems from the Greek word θέματος, symbolizing the library's core focus on revealing the intrinsic structure of textual information. Built upon the [Hydra Fast Interface (HyFI)](https://hyfi.entelecheia.ai) framework, ThematOS is a HyFI-based library, enabling seamless integration into existing HyFI-based projects or utilization as a standalone library.
+ThematOS 1.0 drops the HyFI 1.x API. Pin `thematos<1` to keep it.
+
+## Install
+
+```bash
+uv add thematos          # or: pip install thematos
+pip install pyLDAvis     # optional: LDAvis HTML next to the other artifacts
+```
+
+Python 3.11 or newer. Stopwords come from [lexikanon](https://github.com/entelecheia/lexikanon), which pulls in MeCab through fugashi; on Python 3.15 fugashi builds from source and needs the MeCab library (`apt-get install libmecab-dev` or `brew install mecab`).
+
+## Use it as a library
+
+```python
+from thematos.datasets import Corpus
+from thematos.models import LdaModel
+
+corpus = Corpus(data_file="news.parquet", text_col="tokens")  # or Corpus(data=dataframe)
+model = LdaModel(output_dir="workspace/topic/model", seed=42, model_args={"k": 10})
+model.train(corpus)  # trains and computes coherence; writes nothing
+model.save()  # model file, log-likelihood trace, distributions, top words
+model.summarize()  # tomotopy summary and one JSON line in model-summary.jsonl
+model.plot()  # log-likelihood plot and topic word clouds
+model.model.perplexity
+```
+
+Every file name starts with the model id, `LDA_model_k(10)` here. Importing thematos never imports HyFI.
+
+## Use it from HyFI
+
+Installing thematos registers its config groups through the `hyfi.plugins` entry point:
+
+| group | options |
+|---|---|
+| `model` | `lda` |
+| `dataset` | `topic_corpus` (stopwords from lexikanon's `stopwords` group) |
+| `words` | `wordprior` |
+| `plot` | `wordcloud` |
+| `workflow` | `thematos_lda`, `thematos_lda_sweep`, `thematos_lda_infer` |
+
+```bash
+hyfi run workflow=thematos_lda dataset.data_file=news.parquet dataset.text_col=tokens \
+  model.model_args.k=20 model.seed=42
+```
+
+Artifacts go under the project workspace (`workspace/topic/model/` by default) and the run manifest under `.hyfi/runs/<run id>/manifest.json`. See [Usage](https://thematos.entelecheia.ai/usage/) for the sweep and inference workflows.
 
 ## Citation
 
@@ -31,45 +71,14 @@ ThematOS is a Python library specifically designed for topic modeling, a critica
 }
 ```
 
-```tex
-@software{lee_2023_hyfi,
-  author       = {Young Joon Lee},
-  title        = {Lexikanon: A HyFI-based library for Tokenizers},
-  year         = 2023,
-  publisher    = {GitHub},
-  url          = {https://github.com/entelecheia/lexikanon}
-}
-```
-
-## Changelog
-
-See the [CHANGELOG] for more information.
-
-## Contributing
-
-Contributions are welcome! Please see the [contributing guidelines] for more information.
-
 ## License
 
-This project is released under the [MIT License][license-url].
-
-<!-- Links: -->
+[MIT][license-url]
 
 [zenodo-image]: https://zenodo.org/badge/DOI/10.5281/zenodo.8248128.svg
 [zenodo-url]: https://doi.org/10.5281/zenodo.8248128
-[codecov-image]: https://codecov.io/gh/entelecheia/thematos/branch/main/graph/badge.svg?token=JP5P7C8ZOO
-[codecov-url]: https://codecov.io/gh/entelecheia/thematos
 [pypi-image]: https://img.shields.io/pypi/v/thematos
+[pypi-url]: https://pypi.org/project/thematos
 [license-image]: https://img.shields.io/github/license/entelecheia/thematos
 [license-url]: https://github.com/entelecheia/thematos/blob/main/LICENSE
-[version-image]: https://img.shields.io/github/v/release/entelecheia/thematos?sort=semver
-[release-date-image]: https://img.shields.io/github/release-date/entelecheia/thematos
-[release-url]: https://github.com/entelecheia/thematos/releases
-[jupyter-book-image]: https://jupyterbook.org/en/stable/_images/badge.svg
-[repo-url]: https://github.com/entelecheia/thematos
-[pypi-url]: https://pypi.org/project/thematos
 [docs-url]: https://thematos.entelecheia.ai
-[changelog]: https://github.com/entelecheia/thematos/blob/main/CHANGELOG.md
-[contributing guidelines]: https://github.com/entelecheia/thematos/blob/main/CONTRIBUTING.md
-
-<!-- Links: -->
